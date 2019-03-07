@@ -51,15 +51,6 @@
           </div>
         </div>
 
-        <div class="good-detail-specification">
-          <cell
-            class="z-cell-item"
-            :title="'选择: 规格 / 颜色'"
-            is-link
-            @click.native="toggerSpeciPopup(0)">
-          </cell>
-        </div>
-
         <div class="good-detail-introduce">
           <div class="head">——— 详情 ———</div>
           <div class="content" v-html="productDetail.content"></div>
@@ -107,9 +98,6 @@
                 <div
                   class="param-item"
                   v-for="(item,pIndex) in productDetail.params">
-                  <!--<good-param-->
-                    <!--:item="item"-->
-                    <!--@paramChange="paramChange" />-->
                 </div>
                 <div class="param-item">
                   <x-number
@@ -155,7 +143,7 @@
   import './goodsDetail.less'
   import {productDetail} from '../../data/data.js'
   // import CommentCard from '../../components/commentCard.vue'
-  import {Flexbox,FlexboxItem,Swiper,SwiperItem,Cell,Popup,Scroller,Toast,ViewBox,XSwitch,XNumber} from 'vux'
+  import {Swiper,SwiperItem,Popup,Scroller,Toast,XNumber} from 'vux'
   import HeaderNav from '../../components/HeaderNav'
   export default {
     components: {
@@ -164,12 +152,7 @@
       Toast,
       Swiper,
       SwiperItem,
-      Cell,
       // CommentCard,
-      Flexbox,
-      FlexboxItem,
-      ViewBox,
-      XSwitch,
       XNumber,
       HeaderNav
     },
@@ -180,16 +163,6 @@
         isActive: false,
         btnType: '',
         show: false,
-        showToast: false,
-        isLike: false,
-        shareInfo: {
-          qrcode: '/static/img/good-default.jpg',
-          text: '长按二维码分享'
-        },
-        kefu: {
-          qrcode: '/static/img/good-default.jpg',
-          text: '长按二维码分享'
-        },
         productDetail: productDetail
       }
     },
@@ -229,18 +202,6 @@
       goToCart() {
         this.$store.commit('bottomNav/set', 1);
         this.$router.push('/cart');
-      },
-      paramChange(param) {
-        // data 存引用类型会出现奇怪的事情
-        var pos = this.selectParams.indexOf(param.name)
-        console.log(pos)
-        if(pos > -1){
-          this.selectParams[pos + 1] = param.val
-        }else{
-          this.selectParams.push(param.name, param.val)
-        }
-
-        console.log(this.selectParams)
       },
       handleBuy() {
         console.log(1111)

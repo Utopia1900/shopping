@@ -466,10 +466,10 @@ export const productDetail = {
 		subtitle: '生活态度'
 	},
 	banners: [
-		'/static/img/banner-life.png',
-		'/static/img/banner-life.png',
-		'/static/img/banner-life.png',
-		'/static/img/banner-life.png'
+		'/static/img/article-default.png',
+		'/static/img/article-default.png',
+		'/static/img/article-default.png',
+		'/static/img/article-default.png'
 	],
 	storeName: '极物商城',
 	content: '我是详情',
@@ -515,14 +515,14 @@ export const payPill = [
 		name: '由极物商城发货',
 		goods: [
 			{
-				img: '/static/img/good-default.jpg',
+				img: '/static/img/article-default.png',
 				title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
 				subInfo: ['颜色:蓝色','颜色:蓝色','颜色:蓝色'],
 				price: '200.00',
 				num: '3'
 			},
 			{
-				img: '/static/img/good-default.jpg',
+				img: '/static/img/article-default.png',
 				title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
 				subInfo: ['颜色:蓝色','颜色:蓝色','颜色:蓝色'],
 				price: '200.00',
@@ -554,14 +554,14 @@ export const payPill = [
 		name: '由极物商城发货',
 		goods: [
 			{
-				img: '/static/img/good-default.jpg',
+				img: '/static/img/article-default.png',
 				title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
 				subInfo: ['颜色:蓝色','颜色:蓝色','颜色:蓝色'],
 				price: '200.00',
 				num: '3'
 			},
 			{
-				img: '/static/img/good-default.jpg',
+				img: '/static/img/article-default.png',
 				title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
 				subInfo: ['颜色:蓝色','颜色:蓝色','颜色:蓝色'],
 				price: '200.00',
@@ -587,85 +587,6 @@ export const payPill = [
 				time: '2017.2.19-2017.3.1'
 			}
 		],
-	}
-]
-
-
-
-/******* good search *********/
-// search result
-export const searchResult = [
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
-	},
-	{
-		id: 'a',
-		img: '/static/img/article-default.png',
-		title: '发现生活中的美',
-		price: '998.00'
 	}
 ]
 
@@ -708,144 +629,6 @@ export const userAddress = [
 		address: '广东广州海珠区广州大道中338号'
 	}
 ]
-
-
-/******** coupon *********/
-// coupon
-export const timeoutCoupons = [
-	{
-		state: 'timeout',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'timeout',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'timeout',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'timeout',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'timeout',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-]
-
-export const unusefullCoupons = [
-	{
-		state: 'unusefull',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'unusefull',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'unusefull',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'unusefull',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-	{
-		state: 'unusefull',
-		title: '注册有礼50元券',
-		amount: '50',
-		limitMsg: '满200可用',
-		validity: '2016.09.05-2016.10.31'
-	},
-]
-
-
-export const usefullCoupons = [
-	// {
-	// 	state: 'usefull',
-	// 	title: '注册有礼50元券',
-	// 	amount: '50',
-	// 	limitMsg: '满200可用',
-	// 	validity: '2016.09.05-2016.10.31'
-	// },
-	// {
-	// 	state: 'usefull',
-	// 	title: '注册有礼50元券',
-	// 	amount: '50',
-	// 	limitMsg: '满200可用',
-	// 	validity: '2016.09.05-2016.10.31'
-	// },
-	// {
-	// 	state: 'usefull',
-	// 	title: '注册有礼50元券',
-	// 	amount: '50',
-	// 	limitMsg: '满200可用',
-	// 	validity: '2016.09.05-2016.10.31'
-	// },
-	// {
-	// 	state: 'usefull',
-	// 	title: '注册有礼50元券',
-	// 	amount: '50',
-	// 	limitMsg: '满200可用',
-	// 	validity: '2016.09.05-2016.10.31'
-	// },
-	// {
-	// 	state: 'usefull',
-	// 	title: '注册有礼50元券',
-	// 	amount: '50',
-	// 	limitMsg: '满200可用',
-	// 	validity: '2016.09.05-2016.10.31'
-	// },
-]
-/*********** my like ************/
-// like list
-export const myLikes = [
-	{
-		id: 1,
-		img: '/static/img/good-default.jpg',
-		title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
-		subInfo: '已售8888件',
-		price: '200.00'
-	},
-	{
-		id: 2,
-		img: '/static/img/good-default.jpg',
-		title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
-		subInfo: '已售8888件',
-		price: '200.00'
-	}
-]
-
-
 
 /*********** my order ************/
 // order list

@@ -29,7 +29,7 @@
 						name: 'addressEdit',
 						params: {ad: data}
 					}">编辑
-        </router-link >
+        </router-link>
         <span
           class="zui-icon zui-icon-del"
           @click="deleteHandler">删除</span>
@@ -39,7 +39,7 @@
 
 </template>
 <script>
-  import { Icon } from 'vux'
+  import {Icon} from 'vux'
 
   export default {
     name: 'AddressCard',
@@ -49,11 +49,11 @@
     props: {
       data: {
         type: Object,
-        default: function(){
+        default: function () {
           return {}
         }
       },
-      tool:{
+      tool: {
         type: Boolean,
         default: false
       },
@@ -67,9 +67,7 @@
       }
     },
     data() {
-      return {
-
-      }
+      return {}
     },
     methods: {
       selectHandler() {
@@ -82,18 +80,20 @@
   }
 </script>
 <style>
-  .address-card-wrap{
+  .address-card-wrap {
     background-color: #fff;
     border-bottom: 8px solid #efeff4;
     padding-left: 8px;
     padding-right: 8px;
   }
-  .address-head{
+
+  .address-head {
     height: 40px;
     line-height: 40px;
     overflow: hidden;
   }
-  .address-head .zui-icon{
+
+  .address-head .zui-icon {
     float: right;
     display: block;
     padding-left: 4px;
@@ -102,56 +102,64 @@
     line-height: 40px;
     color: #868683;
   }
-  .address-head .name{
+
+  .address-head .name {
     font-size: 15px;
     font-weight: 500;
     color: #404040;
     float: left;
     display: block;
   }
-  .address-head .tell{
+
+  .address-head .tell {
     font-size: 15px;
     font-weight: 500;
     color: #404040;
     float: right;
     display: block;
   }
-  .address-body{
+
+  .address-body {
     display: block;
     font-size: 14px;
     line-height: 1.5;
     color: #404040;
     padding-bottom: 8px;
   }
-  .address-foot{
+
+  .address-foot {
     border-top: 1px dashed #eee;
     height: 36px;
     line-height: 36px;
   }
-  .address-foot .left{
+
+  .address-foot .left {
     float: left;
     width: 40%;
     font-size: 12px;
     color: #404040;
     vertical-align: middle;
   }
+
   .address-foot .left.active,
-  .address-foot .left.active .icon:before{
+  .address-foot .left.active .icon:before {
     color: #ed7a5d;
   }
-  .address-foot .left .icon:before{
+
+  .address-foot .left .icon:before {
     color: #404040;
     font-size: 16px;
     line-height: 2.1;
   }
 
-  .address-foot .right{
+  .address-foot .right {
     float: right;
     width: 60%;
     text-align: right;
     vertical-align: middle;
   }
-  .address-foot .right .zui-icon{
+
+  .address-foot .right .zui-icon {
     display: inline-block;
     height: 100%;
     padding: 8px 0 8px 8px;
