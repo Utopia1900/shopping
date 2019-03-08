@@ -143,7 +143,7 @@
   import './goodsDetail.less'
   import {productDetail} from '../../data/data.js'
   // import CommentCard from '../../components/commentCard.vue'
-  import {Swiper,SwiperItem,Popup,Scroller,Toast,XNumber} from 'vux'
+  import {Swiper,SwiperItem,Popup,Scroller,Toast,XNumber, ViewBox} from 'vux'
   import HeaderNav from '../../components/HeaderNav'
   export default {
     components: {
@@ -154,6 +154,7 @@
       SwiperItem,
       // CommentCard,
       XNumber,
+      ViewBox,
       HeaderNav
     },
     data() {
