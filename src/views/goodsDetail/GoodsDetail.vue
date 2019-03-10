@@ -1,18 +1,7 @@
 <template>
   <div class="z-page">
     <div class="z-content">
-      <!--<div class="catresult-catbar-wrap">-->
-        <!--<router-link-->
-          <!--class="catresult-catbar-back zui-icon zui-icon-back"-->
-          <!--:to="{name: 'index'}">-->
-        <!--</router-link>-->
-        <!--<div class="catresult-catbar-wrap-title">goodsDetail</div>-->
-      <!--</div>-->
-      <header-nav
-      :headerNavTitle="headerNavTitle"
-      >
-
-      </header-nav>
+      <header-nav :headerNavTitle="headerNavTitle"></header-nav>
       <view-box>
         <div class="good-detail-bottombar">
           <div class="cart">
@@ -36,27 +25,25 @@
           class="a"
           :aspect-ratio="1/1"
           dots-position="center">
-          <swiper-item
-            v-for="item in productDetail.banners">
-            <img :src="item">
+          <swiper-item>
+            <img :src="productDetail.imgUrl">
           </swiper-item>
         </swiper>
 
         <div class="good-detail-head">
-          <div class="title z-ellipsis-2">{{productDetail.title}}</div>
+          <div class="title z-ellipsis-2">{{productDetail.name}}</div>
           <div class="subtitle">
             <div class="params price">￥{{productDetail.price}}</div>
-            <div class="params">已售{{productDetail.soleNum}}</div>
-            <div class="params">库存{{productDetail.maxInventory}}件</div>
+            <div class="params">库存{{productDetail.inventory}}件</div>
           </div>
         </div>
 
-        <div class="good-detail-introduce">
+        <!-- <div class="good-detail-introduce">
           <div class="head">——— 详情 ———</div>
           <div class="content" v-html="productDetail.content"></div>
-        </div>
+        </div> -->
 
-        <div class="good-detail-comment">
+        <!-- <div class="good-detail-comment">
           <div class="head">
             评价
             <span class="comment-num">({{productDetail.commentsLength}}人评价)</span>
@@ -68,12 +55,12 @@
               查看全部
             </router-link>
           </div>
-          <!--<comment-card
+          <comment-card
             :type="'part'"
             v-for="item in productDetail.commentsPart"
             :comment="item">
-          </comment-card>-->
-        </div>
+          </comment-card>
+        </div> -->
 
         <popup
           v-model="show"
@@ -95,10 +82,6 @@
               lock-x
               ref="scroller">
               <div class="body">
-                <div
-                  class="param-item"
-                  v-for="(item,pIndex) in productDetail.params">
-                </div>
                 <div class="param-item">
                   <x-number
                     class="add-num"
@@ -141,7 +124,6 @@
 </template>
 <script>
   import './goodsDetail.less'
-  import {productDetail} from '../../data/data.js'
   // import CommentCard from '../../components/commentCard.vue'
   import {Swiper,SwiperItem,Popup,Scroller,Toast,XNumber, ViewBox} from 'vux'
   import HeaderNav from '../../components/HeaderNav'
@@ -160,16 +142,16 @@
     data() {
       return {
         headerNavTitle: 'GoodsDetail',
-        selectParams: [],
-        isActive: false,
         btnType: '',
-        show: false,
-        productDetail: productDetail
+        show: false
       }
     },
     computed: {
       scrollerHeight() {
         return 'cale(100%-130px)'
+      },
+      productDetail () {
+        return this.$store.state.goodDetail.detail
       }
     },
     created() {

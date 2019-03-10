@@ -1,21 +1,17 @@
 <template>
 	<ul class="zlist-2-item">
 		<li class="item" v-for="item in data">
-			<router-link
-				:to="{
-					name: 'goodsDetail',
-					params: {id: item.id}
-				}">
-				<img :src="item.img"/>
+			<div @click="goToDetail(item)">
+				<img :src="item.imgUrl"/>
 				<div class="info">
 					<div class="title z-ellipsis-2">
-						{{item.title}}
+						{{item.name}}
 					</div>
 					<div class="subtitle z-ellipsis-2">
 						￥{{item.price}}
 					</div>
 				</div>
-			</router-link>
+			</div>
 		</li>
 	</ul>
 </template>
@@ -24,6 +20,12 @@ export default {
 	props: ['data'],
 	data() {
 		return {}
+	},
+	methods: {
+		goToDetail (item) {
+	      this.$store.commit('goodDetail/set', item) 		
+          this.$router.push(`/index/goods/:${item.id}`)
+		}
 	}
 }
 </script>

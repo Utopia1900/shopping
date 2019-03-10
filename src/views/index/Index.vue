@@ -25,14 +25,27 @@ import EndingLine from '../../components/EndingLine'
 import GoodList from '../../components/GoodList'
 import {ViewBox} from 'vux'
 import {recommendGoods} from '../../data/data.js'
-
+import {queryProduct} from '../../api'
 export default {
   name:'Index',
   data () {
     return{
-      goodsList: recommendGoods,
+      goodsList: [],
       shop: {
         title: 'jft_shop',
+      }
+    }
+  },
+  methods: {
+    handleQueryProduct () {
+      let token = window.sessionStorage.getItem('token')
+      let that = this
+      if (token != null) {
+        queryProduct(token, data => {
+          if(!data.errcode) {
+            that.goodsList = data
+          }
+        })
       }
     }
   },
@@ -40,6 +53,9 @@ export default {
     EndingLine,
     ViewBox,
     GoodList
+  },
+  created () {
+    this.handleQueryProduct()
   }
 }
 </script>
