@@ -6,10 +6,10 @@
         v-if="link">
 			</span>
       <span class="name">{{data.name}}</span>
-      <span class="tell">{{data.tel}}</span>
+      <span class="tell">{{data.mobile}}</span>
     </div>
     <div class="address-body">
-      收货地址: {{data.address}}
+      收货地址: {{data.province}} {{data.city}} {{data.district}} {{data.detail}}
     </div>
     <div class="address-foot" v-if="tool">
       <div
@@ -23,13 +23,16 @@
         {{selected ? '默认地址' : '设为默认'}}
       </div>
       <div class="right">
-        <router-link
+        <!--<router-link
           class="zui-icon zui-icon-article1"
           :to="{
 						name: 'addressEdit',
-						params: {ad: data}
+						params: {address: data}
 					}">编辑
-        </router-link>
+        </router-link>-->
+        <span class="zui-icon zui-icon-article1" @click="editAddress(data)">
+          编辑
+        </span>
         <span
           class="zui-icon zui-icon-del"
           @click="deleteHandler">删除</span>
@@ -75,6 +78,11 @@
       },
       deleteHandler() {
         this.$emit('on-address-delete')
+      },
+      editAddress(payload) {
+        console.log(payload)
+        this.$store.commit('address/set', payload)
+        this.$router.push('/mine/address/edit')
       }
     }
   }

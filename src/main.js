@@ -6,27 +6,13 @@ import Vuex from 'vuex'
 import router from './router'
 import store from './store.js'
 import FastClick from 'fastclick'
-
+import {AlertPlugin, ToastPlugin} from 'vux'
 Vue.config.productionTip = false
 FastClick.attach(document.body)
 
-
-// const history = window.sessionStorage
-// history.clear()
-// let historyCount = history.getItem('count') * 1 || 0
-// history.setItem('/', 0)
-//
-// router.beforeEach(function(to, from ,next) {
-//   next()
-// })
-//
-// router.afterEach(function (to) {
-//
-// })
-
-
 Vue.use(Vuex)
-
+Vue.use(AlertPlugin)
+Vue.use(ToastPlugin)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

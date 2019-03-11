@@ -6,7 +6,7 @@
         title="姓名"
         :show-clear="true"
         is-type="china-name"
-        :value="ad.name"
+        :value="addressObj.name"
         required
         @on-change="changeName"
         placeholder="姓名">
@@ -17,9 +17,9 @@
         is-type="china-mobile"
         keyboard="number"
         type="tel"
-        :value="ad.tel"
+        :value="addressObj.mobile"
         required
-        @on-change="changeTel"
+        @on-change="changeMobile"
         placeholder="手机号码">
       </x-input>
       <x-address
@@ -31,21 +31,32 @@
       <x-textarea
         :max="50"
         :height="100"
-        :value="ad.address"
+        :value="addressObj.detail"
         @on-change="changeAddress"
         :show-counter="false"
         placeholder="请填写详细地址">
       </x-textarea>
+      <div
+        class="vux-cell-box set-default-wrap"
+        :class="addressObj.isDefault ? 'active' : '' "
+        @click="toggleDefault">
+        <icon
+          class="icon"
+          :type="addressObj.isDefault ? 'success' : 'circle'">
+        </icon>
+        {{addressObj.isDefault ? '默认地址' : '设为默认'}}
+      </div>
     </div>
     <div
       class="address-edit-btn"
-      @click="submitHandle">保存</div>
+      @click="submitHandle(addressObj.index)">保存</div>
   </div>
 </template>
 <script>
   import './addressEdit.less'
   import HeaderNav from '../../components/HeaderNav'
-  import {XInput,XAddress,ChinaAddressData,XTextarea} from 'vux'
+  import {XInput,XAddress,ChinaAddressData,XTextarea, Icon} from 'vux'
+  import {editAddress} from '../../api'
 
   export default {
     name: 'AddressEdit',
@@ -53,12 +64,14 @@
       XInput,
       XAddress,
       XTextarea,
-      HeaderNav
+      HeaderNav,
+      Icon
     },
     data() {
       return {
-        headerNavTitle: '编辑地址',
-        ad: {},
+        addressObj: {
+          isDefault: 0
+        },
         value: [],
         addressData: ChinaAddressData
       }
@@ -66,6 +79,13 @@
     computed: {
       hasSave() {
         return this.$store.getters.hasSave
+      },
+      headerNavTitle() {
+        if (this.addressObj.name) {
+          return '编辑'
+        } else {
+          return '添加'
+        }
       }
     },
     watch: {
@@ -80,40 +100,76 @@
             ? this.$router.back()
             : window.history.back()
         }
+      },
+      value: function (val, oldVal) {
+        let that = this
+        if (val) {
+          this.addressData.forEach((item, city) => {
+            if (item.value == val[0]) {
+              that.addressObj.province = item.name
+            }
+          })
+
+          this.addressData.forEach((item, city) => {
+            if (item.value == val[1]) {
+              that.addressObj.city = item.name
+            }
+          })
+
+          this.addressData.forEach((item, city) => {
+            if (item.value == val[2]) {
+              that.addressObj.district = item.name
+            }
+          })
+        }
+      },
+      '$route'() {
+        this.addressObj = this.$store.state.address.addressObj || {isDefault: 0}
       }
     },
     created(){
-      console.log(this.$route.params.ad)
-      this.ad = this.$route.params.ad || {
-        name: '',
-        tel: '',
-        address: ''
-      }
+
     },
     methods: {
       changeName (val) {
-        console.log(val)
-        this.ad.name = val
+        this.addressObj.name = val
       },
-      changeTel (val) {
-        console.log(val)
-        this.ad.tel = val
+      changeMobile (val) {
+        this.addressObj.mobile = val
       },
       changeAddress (val) {
-        console.log(val)
-        this.ad.address = val
+        this.addressObj.detail = val
       },
-      submitHandle(){
-        console.log(this.value)
-        this.$store.dispatch({
-          type: 'editAddress',
-          address: {
-            name: this.ad.name,
-            tel: this.ad.tel,
-            address: this.ad.address,
-            cityCode: this.value
-          }
-        })
+      submitHandle(argIndex){
+        let that = this
+        let token = window.sessionStorage.getItem('token')
+        let addressObj = this.addressObj
+        let index = argIndex != null ? argIndex : -1
+        console.log('index', index)
+        if (token != null) {
+          editAddress(token, index, addressObj, data => {
+             if (!data.errcode) {
+               that.$vux.toast.show({
+                 text: `保存成功`
+               })
+             } else {
+               that.$vux.alert.show({
+                 title: '提示',
+                 content: data.errmsg,
+                 buttonText: '知道了'
+               })
+             }
+          })
+        }
+      },
+      toggleDefault () {
+        let isDefault = this.addressObj.isDefault
+        if (isDefault == 0) {
+          this.addressObj.isDefault = 1
+        } else {
+          this.addressObj.isDefault = 0
+        }
+        // this.addressObj.isDefault = !this.addressObj.isDefault
       }
     }
   }

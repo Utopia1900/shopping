@@ -140,9 +140,10 @@ export const delAddress = (token, index, defIndex, successCb) => {
   })
 }
 
-export const editAddress = (token, index, isDefault, name, mobile, province, city, district, detail, successCb) => {
+export const editAddress = (token, index, addressObj, successCb) => {
 // 编辑收货地址 editAddress(token, index, isDefault, name, mobile, province, city, district, detail)  注意： index:-1 代表新增, index: 非-1 代表修改(编辑)
-  let formData = {token, index, isDefault, name, mobile, province, city, district, detail}
+  let preData = {token, index}
+  let formData = Object.assign(preData, addressObj)
   const options = {
     methods: 'POST',
     headers: {'content-type': 'application/json'},

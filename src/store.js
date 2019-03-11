@@ -23,6 +23,18 @@ export default {
           state.detail = payload
         }
       }
+    },
+    address: {
+      stric: true,
+      namespaced: true,
+      state: {
+        addressObj: {}
+      },
+      mutations: {
+        set (state, payload) {
+          state.addressObj = payload
+        }
+      }
     }
   }
 }

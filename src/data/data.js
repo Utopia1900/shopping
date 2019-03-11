@@ -604,29 +604,29 @@ export const userAddress = [
 		id:1,
 		isDefault: 0,
 		name: '老王',
-		tel: '13684833901',
-		address: '广东广州海珠区广州大道中338号'
+		mobile: '13684833901',
+    detail: '广东广州海珠区广州大道中338号'
 	},
 	{
 		id:2,
 		isDefault: 0,
 		name: '老王1',
-		tel: '13684833901',
-		address: '广东广州海珠区广州大道中338号'
+		mobile: '13684833901',
+		detail: '广东广州海珠区广州大道中338号'
 	},
 	{
 		id:3,
 		isDefault: 0,
 		name: '老王2',
-		tel: '13684833901',
-		address: '广东广州海珠区广州大道中338号'
+		mobile: '13684833901',
+    detail: '广东广州海珠区广州大道中338号'
 	},
 	{
 		id:4,
-		isDefault: 0,
+		isDefault: 1,
 		name: '老王3',
-		tel: '13684833901',
-		address: '广东广州海珠区广州大道中338号'
+		mobile: '13684833901',
+    detail: '广东广州海珠区广州大道中338号'
 	}
 ]
 
@@ -759,7 +759,7 @@ export const myOrder = {
 	createdAt: '2017-03-07 16:09:02',
 	address: {
 		name: '张飞',
-		tel: '1200000000',
+		mobile: '1200000000',
 		address: '放大范德萨会计法撒旦发生打发手动阀第四发股份大噶的风格'
 	},
 	good: [
@@ -789,5 +789,5 @@ export const userSettings = {
 	account: 'xxx',
 	nikeName: 'Jar',
 	pwd: '',
-	tell: '1200000000'
+	mobilel: '1200000000'
 }
