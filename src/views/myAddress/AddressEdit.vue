@@ -104,31 +104,34 @@
       value: function (val, oldVal) {
         let that = this
         if (val) {
-          this.addressData.forEach((item, city) => {
+          this.addressData.forEach((item) => {
             if (item.value == val[0]) {
               that.addressObj.province = item.name
             }
           })
 
-          this.addressData.forEach((item, city) => {
+          this.addressData.forEach((item) => {
             if (item.value == val[1]) {
               that.addressObj.city = item.name
             }
           })
 
-          this.addressData.forEach((item, city) => {
+          this.addressData.forEach((item) => {
             if (item.value == val[2]) {
               that.addressObj.district = item.name
             }
           })
         }
       },
-      '$route'() {
-        this.addressObj = this.$store.state.address.addressObj || {isDefault: 0}
+      '$route'(val, oldVal) {
+        if (val) {
+          this.addressObj = this.$store.state.address.addressObj || {isDefault: 0}
+        }
       }
     },
     created(){
-
+      // 第一次进入路由时 watch 不到$route
+      this.addressObj = this.$store.state.address.addressObj || {isDefault: 0}
     },
     methods: {
       changeName (val) {

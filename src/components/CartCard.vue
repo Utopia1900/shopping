@@ -9,11 +9,10 @@
       </icon>
     </div>
     <div class="cart-card-info">
-      <img :src="data.img" alt="">
+      <img :src="data.headImgUrl" alt="缩略图">
 
       <div class="cart-card-desc">
-        <div class="suptitle z-ellipsis-2">{{data.title}}</div>
-        <div class="subtitle">{{data.subInfo}}</div>
+        <div class="suptitle z-ellipsis-2">{{data.name}}</div>
         <div class="price">{{data.price}}</div>
         <x-number
           class="accumulator"

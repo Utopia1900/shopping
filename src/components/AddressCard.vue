@@ -80,10 +80,9 @@
         this.$emit('on-address-delete')
       },
       editAddress(payload) {
-        console.log(payload)
         this.$store.commit('address/set', payload)
         this.$router.push('/mine/address/edit')
-      }
+      },
     }
   }
 </script>

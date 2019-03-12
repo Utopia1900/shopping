@@ -28,7 +28,7 @@
   import EmptyView from '../../components/EmptyView'
   import AddressCard from '../../components/AddressCard'
   import {queryAddress, setDefaultAddress, delAddress} from '../../api'
-  import {userAddress} from '../../data/data'
+  // import {userAddress} from '../../data/data'
   const token = window.sessionStorage.getItem('token')
   export default {
     components: {
@@ -40,7 +40,7 @@
       return {
         headerNavTitle: '收货地址',
         index: null,
-        address: userAddress,
+        address: [],
         defIndex: null
       }
     },

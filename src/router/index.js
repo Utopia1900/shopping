@@ -58,7 +58,7 @@ export default new Router({
       }
     },
     {
-      path: '/index/goods/:id/confirmOrder',
+      path: '/index/goods/confirmOrder',
       name: 'confirmOrder',
       components: {
         'default': Index,

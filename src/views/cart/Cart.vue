@@ -8,7 +8,6 @@
 
   </div>
   <empty-view
-    v-show="!loading"
     v-if="cart.length === 0"
     :iconCls="'zui-icon-SHOPPING-CART-EMPTY'"
     :text="'您的购物车空空如也，赶紧去逛逛吧！'">
@@ -16,7 +15,6 @@
 
   <div
     v-else
-    v-show="!loading"
     style="margin-top: 45px;"
   >
     <swipeout>
@@ -64,6 +62,7 @@
   import EmptyView from '../../components/EmptyView.vue'
   import CartCard from '../../components/CartCard.vue'
   import {Icon,Swipeout, SwipeoutItem,SwipeoutButton} from 'vux'
+  import {queryCart} from '../../api'
 
   export default {
     name: 'Cart',
@@ -80,17 +79,12 @@
         selectList: [],
         num: 1,
         selectAll: false,
-        cart: commentPost.goods
-      }
-    },
-    computed: {
-      loading(){
-        return this.$store.getters.loading
+        cart: []
       }
     },
     methods: {
       confirmOrder() {
-        this.$router.push('/index/goods/:id/confirmOrder')
+        this.$router.push('/index/goods/confirmOrder')
       },
       handleEvents (type) {
         console.log('event: ', type)
@@ -109,6 +103,23 @@
       },
       selectNum(){
 
+      },
+      handleGetCart () {
+        let token = window.sessionStorage.getItem('token')
+        let that = this
+        if (token !=null) {
+          queryCart(token, data => {
+            if (!data.errcode) {
+              that.cart = data
+            } else {
+              that.$vux.alert.show({
+                title: '提示',
+                content: data.errmsg,
+                buttonText: '知道了'
+              })
+            }
+          })
+        }
       }
     }
   }
