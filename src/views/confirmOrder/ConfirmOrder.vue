@@ -29,7 +29,8 @@
       </div>
 
       <shop-card
-        v-for="shop in payPill"
+        v-for="(shop, index) in payPill"
+        :key = index
         :shop="shop">
         <div
           slot="body"
@@ -73,7 +74,7 @@
   import {payPill, userAddress} from '../../data/data.js'
 
   import ShopCard from '../../components/ShopCard'
-  import AddressCard from '../../components/addressCard.vue'
+  import AddressCard from '../../components/AddressCard.vue'
   import GoodList from '../../components/GoodList.vue'
   import PayPopup from './PayPopup.vue'
   import HeaderNav from '../../components/HeaderNav'
