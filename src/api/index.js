@@ -56,7 +56,7 @@ export const queryCart = (token, successCb) => {
 export const delCartProduct = (token, productIDs, successCb) => {
 // 删除购物车商品 delCartProduct(token, productIDs) 其中productIDs 是选择要删除的productID的数组
 // 返回 {errcode: , errmsg: }
-  let formData = {token}
+  let formData = {token, productIDs}
   const options = {
     methods: 'POST',
     headers: {'content-type': 'application/json'},

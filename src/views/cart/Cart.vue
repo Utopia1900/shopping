@@ -20,6 +20,7 @@
     <swipeout>
       <swipeout-item
         v-for="(item,index) in cart"
+        :key = item.productID
         transition-mode="follow"
         @on-close="handleEvents('on-close')"
         @on-open="handleEvents('on-open')">
