@@ -431,7 +431,7 @@ export const commentPost = [
 		{
 			productID: 101,
 			headImgUrl: '/static/img/article-default.png',
-			name: 'name1',
+			name: 'name111111',
 			price: '188.00',
 			num: 3
 		},

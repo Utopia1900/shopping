@@ -118,20 +118,19 @@ export default {
     selectGood(index, productID, item) {
       // this.$store.commit('cart/setSelectAll', false)
       item.selected = !item.selected
-      // if (this.productIDs.includes(productID)) {
-      //   this.productIDs.splice(this.productIDs.indexOf(productID), 1);
-      //   // this.products.splice(this.products.indexOf({productID: item.productID, num: item.num}), 1)
-      // } else {
-      //   this.productIDs.push(productID);
-      //   this.products.push({productID: item.productID, num: item.num})
-      // }
-      // console.log("selectList", this.selectList);
-    },
-    selectNum(val) {
-       console.log('sss', val)
+      if(item.selected && (this.selectList.length == this.cartList.length)) {
+        this.selectAll = true        
+        } else {
+        this.selectAll = false
+      }
     },
     toggleEditCart() {
-      this.toggle.isDefault = !this.toggle.isDefault;
+      this.toggle.isDefault = !this.toggle.isDefault
+      if (this.toggle.isDefault) {
+
+      } else {
+        this.selectAll = false
+      }
     },
     deleteCart() {
       let selectList = this.selectList;
