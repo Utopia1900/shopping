@@ -427,31 +427,29 @@ export const comments = [
 ]
 
 // cpmment post
-export const commentPost = {
-	goods: [
+export const commentPost = [
 		{
-			img: '/static/img/article-default.png',
-			title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
-			subInfo: ['颜色:蓝色','颜色:蓝色','颜色:蓝色'],
-			price: '988.00',
-			num: '3'
+			productID: 101,
+			headImgUrl: '/static/img/article-default.png',
+			name: 'name1',
+			price: '188.00',
+			num: 3
 		},
 		{
-			img: '/static/img/article-default.png',
-			title: '原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造原木打造',
-			subInfo: ['颜色:蓝色','颜色:蓝色','颜色:蓝色'],
-			price: '988.00',
-			num: '3'
+			productID: 102,
+			headImgUrl: '/static/img/article-default.png',
+			name: 'name2',
+			price: '212.00',
+			num: 2
 		},
-	],
-	rateTip: {
-		level5: '就好就极大愤慨的萨芬5',
-		level4: '就好就极大愤慨的萨芬4',
-		level3: '就好就极大愤慨的萨芬3',
-		level2: '就好就极大愤慨的萨芬2',
-		level1: '就好就极大愤慨的萨芬1',
-	}
-}
+		{
+			productID: 103,
+			headImgUrl: '/static/img/article-default.png',
+			name: 'name3',
+			price: '300.00',
+			num: 1
+		},
+	]
 
 
 /*********** good detail ***********/

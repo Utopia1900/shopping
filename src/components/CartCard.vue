@@ -5,7 +5,7 @@
       class="cart-card-select">
       <icon
         class="icon"
-        :type="selected ? 'success' : 'circle'">
+        :type="data.selected ? 'success' : 'circle'">
       </icon>
     </div>
     <div class="cart-card-info">
@@ -17,12 +17,11 @@
         <x-number
           class="accumulator"
           :title="''"
-          v-model="num"
-          button-style="round"
-          @on-change="change"
+          v-model="data.num"
+          button-style="square"
           :step="1"
           :value="1"
-          :min="0">
+          :min="1">
         </x-number>
       </div>
     </div>
@@ -40,17 +39,12 @@
     },
     data () {
       return {
-        num: 1,
-        selected: false
+        num: 1
       }
     },
     methods: {
       selectHandler () {
-        this.selected = !this.selected
         this.$emit('on-selected-good')
-      },
-      change (val) {
-        this.$emit('on-selected-num', val)
       }
     }
   }

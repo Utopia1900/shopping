@@ -3,10 +3,6 @@
     <span @click="goBack" class="catresult-catbar-back zui-icon zui-icon-back">
 
     </span>
-    <!--<router-link-->
-      <!--class="catresult-catbar-back zui-icon zui-icon-back"-->
-      <!--:to="{name: 'index'}">-->
-    <!--</router-link>-->
     <div class="catresult-catbar-wrap-title">{{headerNavTitle}}</div>
   </div>
 </template>

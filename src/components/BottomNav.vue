@@ -3,6 +3,7 @@
     <tabbar-item
       v-for="item in bottomBar"
       :link="item.link"
+      :key = "item.index"
       :selected="item.index == index"
       @on-item-click="activeItem(item.index)"
     >
@@ -35,7 +36,7 @@
           {
             name: '首页',
             iconCls: 'zui-icon-INDEX_1',
-            link: 'index',
+            link: '/',
             index: 0,
           },
           {
