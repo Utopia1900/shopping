@@ -45,7 +45,7 @@
           ></icon>全选
         </div>
         <div v-if="toggle.isDefault">
-          <div class="sum">合计:</div>
+          <div class="sum">合计:&nbsp;&nbsp;<span style="color: #ed7a5d">￥{{amount}}</span></div>
           <div class="btn balance-btn" @click="confirmOrder">结算({{selectList.length}})</div>
         </div>
         <div v-else>
@@ -84,7 +84,8 @@ export default {
       toggle: {
         isDefault: true
       },
-      products: []
+      products: [],
+      amount: 0
     };
   },
   computed: {
@@ -126,11 +127,6 @@ export default {
     },
     toggleEditCart() {
       this.toggle.isDefault = !this.toggle.isDefault
-      if (this.toggle.isDefault) {
-
-      } else {
-        this.selectAll = false
-      }
     },
     deleteCart() {
       let selectList = this.selectList;
@@ -141,6 +137,7 @@ export default {
           isShowMask: true
         });
       } else {
+        
       }
     },
     handleGetCart() {
@@ -159,6 +156,20 @@ export default {
           }
         });
       }
+    }
+  },
+  watch: {
+    'selectList':{
+      handler: function(newVal) {
+        let tmp = newVal
+        let that = this
+        var amount = 0
+        for (var i=0; i<newVal.length; i++) {
+           amount += (newVal[i].num * Number(newVal[i].price))
+        }
+        that.amount = amount.toFixed(2)
+      },
+      deep: true
     }
   },
   created() {

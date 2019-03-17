@@ -432,21 +432,21 @@ export const commentPost = [
 			productID: 101,
 			headImgUrl: '/static/img/article-default.png',
 			name: 'name111111',
-			price: '188.00',
+			price: '15.04',
 			num: 3
 		},
 		{
 			productID: 102,
 			headImgUrl: '/static/img/article-default.png',
 			name: 'name2',
-			price: '212.00',
+			price: '212.02',
 			num: 2
 		},
 		{
 			productID: 103,
 			headImgUrl: '/static/img/article-default.png',
 			name: 'name3',
-			price: '300.00',
+			price: '134.05',
 			num: 1
 		},
 	]
