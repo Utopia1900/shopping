@@ -45,7 +45,7 @@ export default new Router({
       }
     },
     {
-      path: '/index/goods/:id',
+      path: '/goods/:id',
       name: 'goodsDetail',
       components: {
         'default': Index,
@@ -53,10 +53,10 @@ export default new Router({
       }
     },
     {
-      path: '/index/goods/confirmOrder',
+      path: '/cart/confirmOrder',
       name: 'confirmOrder',
       components: {
-        'default': Index,
+        'default': Cart,
         'subPage': ConfirmOrder
       }
     }

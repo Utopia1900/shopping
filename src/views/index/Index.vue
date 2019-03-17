@@ -30,7 +30,7 @@ export default {
   name:'Index',
   data () {
     return{
-      goodsList: [],
+      goodsList: recommendGoods,
       shop: {
         title: 'jft_shop',
       }

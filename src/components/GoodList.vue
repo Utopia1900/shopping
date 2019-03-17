@@ -7,7 +7,7 @@
       <good-grid :data="data"></good-grid>
     </div>
     <div v-else-if="type === 'INCONFIRM'" class="good-list-wrap">
-      <img class="good-list-img" :src="data.img" alt="">
+      <img class="good-list-img" :src="data.headImgUrl" alt="">
       <div class="good-list-info">
         <div class="title z-ellipsis-2">
           {{data.title}}
@@ -15,7 +15,9 @@
         <div class="subInfo z-ellipsis-2">
 				<span
           class="param"
-          v-for="item in data.subInfo">
+          v-for="(item, index) in data.subInfo"
+          :key = "index"
+          >
 					{{item}}
 				</span>
         </div>
@@ -44,6 +46,7 @@
     overflow: hidden;
     padding: 8px;
     border-bottom: 1px solid #f8f8f8;
+    background: #ffffff;
   }
   .good-list-wrap:last-child{
     border-bottom: none;

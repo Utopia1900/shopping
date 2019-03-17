@@ -80,7 +80,6 @@ export default {
       cartList: [],
       num: 1,
       selectAll: false,
-      // cart: this.$store.state.cart.cartList,
       toggle: {
         isDefault: true
       },
@@ -89,9 +88,6 @@ export default {
     };
   },
   computed: {
-    // cartList() {
-    //   return this.$store.state.cart.cartList;
-    // },
     selectList() {
       return this.cartList.filter(item=>{
         return item.selected
@@ -100,7 +96,18 @@ export default {
   },
   methods: {
     confirmOrder() {
-      this.$router.push("/index/goods/confirmOrder");
+      let selectList = this.selectList
+      if (selectList.length != 0) {
+        this.$store.commit("cart/setPayList", this.selectList)
+        this.$router.push("/cart/confirmOrder");
+      } else {
+        this.$vux.toast.show({
+          type: "warn",
+          text: "您还没有选择商品哦",
+          isShowMask: true
+        })
+      }
+      
     },
     handleEvents(type) {
       console.log("event: ", type);

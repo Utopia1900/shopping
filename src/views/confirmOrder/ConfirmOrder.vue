@@ -1,8 +1,8 @@
 <template>
   <div>
-    <header-nav :headerNavTitle="'填写订单'"/>
+    <header-nav :headerNavTitle="'确认订单'"/>
     <div class="good-pay-bottombar">
-      <div class="sum-price">总计: ￥{{paySumAmount}}</div>
+      <div class="sum-price">总计: <span style="color:#ed7a5d">￥{{totalAmount}}</span></div>
       <div class="pill-submit-btn">
         <span class="btn">提交订单</span>
       </div>
@@ -10,6 +10,7 @@
 
     <view-box>
       <div
+        style="margin-top: 45px;"
         class="good-pay-address"
         @click="selectAddress('address')">
         <address-card
@@ -27,33 +28,24 @@
 					</span>
         </div>
       </div>
-
-      <shop-card
-        v-for="(shop, index) in payPill"
-        :key = index
-        :shop="shop">
         <div
-          slot="body"
           class="shop-card-body">
           <good-list
-            v-for="item in shop.goods"
+            v-for="(item, index) in payList"
+            :key = "index"
             :type="'INCONFIRM'"
             :data="item">
           </good-list>
         </div>
         <div
-          slot="foot"
+          v-show="payList.length!=0"
           class="shop-card-foot">
-          <div class="z-cell-item z-text-right">
-            <span>共{{2}}件</span>
-            合计￥<strong>{{shop.sum}}</strong>
-          </div>
-          <div class="z-cell-item">
-            需支付
-            <span class="right-tip z-text-color-main">￥{{shop.needPay}}</span>
+          <div class="z-cell-item z-text-right" style="padding-right: 10px;">
+            <span>共{{totalNum}}件</span>
+            合计￥<span style="color:#ed7a5d">{{totalAmount}}</span>
           </div>
         </div>
-      </shop-card>
+      
     </view-box>
 
     <popup
@@ -72,8 +64,6 @@
 <script>
   import './confirmOrder.less'
   import {payPill, userAddress} from '../../data/data.js'
-
-  import ShopCard from '../../components/ShopCard'
   import AddressCard from '../../components/AddressCard.vue'
   import GoodList from '../../components/GoodList.vue'
   import PayPopup from './PayPopup.vue'
@@ -82,7 +72,6 @@
 
   export default{
     components: {
-      ShopCard,
       AddressCard,
       GoodList,
       Cell,
@@ -100,7 +89,6 @@
         paySumAmount: 0,
         showPopup: false,
         popupType: '',
-        couponTip: '无可用优惠券',
         userAddress: userAddress,
         payPill: payPill
       }
@@ -108,6 +96,25 @@
     computed: {
       defaultAddress(){
         return this.userAddress.filter(i => i.isDefault === 1)
+      },
+      payList() {
+        return this.$store.state.cart.payList
+      },
+      totalAmount () {
+        let payList = this.$store.state.cart.payList
+        let amount = 0
+        for (var i =0; i<payList.length; i++) {
+            amount += payList[i].num * Number(payList[i].price)
+        }
+        return amount.toFixed(2)
+      },
+      totalNum () {
+        let payList = this.$store.state.cart.payList
+        let num = 0;
+        for (var i =0; i<payList.length; i++) {
+            num += payList[i].num
+        }
+        return num
       }
     },
     methods: {

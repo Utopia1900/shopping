@@ -24,6 +24,18 @@ export default {
         }
       }
     },
+    cart: {
+      stric: true,
+      namespaced: true,
+      state: {
+        payList: []
+      },
+      mutations: {
+        setPayList (state, payload) {
+          state.payList = payload
+        }
+      }
+    },
     address: {
       stric: true,
       namespaced: true,

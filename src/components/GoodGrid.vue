@@ -1,6 +1,6 @@
 <template>
 	<ul class="zlist-2-item">
-		<li class="item" v-for="item in data">
+		<li class="item" v-for="(item, index) in data" :key="index">
 			<div @click="goToDetail(item)">
 				<img :src="item.imgUrl"/>
 				<div class="info">
@@ -24,7 +24,7 @@ export default {
 	methods: {
 		goToDetail (item) {
 	      this.$store.commit('goodDetail/set', item) 		
-          this.$router.push(`/index/goods/:${item.id}`)
+          this.$router.push(`/goods/:${item.id}`)
 		}
 	}
 }

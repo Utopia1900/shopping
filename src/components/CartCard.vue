@@ -22,7 +22,6 @@
           :step="1"
           :value="1"
           :min="1"
-          @click="hh"
           >
         </x-number>
       </div>
@@ -47,9 +46,6 @@
     methods: {
       selectHandler () {
         this.$emit('on-selected-good')
-      },
-      hh () {
-        console.log('sdsdsd')
       }
     },
     watch: {
