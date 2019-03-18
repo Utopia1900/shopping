@@ -5,7 +5,7 @@
       <img :src="shop.logo" alt="">
       </div>-->
       <span class="title">购物车</span>
-      <div class="cart-edit">
+      <div class="cart-edit" v-show="cartList.length !==0">
         <span class="right" @click="toggleEditCart">{{toggle.isDefault? '編輯':'完成'}}</span>
       </div>
     </div>
