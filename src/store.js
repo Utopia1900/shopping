@@ -40,11 +40,15 @@ export default {
       stric: true,
       namespaced: true,
       state: {
-        addressObj: {}
+        addressObj: {},
+        selectedAddress: null
       },
       mutations: {
         set (state, payload) {
           state.addressObj = payload
+        },
+        setSelectedAddress(state, payload) {
+          state.selectedAddress = payload
         }
       }
     }

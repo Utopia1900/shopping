@@ -28,10 +28,7 @@
             <swipeout-button type="warn">删除</swipeout-button>
           </div>
           <div slot="content">
-            <cart-card
-              @on-selected-good="selectGood(index, item.productID, item)"
-              :data="item"
-            ></cart-card>
+            <cart-card @on-selected-good="selectGood(index, item.productID, item)" :data="item"></cart-card>
           </div>
         </swipeout-item>
       </swipeout>
@@ -45,7 +42,10 @@
           ></icon>全选
         </div>
         <div v-if="toggle.isDefault">
-          <div class="sum">合计:&nbsp;&nbsp;<span style="color: #ed7a5d">￥{{amount}}</span></div>
+          <div class="sum">
+            合计:&nbsp;&nbsp;
+            <span style="color: #ed7a5d">￥{{amount}}</span>
+          </div>
           <div class="btn balance-btn" @click="confirmOrder">结算({{selectList.length}})</div>
         </div>
         <div v-else>
@@ -63,7 +63,7 @@ import { commentPost } from "../../data/data.js";
 import EmptyView from "../../components/EmptyView.vue";
 import CartCard from "../../components/CartCard.vue";
 import { Icon, Swipeout, SwipeoutItem, SwipeoutButton } from "vux";
-import { queryCart } from "../../api";
+import { queryCart, delCartProduct } from "../../api";
 
 export default {
   name: "Cart",
@@ -84,56 +84,56 @@ export default {
         isDefault: true
       },
       products: [],
-      amount: 0
+      amount: 0,
+      show: false
     };
   },
   computed: {
     selectList() {
-      return this.cartList.filter(item=>{
-        return item.selected
-      })
+      return this.cartList.filter(item => {
+        return item.selected;
+      });
     }
   },
   methods: {
     confirmOrder() {
-      let selectList = this.selectList
+      let selectList = this.selectList;
       if (selectList.length != 0) {
-        this.$store.commit("cart/setPayList", this.selectList)
+        this.$store.commit("cart/setPayList", this.selectList);
         this.$router.push("/cart/confirmOrder");
       } else {
         this.$vux.toast.show({
           type: "warn",
           text: "您还没有选择商品哦",
           isShowMask: true
-        })
+        });
       }
-      
     },
     handleEvents(type) {
       console.log("event: ", type);
     },
     selectAllHandler() {
-      this.selectAll = !this.selectAll
-      let cartList = this.cartList
-      for(var i=0; i<cartList.length; i++) {
+      this.selectAll = !this.selectAll;
+      let cartList = this.cartList;
+      for (var i = 0; i < cartList.length; i++) {
         if (this.selectAll) {
-          cartList[i].selected = true 
+          cartList[i].selected = true;
         } else {
-          cartList[i].selected = false
+          cartList[i].selected = false;
         }
       }
     },
     selectGood(index, productID, item) {
       // this.$store.commit('cart/setSelectAll', false)
-      item.selected = !item.selected
-      if(item.selected && (this.selectList.length == this.cartList.length)) {
-        this.selectAll = true        
-        } else {
-        this.selectAll = false
+      item.selected = !item.selected;
+      if (item.selected && this.selectList.length == this.cartList.length) {
+        this.selectAll = true;
+      } else {
+        this.selectAll = false;
       }
     },
     toggleEditCart() {
-      this.toggle.isDefault = !this.toggle.isDefault
+      this.toggle.isDefault = !this.toggle.isDefault;
     },
     deleteCart() {
       let selectList = this.selectList;
@@ -144,7 +144,37 @@ export default {
           isShowMask: true
         });
       } else {
-        
+        var productIDs = [];
+        let that = this;
+        let token = window.sessionStorage.getItem("token");
+        for (var i = 0; i < selectList.length; i++) {
+          productIDs.push(selectList[i].productID);
+        }
+        if (token != null) {
+          delCartProduct(token, productIDs, data => {
+            if (!data.errcode) {
+              that.$vux.toast.show({
+                type: "success",
+                text: "删除成功",
+                isShowMask: true
+              });
+              let cartList = that.cartList;
+              for (var a = 0; a < cartList.length; a++) {
+                for (var b = 0; b < productIDs.length; b++) {
+                  if (cartList[a].productID == productIDs[b]) {
+                    cartList.splice(a, 1);
+                  }
+                }
+              }
+            } else {
+              that.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              });
+            }
+          });
+        }
       }
     },
     handleGetCart() {
@@ -166,27 +196,26 @@ export default {
     }
   },
   watch: {
-    'selectList':{
+    selectList: {
       handler: function(newVal) {
-        let tmp = newVal
-        let that = this
-        var amount = 0
-        for (var i=0; i<newVal.length; i++) {
-           amount += (newVal[i].num * Number(newVal[i].price))
+        let tmp = newVal;
+        let that = this;
+        var amount = 0;
+        for (var i = 0; i < newVal.length; i++) {
+          amount += newVal[i].num * Number(newVal[i].price);
         }
-        that.amount = amount.toFixed(2)
+        that.amount = amount.toFixed(2);
       },
       deep: true
     }
   },
   created() {
-    let tmp = []
-    for(var i=0; i<commentPost.length; i++) {
-      commentPost[i].selected = false
-      tmp.push(commentPost[i])
+    let tmp = [];
+    for (var i = 0; i < commentPost.length; i++) {
+      commentPost[i].selected = false;
+      tmp.push(commentPost[i]);
     }
-    console.log('tmp', tmp)
-    this.cartList = tmp
+    this.cartList = tmp;
   }
 };
 </script>

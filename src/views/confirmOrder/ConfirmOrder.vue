@@ -14,10 +14,10 @@
         class="good-pay-address"
         @click="selectAddress('address')">
         <address-card
-          v-if="defaultAddress.length > 0"
+          v-if="selectAddress"
           :link="true"
           :tool="false"
-          :data="defaultAddress[0]">
+          :data="selectedAddress">
         </address-card>
         <div
           v-else
@@ -50,7 +50,7 @@
 
     <popup
       v-model="showPopup"
-      height="300px"
+      height="400px"
       @on-hide="log('hide')"
       @on-show="log('show')"
       @on-first-show="resetScroller">
@@ -94,8 +94,13 @@
       }
     },
     computed: {
-      defaultAddress(){
-        return this.userAddress.filter(i => i.isDefault === 1)
+      selectedAddress () {
+        let selectedAddress = this.$store.state.address.selectedAddress
+        if (selectedAddress !=null) {
+           return selectedAddress
+        } else {
+          return (this.userAddress.filter(i => i.isDefault === 1))[0]
+        }
       },
       payList() {
         return this.$store.state.cart.payList
@@ -121,17 +126,8 @@
       selectAddress(type){
         this.popupType = type
         this.showPopup = !this.showPopup
+        // this.$store.commit('payPopup/open')
         this.popupData = this.userAddress
-      },
-      selectCoupon(type,id) {
-        this.popupType = type
-        this.showPopup = !this.showPopup
-        this.payPill.forEach(i => {
-          if(i.id === id){
-            console.log(i.coupon)
-            this.popupData = i.coupon
-          }
-        })
       },
       resetScroller() {
         // this.$nextTick(() => {

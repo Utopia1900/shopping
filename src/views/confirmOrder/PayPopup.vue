@@ -2,11 +2,6 @@
   <div class="pay-popup-wrap">
     <div
       class="pay-popup-head"
-      v-show="type==='coupon'">
-      优惠券选择
-    </div>
-    <div
-      class="pay-popup-head"
       v-show="type==='address'">
       收货地址选择
       <router-link
@@ -17,27 +12,9 @@
       </router-link>
     </div>
     <scroller
-      height="210px"
+      height="350px"
       lock-x
       ref="scroller">
-      <div
-        class="pay-popup-body"
-        v-show="type==='coupon'">
-        <checker
-          v-model="selectData"
-          default-item-class="pp-coupon-item-detault"
-          selected-item-class="pp-coupon-item-selected">
-          <checker-item
-            v-for="item in popupData"
-            :value="item">
-            <div class="coupon-pop-item">
-              <span class="coupon-pop-item-title">{{item.title}}</span>
-              <span class="">{{item.amount}}元</span>
-              <p class="coupon-pop-item-time">{{item.time}}</p>
-            </div>
-          </checker-item>
-        </checker>
-      </div>
       <div
         class="pay-popup-body"
         v-show="type==='address'">
@@ -46,27 +23,25 @@
           default-item-class="pp-address-item-detault"
           selected-item-class="pp-address-item-selected">
           <checker-item
-            v-for="item in popupData"
+            v-for="(item, index) in popupData"
+            :key = "index"
             :value="item">
             <div class="">
               <span>{{item.name}}</span>
-              <span>{{item.tel}}</span>
+              <span>{{item.mobile}}</span>
               <div>
 								<span
                   class="z-text-color-main"
-                  v-if="item.defaultAddress === 1">
+                  v-if="item.isDefault === 1">
 									默认地址:
 								</span>
-                {{item.address}}
+                {{item.province}}{{item.city}}{{item.district}}{{item.detail}}
               </div>
             </div>
           </checker-item>
         </checker>
       </div>
     </scroller>
-    <div class="pay-popup-foot">
-      <div class="pay-popup-btn">确认</div>
-    </div>
   </div>
 </template>
 
@@ -83,6 +58,11 @@
     data(){
       return {
         selectData: null
+      }
+    },
+    watch: {
+      'selectData'(newVal, oldVal) {
+         this.$store.commit('address/setSelectedAddress', newVal)
       }
     }
   }
@@ -156,23 +136,5 @@
     height: 40px;
     width: 100%;
     padding: 2px 8px;
-  }
-  .pay-popup-foot .pay-popup-btn{
-    display: block;
-    height: 100%;
-    width: 100%;
-    border-radius: 2px;
-    font-size: 15px;
-    line-height: 2;
-    letter-spacing: 1px;
-    color: #fff;
-    text-align: center;
-    background-color: #ed7a5d;
-  }
-  .coupon-pop-item{
-    overflow: hidden;
-  }
-  .coupon-pop-item-time{
-    float: right;
   }
 </style>
