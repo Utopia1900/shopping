@@ -25,10 +25,10 @@
           @on-open="handleEvents('on-open')"
         >
           <div slot="right-menu">
-            <swipeout-button type="warn">删除</swipeout-button>
+            <swipeout-button type="warn" @click="delBySwipe(item.productID)">删除</swipeout-button>
           </div>
           <div slot="content">
-            <cart-card @on-selected-good="selectGood(index, item.productID, item)" :data="item"></cart-card>
+            <cart-card @on-selected-good="selectGood(item)" :data="item"></cart-card>
           </div>
         </swipeout-item>
       </swipeout>
@@ -50,7 +50,7 @@
         </div>
         <div v-else>
           <div class="btn delete-btn">
-            <span @click="deleteCart">刪除</span>
+            <span @click="handleDelete">刪除</span>
           </div>
         </div>
       </div>
@@ -77,15 +77,13 @@ export default {
   },
   data() {
     return {
-      cartList: [],
       num: 1,
       selectAll: false,
       toggle: {
         isDefault: true
       },
       products: [],
-      amount: 0,
-      show: false
+      amount: 0
     };
   },
   computed: {
@@ -93,6 +91,9 @@ export default {
       return this.cartList.filter(item => {
         return item.selected;
       });
+    },
+    cartList() {
+      return this.$store.state.cart.cartList;
     }
   },
   methods: {
@@ -123,7 +124,7 @@ export default {
         }
       }
     },
-    selectGood(index, productID, item) {
+    selectGood(item) {
       // this.$store.commit('cart/setSelectAll', false)
       item.selected = !item.selected;
       if (item.selected && this.selectList.length == this.cartList.length) {
@@ -133,9 +134,10 @@ export default {
       }
     },
     toggleEditCart() {
-      this.toggle.isDefault = !this.toggle.isDefault;
+      this.toggle.isDefault = !this.toggle.isDefault
     },
-    deleteCart() {
+    delBySwipe() {},
+    handleDelete() {
       let selectList = this.selectList;
       if (selectList.length == 0) {
         this.$vux.toast.show({
@@ -144,11 +146,11 @@ export default {
           isShowMask: true
         });
       } else {
-        var productIDs = [];
-        let that = this;
-        let token = window.sessionStorage.getItem("token");
+        var productIDs = []
+        let that = this
+        let token = window.sessionStorage.getItem("token")
         for (var i = 0; i < selectList.length; i++) {
-          productIDs.push(selectList[i].productID);
+          productIDs.push(selectList[i].productID)
         }
         if (token != null) {
           delCartProduct(token, productIDs, data => {
@@ -171,38 +173,45 @@ export default {
                 title: "提示",
                 content: data.errmsg,
                 buttonText: "知道了"
-              });
+              })
             }
-          });
+          })
         }
       }
     },
     handleGetCart() {
-      let token = window.sessionStorage.getItem("token");
-      let that = this;
+      let token = window.sessionStorage.getItem("token")
+      let that = this
       if (token != null) {
         queryCart(token, data => {
           if (!data.errcode) {
-            that.cart = data;
+            if (data.length != 0) {
+              let tmp = [];
+              for (var i = 0; i < data.length; i++) {
+                data[i].selected = false;
+                tmp.push(data[i])
+              }
+              that.$store.commit("cart/setCartList", tmp)
+            }
           } else {
             that.$vux.alert.show({
               title: "提示",
               content: data.errmsg,
               buttonText: "知道了"
-            });
+            })
           }
-        });
+        })
       }
     }
   },
   watch: {
     selectList: {
       handler: function(newVal) {
-        let tmp = newVal;
-        let that = this;
-        var amount = 0;
+        let tmp = newVal
+        let that = this
+        var amount = 0
         for (var i = 0; i < newVal.length; i++) {
-          amount += newVal[i].num * Number(newVal[i].price);
+          amount += newVal[i].num * Number(newVal[i].price)
         }
         that.amount = amount.toFixed(2);
       },
@@ -210,12 +219,7 @@ export default {
     }
   },
   created() {
-    let tmp = [];
-    for (var i = 0; i < commentPost.length; i++) {
-      commentPost[i].selected = false;
-      tmp.push(commentPost[i]);
-    }
-    this.cartList = tmp;
+    this.handleGetCart()
   }
 };
 </script>

@@ -28,11 +28,15 @@ export default {
       stric: true,
       namespaced: true,
       state: {
-        payList: []
+        payList: [],
+        cartList: []
       },
       mutations: {
         setPayList (state, payload) {
           state.payList = payload
+        },
+        setCartList (state, payload) {
+          state.cartList = payload
         }
       }
     },

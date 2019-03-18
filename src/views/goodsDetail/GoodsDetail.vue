@@ -11,12 +11,12 @@
           </div>
           <div
             class="addcart"
-            @click="toggerSpeciPopup(1)">
+            @click="handleAddToCart(productDetail.id)">
             加入购物车
           </div>
           <div
             class="buynow"
-            @click="toggerSpeciPopup(2)">
+            @click="toggerPopup">
             立即购买
           </div>
         </div>
@@ -85,8 +85,8 @@
                 <div class="param-item">
                   <x-number
                     class="add-num"
-                    :title="'数量'"
-                    :value="1"
+                    :title="'购买数量'"
+                    :value="num"
                     :min="1"
                     :step="1"
                     width="30px">
@@ -97,24 +97,9 @@
             <div class="foot">
               <div
                 class="btn"
-                v-show="btnType === 0">
-                <div class="left">加入购物车</div>
-                <div class="right">立即购买</div>
+                v-show="show">
+                <div class="btn" @click="handleBuy">确定</div>
               </div>
-              <div
-                class="btn"
-                v-show="btnType === 1">
-                加入购物车
-              </div>
-              <router-link
-                class="btn"
-                @click.native="handleBuy"
-                v-show="btnType === 2"
-                :to="{
-							name: 'goodPay'
-						}">
-                立即购买
-              </router-link>
             </div>
           </div>
         </popup>
@@ -127,6 +112,7 @@
   // import CommentCard from '../../components/commentCard.vue'
   import {Swiper,SwiperItem,Popup,Scroller,Toast,XNumber, ViewBox} from 'vux'
   import HeaderNav from '../../components/HeaderNav'
+  import {addToCart} from '../../api'
   export default {
     components: {
       Popup,
@@ -141,9 +127,10 @@
     },
     data() {
       return {
-        headerNavTitle: 'GoodsDetail',
+        headerNavTitle: '',
         btnType: '',
-        show: false
+        show: false,
+        num: 1
       }
     },
     computed: {
@@ -154,9 +141,6 @@
         return this.$store.state.goodDetail.detail
       }
     },
-    created() {
-
-    },
     methods: {
       resetScroller() {
         this.$nextTick(() => {
@@ -166,28 +150,39 @@
       log(str) {
         console.log(str)
       },
-      toggerSpeciPopup(type) {
-        switch(type){
-          case 0:
-            this.btnType = 0
+      toggerPopup() {
             this.show = !this.show
-            break;
-          case 1:
-            this.btnType = 1
-            this.show = !this.show
-            break;
-          case 2:
-            this.btnType = 2
-            this.show = !this.show
-            break
-        }
       },
       goToCart() {
         this.$store.commit('bottomNav/set', 1);
         this.$router.push('/cart');
       },
+      handleAddToCart (productId) {
+        console.log('add')
+        let that = this
+        let token = window.sessionStorage.getItem("token")
+        if (token !=null) {
+         addToCart(token, productId, data => {
+           if (!data.errcode) {
+              that.$vux.toast.show({
+                type: "success",
+                text: "添加成功",
+                isShowMask: true
+              })
+           } else {
+             that.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              })
+           }
+         }) 
+
+        }
+      },
       handleBuy() {
-        console.log(1111)
+        console.log('handleBuy')
+        this.$router.push('/cart/confirmOrder')
         this.show = false
       }
     }

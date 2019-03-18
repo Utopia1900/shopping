@@ -561,6 +561,7 @@ export const userInfo = {
 /************* address list ******/
 // address list
 export const userAddress = [{
+    index: 0,
     id: 1,
     isDefault: 0,
     name: '老王',
@@ -568,6 +569,7 @@ export const userAddress = [{
     detail: '广东广州海珠区广州大道中338号'
   },
   {
+    index: 1,
     id: 2,
     isDefault: 0,
     name: '张山',
@@ -575,6 +577,7 @@ export const userAddress = [{
     detail: '湖北武汉市海珠区广州大道中338号'
   },
   {
+    index: 2,
     id: 3,
     isDefault: 0,
     name: '李四',
@@ -582,6 +585,7 @@ export const userAddress = [{
     detail: '浙江省杭州市创业大赛的萨的萨的萨的三'
   },
   {
+    index: 3,
     id: 4,
     isDefault: 0,
     name: '马又云',
@@ -589,6 +593,7 @@ export const userAddress = [{
     detail: '海南省海口市大兴安岭杜郊区'
   },
   {
+    index: 4,
     id: 5,
     isDefault: 1,
     name: '刘小东',
@@ -596,6 +601,7 @@ export const userAddress = [{
     detail: '四川省成都市天赋光彩天赋广成'
   },
   {
+    index: 5,
     id: 6,
     isDefault: 0,
     name: '小六',
@@ -603,6 +609,7 @@ export const userAddress = [{
     detail: '湖南省岳阳市洞庭湖以北200公里'
   },
   {
+    index: 6,
     id: 7,
     isDefault: 0,
     name: '哈楼',
