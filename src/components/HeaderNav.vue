@@ -1,6 +1,6 @@
 <template>
   <div class="catresult-catbar-wrap">
-    <span @click="goBack" class="catresult-catbar-back zui-icon zui-icon-back">
+    <span @click="handleGoBack" class="catresult-catbar-back zui-icon zui-icon-back">
 
     </span>
     <div class="catresult-catbar-wrap-title">{{headerNavTitle}}</div>
@@ -12,8 +12,8 @@
     name: 'HeadNav',
     props:['headerNavTitle'],
     methods:{
-      goBack() {
-        this.$router.go(-1)
+      handleGoBack() {
+        this.$emit('on-back')
       }
     }
   }

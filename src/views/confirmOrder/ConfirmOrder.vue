@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header-nav :headerNavTitle="'确认订单'"/>
+    <header-nav :headerNavTitle="'确认订单'" @on-back="goBack"/>
     <div class="good-pay-bottombar">
       <div class="sum-price">总计: <span style="color:#ed7a5d">￥{{totalAmount}}</span></div>
       <div class="pill-submit-btn">
@@ -134,8 +134,8 @@
         // 	this.$refs.scroller.reset()
         // })
       },
-      log(str) {
-        console.log(str)
+      goBack() {
+        this.$router.go(-1) 
       },
       change (val) {
         console.log('change', val)

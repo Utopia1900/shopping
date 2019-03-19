@@ -136,7 +136,9 @@ export default {
     toggleEditCart() {
       this.toggle.isDefault = !this.toggle.isDefault
     },
-    delBySwipe() {},
+    delBySwipe() {
+
+    },
     handleDelete() {
       let selectList = this.selectList;
       if (selectList.length == 0) {
@@ -144,7 +146,7 @@ export default {
           type: "warn",
           text: "您还没有选择商品哦",
           isShowMask: true
-        });
+        })
       } else {
         var productIDs = []
         let that = this

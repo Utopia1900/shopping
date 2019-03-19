@@ -1,6 +1,6 @@
 <template>
   <div class="myaddress-list-wrap">
-    <header-nav :headerNavTitle="headerNavTitle"/>
+    <header-nav :headerNavTitle="headerNavTitle" @on-back="goBack"/>
     <empty-view v-if="address.length === 0" :iconCls="'zui-icon-COUPON'" :text="'您还没创建过地址!'"></empty-view>
 
     <address-card
@@ -112,6 +112,9 @@ export default {
     addAddress() {
       this.$store.commit("address/set", null);
       this.$router.push("/mine/address/edit");
+    },
+    goBack() {
+      this.$router.go(-1) 
     }
   },
   created() {

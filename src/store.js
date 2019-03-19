@@ -44,7 +44,9 @@ export default {
       stric: true,
       namespaced: true,
       state: {
-        addressObj: {},
+        addressObj: {
+          isDefault: 0
+        },
         selectedAddress: null
       },
       mutations: {

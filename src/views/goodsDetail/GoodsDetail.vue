@@ -1,7 +1,7 @@
 <template>
   <div class="z-page">
     <div class="z-content">
-      <header-nav :headerNavTitle="headerNavTitle"></header-nav>
+      <header-nav :headerNavTitle="headerNavTitle" @on-back="goBack"/>
       <view-box>
         <div class="good-detail-bottombar">
           <div class="cart">
@@ -184,6 +184,9 @@
         console.log('handleBuy')
         this.$router.push('/cart/confirmOrder')
         this.show = false
+      },
+      goBack() {
+        this.$router.go(-1) 
       }
     }
   }
