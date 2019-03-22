@@ -41,7 +41,14 @@
       </div>
     </div>
     <div class="address-edit-btn" @click="submitHandle(addressObj.index)">保存</div>
-    <confirm title="是否保存本次修改？" :value="show" confirm-text="保存" cancel-text="不保存" @on-cancel="goBack" @on-confirm="submitHandle(addressObj.index)"></confirm>
+    <confirm
+      title="是否保存本次修改？"
+      :value="show"
+      confirm-text="保存"
+      cancel-text="不保存"
+      @on-cancel="goBack"
+      @on-confirm="submitHandle(addressObj.index)"
+    ></confirm>
   </div>
 </template>
 <script>
@@ -125,7 +132,7 @@ export default {
     window.sessionStorage.setItem(
       "initialAddress",
       JSON.stringify(this.addressObj)
-    )
+    );
   },
   methods: {
     changeName(val) {
@@ -138,13 +145,13 @@ export default {
       this.addressObj.detail = val;
     },
     submitHandle(argIndex) {
-      let that = this
-      let token = window.sessionStorage.getItem("token")
-      let addressObj = this.addressObj
+      let that = this;
+      let token = window.sessionStorage.getItem("token");
+      let addressObj = this.addressObj;
       let index = argIndex != null ? argIndex : -1;
-      console.log("index", index)
-      console.log(addressObj)
-      that.$router.replace('/mine/address')
+      console.log("index", index);
+      console.log(addressObj);
+      that.$router.replace("/mine/address");
       if (token != null) {
         editAddress(token, index, addressObj, data => {
           if (!data.errcode) {
@@ -173,17 +180,17 @@ export default {
     },
     handleBack() {
       // 比较地址对象转化为字符串进行比较
-      var initialAddress = window.sessionStorage.getItem("initialAddress");
-      var currentAddress = JSON.stringify(this.addressObj);
+      let initialAddress = window.sessionStorage.getItem("initialAddress");
+      let currentAddress = JSON.stringify(this.addressObj);
       if (initialAddress == currentAddress) {
-        this.$router.go(-1)
+        this.$router.go(-1);
       } else {
-        this.show = !this.show
+        this.show = !this.show;
       }
     },
-    goBack () {
-       this.show = !this.show
-       this.$router.go(-1)
+    goBack() {
+      this.show = !this.show;
+      this.$router.go(-1);
     }
   }
 };

@@ -2,7 +2,6 @@
   <div class="myaddress-list-wrap">
     <header-nav :headerNavTitle="headerNavTitle" @on-back="goBack"/>
     <empty-view v-if="address.length === 0" :iconCls="'zui-icon-COUPON'" :text="'您还没创建过地址!'"></empty-view>
-
     <address-card
       v-else
       v-for="(item,index) in address"
@@ -48,9 +47,9 @@ export default {
             let address = this.address;
             for (var i = 0; i < address.length; i++) {
               if (address[i].index == index) {
-                address[i].isDefault = 1;
+                address[i].isDefault = 1    
               } else {
-                address[i].isDefault = 0;
+                address[i].isDefault = 0
               }
             }
             that.$vux.toast.show({
