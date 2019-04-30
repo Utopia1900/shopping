@@ -36,6 +36,11 @@ export default {
       }
     }
   },
+  components:{
+    EndingLine,
+    ViewBox,
+    GoodList
+  },
   methods: {
     handleQueryProduct () {
       let token = window.sessionStorage.getItem('token')
@@ -48,11 +53,6 @@ export default {
         })
       }
     }
-  },
-  components:{
-    EndingLine,
-    ViewBox,
-    GoodList
   },
   created () {
     this.handleQueryProduct()

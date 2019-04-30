@@ -118,11 +118,20 @@ export default {
     },
     $route(val, oldVal) {
       if (val) {
-        this.addressObj = this.$store.state.address.addressObj;
-        window.sessionStorage.setItem(
-          "initialAddress",
-          JSON.stringify(this.addressObj)
-        );
+        let addressObj = this.$store.state.address.addressObj
+        if (!addressObj) {
+          this.addressObj = {
+            isDefault: 0
+          }
+          window.sessionStorage.removeItem("initialAddress")
+        } else {
+          this.addressObj = addressObj;
+          window.sessionStorage.setItem(
+            "initialAddress",
+            JSON.stringify(this.addressObj)
+          );
+
+        }
       }
     }
   },
