@@ -24,15 +24,14 @@ import('./index.less')
 import EndingLine from '../../components/EndingLine'
 import GoodList from '../../components/GoodList'
 import {ViewBox} from 'vux'
-import {recommendGoods} from '../../data/data.js'
 import {queryProduct} from '../../api'
 export default {
   name:'Index',
   data () {
     return{
-      goodsList: recommendGoods,
+      goodsList: [],
       shop: {
-        title: 'jft_shop',
+        title: '首页',
       }
     }
   },
@@ -42,10 +41,16 @@ export default {
     GoodList
   },
   methods: {
+    getToken () {
+      const token = this.$cookie.get('token')
+      if (token) {
+        window.sessionStorage.setItem('token', token)
+      }
+    },
     handleQueryProduct () {
       let token = window.sessionStorage.getItem('token')
       let that = this
-      if (token != null) {
+      if (token) {
         queryProduct(token, data => {
           if(!data.errcode) {
             that.goodsList = data
@@ -55,6 +60,7 @@ export default {
     }
   },
   created () {
+    this.getToken()
     this.handleQueryProduct()
   }
 }

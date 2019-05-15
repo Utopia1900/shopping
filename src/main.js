@@ -5,12 +5,14 @@ import App from './App'
 import Vuex from 'vuex'
 import router from './router'
 import store from './store.js'
+import VueCookie from 'vue-cookie'
 import FastClick from 'fastclick'
 import {AlertPlugin, ToastPlugin} from 'vux'
 Vue.config.productionTip = false
 FastClick.attach(document.body)
 
 Vue.use(Vuex)
+Vue.use(VueCookie)
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
 /* eslint-disable no-new */

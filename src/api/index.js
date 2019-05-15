@@ -15,7 +15,7 @@ export const queryProduct = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -32,7 +32,7 @@ export const addToCart = (token, productId, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -49,7 +49,7 @@ export const queryCart = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -67,7 +67,7 @@ export const delCartProduct = (token, productIDs, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -85,7 +85,7 @@ export const editCartProduct = (token, products, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -102,7 +102,7 @@ export const queryAddress = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -119,7 +119,7 @@ export const setDefaultAddress = (token, index, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -136,7 +136,7 @@ export const delAddress = (token, index, defIndex, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -154,7 +154,7 @@ export const editAddress = (token, index, addressObj, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -172,7 +172,7 @@ export const createOrder = (token, products, amount, addressIndex, successCb) =>
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -193,7 +193,7 @@ export const queryOrder = (token, type, page, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -210,7 +210,7 @@ export const getPersonalInfo = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -228,7 +228,7 @@ export const UpdatePersonalInfo = (token, name, mobile, sex, province, city, bir
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -246,7 +246,7 @@ export const querySummary = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -264,7 +264,7 @@ export const queryLower = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -282,7 +282,7 @@ export const askWithdraw = (token, amount, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -300,7 +300,7 @@ export const myWithdraw = (token, type, page, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
-    alert(error)
+    console.error(error)
   })
 }
 
@@ -314,7 +314,7 @@ export const isEquivalent = (a, b) => {
    for (var i=0; i<aProps.length; i++) {
      var propName = aProps[i]
      if(a[propName] !== b[propName]) {
-        return false 
+        return false
      }
    }
    return true
