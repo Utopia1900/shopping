@@ -28,24 +28,24 @@
 					</span>
         </div>
       </div>
-        <div
-          class="shop-card-body">
-          <good-list
-            v-for="(item, index) in payList"
-            :key = "index"
-            :type="'INCONFIRM'"
-            :data="item">
-          </good-list>
+      <div
+        class="shop-card-body">
+        <good-list
+          v-for="(item, index) in payList"
+          :key="index"
+          :type="'INCONFIRM'"
+          :data="item">
+        </good-list>
+      </div>
+      <div
+        v-show="payList.length!=0"
+        class="shop-card-foot">
+        <div class="z-cell-item z-text-right" style="padding-right: 10px;">
+          <span>共{{totalNum}}件</span>
+          合计￥<span style="color:#ed7a5d">{{totalAmount}}</span>
         </div>
-        <div
-          v-show="payList.length!=0"
-          class="shop-card-foot">
-          <div class="z-cell-item z-text-right" style="padding-right: 10px;">
-            <span>共{{totalNum}}件</span>
-            合计￥<span style="color:#ed7a5d">{{totalAmount}}</span>
-          </div>
-        </div>
-      
+      </div>
+
     </view-box>
 
     <popup
@@ -63,14 +63,13 @@
 </template>
 <script>
   import './confirmOrder.less'
-  import {payPill, userAddress} from '../../data/data.js'
   import AddressCard from '../../components/AddressCard.vue'
   import GoodList from '../../components/GoodList.vue'
   import PayPopup from './PayPopup.vue'
   import HeaderNav from '../../components/HeaderNav'
-  import {Cell, ViewBox, Popup, Scroller, Checklist,XInput} from 'vux'
+  import {Cell, ViewBox, Popup, Scroller, Checklist, XInput} from 'vux'
 
-  export default{
+  export default {
     components: {
       AddressCard,
       GoodList,
@@ -89,15 +88,15 @@
         paySumAmount: 0,
         showPopup: false,
         popupType: '',
-        userAddress: userAddress,
-        payPill: payPill
+        userAddress: [],
+        payPill: []
       }
     },
     computed: {
-      selectedAddress () {
+      selectedAddress() {
         let selectedAddress = this.$store.state.address.selectedAddress
-        if (selectedAddress !=null) {
-           return selectedAddress
+        if (selectedAddress != null) {
+          return selectedAddress
         } else {
           return (this.userAddress.filter(i => i.isDefault === 1))[0]
         }
@@ -105,25 +104,25 @@
       payList() {
         return this.$store.state.cart.payList
       },
-      totalAmount () {
+      totalAmount() {
         let payList = this.$store.state.cart.payList
         let amount = 0
-        for (var i =0; i<payList.length; i++) {
-            amount += payList[i].num * Number(payList[i].price)
+        for (var i = 0; i < payList.length; i++) {
+          amount += payList[i].num * Number(payList[i].price)
         }
         return amount.toFixed(2)
       },
-      totalNum () {
+      totalNum() {
         let payList = this.$store.state.cart.payList
         let num = 0;
-        for (var i =0; i<payList.length; i++) {
-            num += payList[i].num
+        for (var i = 0; i < payList.length; i++) {
+          num += payList[i].num
         }
         return num
       }
     },
     methods: {
-      selectAddress(type){
+      selectAddress(type) {
         this.popupType = type
         this.showPopup = !this.showPopup
         // this.$store.commit('payPopup/open')
@@ -135,9 +134,9 @@
         // })
       },
       goBack() {
-        this.$router.go(-1) 
+        this.$router.go(-1)
       },
-      change (val) {
+      change(val) {
         console.log('change', val)
       }
     }

@@ -59,7 +59,6 @@
 </template>
 <script>
 import "./cart.less";
-import { commentPost } from "../../data/data.js";
 import EmptyView from "../../components/EmptyView.vue";
 import CartCard from "../../components/CartCard.vue";
 import { Icon, Swipeout, SwipeoutItem, SwipeoutButton } from "vux";

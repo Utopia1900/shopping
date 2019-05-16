@@ -1,136 +1,20 @@
 import axios from 'axios'
-import config from '../config'
+
+// let url = '/api/1/' // 生产环境
+let url = 'http://10.1.2.3/mx/api/1'  // 开发环境
+axios.defaults.baseURL = url
+axios.defaults.timeout = 5 * 1000
+axios.defaults.headers.post['Content-Type'] = 'application/json'
+
 
 // 可以考虑给接口加上时间戳 eg: '/api/queryOrder?timestamp=' + new Date.getTime()
 export const queryProduct = (token, successCb) => {
 // 获取商品信息  queryProduct (token)  返回 {id: , detailUrl: , imgUrl: , name: , price: , oriPrice: , inventory: } 的数组
   let formData = {token}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'queryProduct'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const addToCart = (token, productId, successCb) => {
-// 加入购物车  addToCart (token, productId) 返回 {errcode: , errmsg: }
-  let formData = {token, productId}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'addToCart'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const queryCart = (token, successCb) => {
-// 查看购物车 queryCart(token)  返回 {productID: , price: , oriPrice: , num: , headImgUrl: ,name: } 的数组
-  let formData = {token}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'queryCart'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const delCartProduct = (token, productIDs, successCb) => {
-// 删除购物车商品 delCartProduct(token, productIDs) 其中productIDs 是选择要删除的productID的数组
-// 返回 {errcode: , errmsg: }
-  let formData = {token, productIDs}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'delCartProduct'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const editCartProduct = (token, products, successCb) => {
-// 编辑购物车商品(修改数量) editCartProduct(token, products)  其中 products是{id:productID, num: num}的数组
-// 返回 {errcode: , errmsg: }
-  let formData = {token, products}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'editCartProduct'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const queryAddress = (token, successCb) => {
-// 获取收货地址 queryAddress(token)  返回{index: , name: , mobile: , province: , city: , district: , detail: } 的数组
-  let formData = {token}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'queryAddress'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const setDefaultAddress = (token, index, successCb) => {
-// 设置默认地址 setDefaultAddress(token, index)  返回{errcode: ,errmsg: }
-  let formData = {token}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'setDefaultAddress'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const delAddress = (token, index, defIndex, successCb) => {
-// 删除地址 delAddress(token, index, defIndex) 返回{errcode: , errmsg: }
-  let formData = {token, index, defIndex}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'delAddress'
+    url: 'queryProduct'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -145,10 +29,9 @@ export const editAddress = (token, index, addressObj, successCb) => {
   let preData = {token, index}
   let formData = Object.assign(preData, addressObj)
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'editAddress'
+    url: 'editAddress'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -158,53 +41,13 @@ export const editAddress = (token, index, addressObj, successCb) => {
   })
 }
 
-export const createOrder = (token, products, amount, addressIndex, successCb) => {
-// 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
-// 对接口返回的对象：res 再调用 WeixinJSBridge.invoke(‘getBrandWCPayRequest’，res, callback(res){if(res.err_msg=="get_brand_wcpay_request:ok")表示支付成功})
-  let formData = {token, products, amount, addressIndex}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'createOrder'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const queryOrder = (token, type, page, successCb) => {
-// 查看订单 queryOrder(token, type, page)  其中type：0 表示全部， type：1 表示待付款
-// 返回 {products：[headImgUrl: , name: , price: , num: ], status: , amount: }
-// 其中 status: 0 代表未支付（附加按钮：“支付” 和 “取消订单”）
-//      status：1 代表支付成功“待发货”
-//      status: 2 代表支付成功“已发货” 并附加返回快递信息{expressCompany： , expressNumber: }
-  let formData = {token, type, page}
-  const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
-    data: JSON.stringify(formData),
-    url: config.url + 'queryOrder'
-  }
-  axios(options).then(response => {
-    if (successCb) successCb(response.data)
-  }).catch(error => {
-    // handle error
-    console.error(error)
-  })
-}
-
-export const getPersonalInfo = (token, successCb) => {
-// 获取个人信息 getPersonalInfo(token)  返回{id: , name: , mobile: , sex: , province: , city: , birthday: }
+export const setDefaultAddress = (token, index, successCb) => {
+// 设置默认地址 setDefaultAddress(token, index)  返回{errcode: ,errmsg: }
   let formData = {token}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'getPersonalInfo'
+    url: 'setDefaultAddress'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -214,15 +57,29 @@ export const getPersonalInfo = (token, successCb) => {
   })
 }
 
-export const UpdatePersonalInfo = (token, name, mobile, sex, province, city, birthday, successCb) => {
-// 修改个人信息 UpdatePersonalInfo(token, name, mobile, sex, province, city, birthday)   birthday (eg:19900202)
-// 返回{errcode: , errmsg: }
-  let formData = {token, name, mobile, sex, province, city, birthday}
+export const delAddress = (token, index, defIndex, successCb) => {
+// 删除地址 delAddress(token, index, defIndex) 返回{errcode: , errmsg: }
+  let formData = {token, index, defIndex}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'UpdatePersonalInfo'
+    url: 'delAddress'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    // handle error
+    console.error(error)
+  })
+}
+
+export const queryAddress = (token, successCb) => {
+// 获取收货地址 queryAddress(token)  返回{index: , name: , mobile: , province: , city: , district: , detail: } 的数组
+  let formData = {token}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'queryAddress'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -233,14 +90,13 @@ export const UpdatePersonalInfo = (token, name, mobile, sex, province, city, bir
 }
 
 export const querySummary = (token, successCb) => {
-// 获取会员信息 querySummary(token)
+// 获取摘要信息 querySummary(token)
 // 返回{headImgUrl: , customerID: ,nickname: ,buyAmount: , marketAmount: ,commission: ,unpaidOrderNum: , finishedOrderNum: , introducer: ,followTime: }
   let formData = {token}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'querySummary'
+    url: 'querySummary'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -250,15 +106,158 @@ export const querySummary = (token, successCb) => {
   })
 }
 
-export const queryLower = (token, successCb) => {
-// 查看我的推广（下级） queryLower(token)
-// 返回{levelName: , paid: , unpaid: ,num: }
+export const createOrder = (token, products, amount, addressIndex, points, successCb) => {
+// 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
+  let formData = {token, products, amount, addressIndex, points}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'createOrder'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    // handle error
+    console.error(error)
+  })
+}
+
+export const queryPurchaseOrder = (token, type, page, successCb) => {
+// 查询我购买的订单 type：1- 待发货， 2- 已发货待收货，3- 确认收货待评价， 不传为所有订单
+  let formData = {token, page}
+  if(type) formData.type = type
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url:  'queryPurchaseOrder'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+export const querySoldOrder = (token, type, page, successCb) => {
+// 查询我出售的订单 type：1- 待发货， 2- 已发货待买家收货，3- 确认收货待评价， 不传为所有订单
+  let formData = {token, page}
+  if(type) formData.type = type
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url:  'querySoldOrder'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+export const confirmReceipt = (token, orderID, successCb) => {
+  // 确认订单
+  let formData = {token, orderID}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'confirmReceipt'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+  })
+  console.error(errot)
+}
+
+export const delivery = (token, orderID, expressCompany, expressNo, successCb) => {
+  // 发货
+  let formData = {token, orderID, expressCompany, expressNo}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'delivery'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+export const comment = (token, orderID, productID, star, desc, successCb) => {
+  // 评价订单
+  let formData = {token, orderID, productID, star, desc}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'comment'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+
+export const addToCart = (token, productId, successCb) => {
+// 加入购物车  addToCart (token, productId) 返回 {errcode: , errmsg: }
+  let formData = {token, productId}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'addToCart'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    // handle error
+    console.error(error)
+  })
+}
+
+export const editCartProduct = (token, products, successCb) => {
+// 编辑购物车商品(修改数量) editCartProduct(token, products)  其中 products是{id:productID, num: num}的数组
+// 返回 {errcode: , errmsg: }
+  let formData = {token, products}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'editCartProduct'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    // handle error
+    console.error(error)
+  })
+}
+
+export const delCartProduct = (token, productIDs, successCb) => {
+// 删除购物车商品 delCartProduct(token, productIDs) 其中productIDs 是选择要删除的productID的数组
+// 返回 {errcode: , errmsg: }
+  let formData = {token, productIDs}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'delCartProduct'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    // handle error
+    console.error(error)
+  })
+}
+
+
+export const queryCart = (token, successCb) => {
+// 查看购物车 queryCart(token)  返回 {productID: , price: , oriPrice: , num: , headImgUrl: ,name: } 的数组
   let formData = {token}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'queryLower'
+    url: 'queryCart'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -268,33 +267,28 @@ export const queryLower = (token, successCb) => {
   })
 }
 
-export const askWithdraw = (token, amount, successCb) => {
-// 申请提现 askWithdraw（token, amount）
-// 返回{errcode: , errmsg: }
-  let formData = {token, amount}
+export const getSDKConfig = (url, successCb) => {
+  let formData = {url}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'askWithdraw'
+    url: 'getSDKConfig'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
   }).catch(error => {
-    // handle error
     console.error(error)
   })
 }
 
-export const myWithdraw = (token, type, page, successCb) => {
-// 查看我的提现记录 myWithdraw(token, type, page) 其中type传0
-// 返回 {time: , amount: , status: } 其中 status: 0代表“审核中”, status:1 代表“提现成功”
-  let formData = {token, type, page}
+export const queryLower = (token, page, successCb) => {
+// 查看我的推广（下级） queryLower(token)
+// 返回{levelName: , paid: , unpaid: ,num: }
+  let formData = {token, page}
   const options = {
-    methods: 'POST',
-    headers: {'content-type': 'application/json'},
+    method: 'POST',
     data: JSON.stringify(formData),
-    url: config.url + 'myWithdraw'
+    url: 'queryLower'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -303,19 +297,18 @@ export const myWithdraw = (token, type, page, successCb) => {
     console.error(error)
   })
 }
-
 
 export const isEquivalent = (a, b) => {
-   var aProps = Object.getOwnPropertyNames(a)
-   var bProps = Object.getOwnPropertyNames(b)
-   if (aProps.length != bProps.length) {
-     return false
-   }
-   for (var i=0; i<aProps.length; i++) {
-     var propName = aProps[i]
-     if(a[propName] !== b[propName]) {
-        return false
-     }
-   }
-   return true
+  var aProps = Object.getOwnPropertyNames(a)
+  var bProps = Object.getOwnPropertyNames(b)
+  if (aProps.length != bProps.length) {
+    return false
+  }
+  for (var i = 0; i < aProps.length; i++) {
+    var propName = aProps[i]
+    if (a[propName] !== b[propName]) {
+      return false
+    }
+  }
+  return true
 }

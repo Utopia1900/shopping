@@ -7,19 +7,111 @@
         <span class="hello">, hello</span>
       </div>
     </div>
-    <div class="mine-order-wrap">
-      <cell
-        class="mine-order-all"
-        :title="orderTag.all.text"
-        :value="'查看全部'"
-        :link="{
-					name: 'orderList',
-					query: {tag:orderTag.all.tag}
-				}">
-      </cell>
-    </div>
 
-    <group >
+    <group>
+      <div class="mine-order-wrap">
+        <cell
+          class="mine-order-all"
+          title="我购买的"
+        >
+        </cell>
+        <flexbox :gutter="0">
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'purchaseOrder',
+							query: {tag: purchaseTag.all.tag}
+						}">
+              <!--<badge class="badge" text=""></badge>-->
+              <span :class="purchaseTag.all.icon"></span>
+              <div>{{purchaseTag.all.text}}</div>
+            </router-link>
+          </flexbox-item>
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'purchaseOrder',
+							query: {tag: purchaseTag.send.tag}
+						}">
+              <span :class="purchaseTag.send.icon"></span>
+              <div>{{purchaseTag.send.text}}</div>
+            </router-link>
+          </flexbox-item>
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'purchaseOrder',
+							query: {tag: purchaseTag.get.tag}
+						}">
+              <span :class="purchaseTag.get.icon"></span>
+              <div>{{purchaseTag.get.text}}</div>
+            </router-link>
+          </flexbox-item>
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'purchaseOrder',
+							query: {tag: purchaseTag.comment.tag}
+						}">
+              <span :class="purchaseTag.comment.icon"></span>
+              <div>{{purchaseTag.comment.text}}</div>
+            </router-link>
+          </flexbox-item>
+        </flexbox>
+      </div>
+    </group>
+
+    <group>
+      <div class="mine-order-wrap">
+        <cell
+          class="mine-order-all"
+          title="我售出的"
+        >
+        </cell>
+        <flexbox :gutter="0">
+          <flexbox-item style="color: red">
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'soldOrder',
+							query: {tag: soldTag.all.tag}
+						}">
+              <span :class="soldTag.all.icon" style="color:#ed7a5d"></span>
+              <div>{{soldTag.all.text}}</div>
+            </router-link>
+          </flexbox-item>
+
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'soldOrder',
+							query: {tag: soldTag.send.tag}
+						}">
+              <span :class="soldTag.send.icon"></span>
+              <div>{{soldTag.send.text}}</div>
+            </router-link>
+          </flexbox-item>
+
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'soldOrder',
+							query: {tag: soldTag.get.tag}
+						}">
+              <span :class="soldTag.get.icon"></span>
+              <div>{{soldTag.get.text}}</div>
+            </router-link>
+          </flexbox-item>
+        </flexbox>
+      </div>
+    </group>
+    <group>
       <cell
         class="z-cell-item"
         :title="'收货地址'"
@@ -27,14 +119,20 @@
 					name: 'myAddress'
 				}">
       </cell>
+      <cell
+        class="z-cell-item"
+        :title="'我的推广'"
+        :link="{
+					name: 'myLower'
+				}">
+      </cell>
     </group>
   </div>
 </template>
 <script>
   require('./mine.less')
-  import {userInfo} from '../../data/data.js'
+  import {Badge, Cell, Group, Flexbox, FlexboxItem} from 'vux'
 
-  import { Badge, Cell, Group, Flexbox, FlexboxItem } from 'vux'
   export default {
     components: {
       Badge,
@@ -45,40 +143,62 @@
     },
     data() {
       return {
-        userInfo: userInfo,
-        orderTag: {
+        userInfo: [],
+        purchaseTag: {
           all: {
             tag: 'all',
-            text: '我的订单',
-            icon: ''
-          },
-          pay: {
-            tag: 'pay',
-            text: '待付款',
-            icon: 'zui-icon zui-icon-payment'
+            text: '全部订单',
+            icon: 'zui-icon zui-icon-order'
           },
           send: {
-            tag: 'send',
+            tag: 'needSend',
             text: '待发货',
             icon: 'zui-icon zui-icon-shipped'
           },
           get: {
-            tag: 'get',
+            tag: 'needGet',
             text: '待收货',
             icon: 'zui-icon zui-icon-the-receipt'
           },
           comment: {
-            tag: 'comment',
+            tag: 'needComment',
             text: '待评价',
             icon: 'zui-icon zui-icon-comment'
           },
-          sole: {
-            tag: 'sole',
-            text: '售后/退款',
-            icon: 'zui-icon zui-icon-KEFU'
-          }
+        },
+        soldTag: {
+          all: {
+            tag: 'all',
+            text: '全部订单',
+            icon: 'zui-icon zui-icon-order'
+          },
+          send: {
+            tag: 'needSend',
+            text: '待发货',
+            icon: 'zui-icon zui-icon-shipped'
+          },
+          get: {
+            tag: 'needGet',
+            text: '待买家确认',
+            icon: 'zui-icon zui-icon-the-receipt'
+          },
         }
       }
-    }
+    },
+    watch:{
+      '$route'(to, from){
+         if(to.name === 'soldOrder'){
+           console.log('in sold')
+         }
+         if(to.name === 'purchaseOrder') {
+           console.log('in purchase')
+         }
+      }
+    },
   }
 </script>
+<style>
+  .vux-flexbox .vux-flexbox-item span {
+    color: #ed7a5d;
+  }
+</style>

@@ -8,6 +8,9 @@ const GoodsDetail = r => require.ensure([], () => r(require('@/views/goodsDetail
 const MyAddress = r => require.ensure([], () => r(require('@/views/myAddress/MyAddress')), 'MyAddress')
 const AddressEdit = r => require.ensure([], () => r(require('@/views/myAddress/AddressEdit')), 'AddressEdit')
 const ConfirmOrder = r => require.ensure([], () => r(require('@/views/confirmOrder/ConfirmOrder')), 'ConfirmOrder')
+const PurchaseOrder = r => require.ensure([], () => r(require('@/views/order/PurchaseOrder')), 'PurchaseOrder')
+const SoldOrder = r => require.ensure([], () => r(require('@/views/order/SoldOrder')), 'SoldOrder')
+const MyLower = r => require.ensure([], () => r(require('@/views/myLower/MyLower')), 'MyLower')
 
 Vue.use(Router)
 
@@ -40,7 +43,7 @@ export default new Router({
       path: '/mine/address/edit',
       name: 'addressEdit',
       components: {
-        'default': Mine,
+        'default': MyAddress,
         'subPage': AddressEdit
       }
     },
@@ -58,6 +61,30 @@ export default new Router({
       components: {
         'default': Cart,
         'subPage': ConfirmOrder
+      }
+    },
+    {
+      path: '/purchaseOrder',
+      name: 'purchaseOrder',
+      components: {
+        'default': Mine,
+        'subPage': PurchaseOrder
+      }
+    },
+    {
+      path: '/soldOrder',
+      name: 'soldOrder',
+      components: {
+        'default': Mine,
+        'subPage': SoldOrder
+      }
+    },
+    {
+      path: '/myLower',
+      name: 'myLower',
+      components: {
+        'default': Mine,
+        'subPage': MyLower
       }
     }
   ]

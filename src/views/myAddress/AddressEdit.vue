@@ -138,6 +138,7 @@ export default {
   created() {
     // 第一次进入路由时 watch 不到$route
     this.addressObj = this.$store.state.address.addressObj;
+    console.log(this.addressObj);
     window.sessionStorage.setItem(
       "initialAddress",
       JSON.stringify(this.addressObj)
@@ -160,13 +161,13 @@ export default {
       let index = argIndex != null ? argIndex : -1;
       console.log("index", index);
       console.log(addressObj);
-      that.$router.replace("/mine/address");
       if (token != null) {
         editAddress(token, index, addressObj, data => {
           if (!data.errcode) {
             that.$vux.toast.show({
               text: `保存成功`
             });
+            that.$router.replace("/mine/address");
             // that.$router.replace('/mine/address')
           } else {
             that.$vux.alert.show({
