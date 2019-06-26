@@ -8,6 +8,7 @@ import store from './store.js'
 import VueCookie from 'vue-cookie'
 import FastClick from 'fastclick'
 import {AlertPlugin, ToastPlugin} from 'vux'
+import './style/index.less'
 Vue.config.productionTip = false
 FastClick.attach(document.body)
 

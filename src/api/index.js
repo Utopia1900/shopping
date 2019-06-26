@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// let url = '/api/1/' // 生产环境
-let url = 'http://10.1.2.3/mx/api/1'  // 开发环境
+let url = '/api/1/' // 生产环境
+// let url = 'http://10.1.2.3/mx/api/1'  // 开发环境
 axios.defaults.baseURL = url
 axios.defaults.timeout = 5 * 1000
 axios.defaults.headers.post['Content-Type'] = 'application/json'

@@ -21,7 +21,6 @@
 </template>
 
 <script>
-  import '../assets/css/icon.css'
   import {Tabbar, TabbarItem} from 'vux'
 
   export default {

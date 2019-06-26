@@ -6,12 +6,10 @@
       <keep-alive>
         <router-view name="default"></router-view>
       </keep-alive>
-
       <div class="z-foot">
         <bottom-nav></bottom-nav>
       </div>
     </div>
-
     <transition
       name="custom-classes-transition"
       :enter-active-class="enterAnimate"
@@ -25,7 +23,6 @@
 </template>
 
 <script>
-import "assets/css/common.less";
 import BottomNav from "./components/BottomNav";
 import { Loading } from "vux";
 export default {

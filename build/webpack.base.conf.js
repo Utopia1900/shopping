@@ -6,6 +6,7 @@ const vuxLoader = require('vux-loader')
 
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+const extractTextPlugin = require("extract-text-webpack-plugin");
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
