@@ -1,5 +1,5 @@
 <template>
-  <tabbar style="position: fixed">
+  <tabbar style="position: fixed" v-show="show">
     <tabbar-item
       v-for="item in bottomBar"
       :link="item.link"
@@ -31,9 +31,10 @@
     },
     data () {
       return {
+        show: true,
         bottomBar: [
           {
-            name: '首页',
+            name: '产品购买',
             iconCls: 'zui-icon-INDEX_1',
             link: '/',
             index: 0,
@@ -45,7 +46,7 @@
             index: 1,
           },
           {
-            name: '我的',
+            name: '个人中心',
             iconCls: 'zui-icon-MINE_1',
             link: 'mine',
             index: 2
@@ -61,7 +62,28 @@
     methods: {
       activeItem (index) {
         this.$store.commit('bottomNav/set', index)
-        console.log(`this is ${index}`)
+      }
+    },
+    watch:{
+      $route(to, from){
+        const toFullPath = to.path.split('/')
+        const toIndex = toFullPath.length - 1
+        const toPath = toFullPath[toIndex]
+        if(toPath === 'mine') {
+          this.$store.commit('bottomNav/set', 2)
+        }
+        if(toPath === 'cart') {
+          this.$store.commit('bottomNav/set', 1)
+        }
+        if(toPath === '') {
+          this.$store.commit('bottomNav/set', 0)
+        }
+
+        if(toPath === 'myQrcode'){
+          this.show = false
+        } else {
+          this.show = true
+        }
       }
     }
   }

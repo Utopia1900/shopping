@@ -62,7 +62,7 @@ import {
   Icon,
   Confirm
 } from "vux";
-import { editAddress, isEquivalent } from "../../api";
+import { editAddress, isEquivalent, queryAddress } from "../../api";
 
 export default {
   name: "AddressEdit",
@@ -167,6 +167,7 @@ export default {
             that.$vux.toast.show({
               text: `保存成功`
             });
+            that.handleGetAddress();
             that.$router.replace("/mine/address");
             // that.$router.replace('/mine/address')
           } else {
@@ -179,9 +180,28 @@ export default {
         });
       }
     },
+    handleGetAddress() {
+      const token = window.sessionStorage.getItem('token')
+      let that = this;
+      if (token != null) {
+        queryAddress(token, data => {
+          if (!data.errcode) {
+            that.$store.commit('address/setAddressList', data)
+            // that.address = data.length > 0 ? data : [];
+            // that.defIndex = data.length > 0 ? data[0].index : null;
+          } else {
+            that.$vux.alert.show({
+              title: "提示",
+              content: data.errmsg,
+              buttonText: "知道了"
+            });
+          }
+        });
+      }
+    },
     toggleDefault() {
       let isDefault = this.addressObj.isDefault;
-      if (isDefault == 0) {
+      if (isDefault === 0) {
         this.addressObj.isDefault = 1;
       } else {
         this.addressObj.isDefault = 0;

@@ -1,11 +1,11 @@
 <template>
   <div class="ending-tip">
-    <div class="ending-loading"
-         v-if="showLoading">
-      <div class="loading-cup"></div>
+    <div class="ending-loading" v-if="showLoading">
+      <!--<div class="loading-cup">
+
+      </div>-->
     </div>
-    <div class="ending-nomore"
-         v-else>
+    <div class="ending-nomore" v-else>
       <span>—— {{nomore}} ——</span>
     </div>
   </div>

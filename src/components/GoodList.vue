@@ -1,9 +1,6 @@
 <template>
   <div>
     <div v-if="type === 'INGOODS'" class="good-list-wrap">
-      <div class="index-goodRecommend-head">
-        {{type}}
-      </div>
       <good-grid :data="data"></good-grid>
     </div>
     <div v-else-if="type === 'INCONFIRM'" class="good-list-wrap">
@@ -47,6 +44,7 @@
     padding: 8px;
     border-bottom: 1px solid #f8f8f8;
     background: #ffffff;
+    margin-top: 45px;
   }
   .good-list-wrap:last-child{
     border-bottom: none;

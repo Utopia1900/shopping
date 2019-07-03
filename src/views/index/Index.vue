@@ -14,7 +14,7 @@
         :type="'INGOODS'"
         :data="goodsList">
       </good-list>
-      <ending-line :showLoading="false"></ending-line>
+      <ending-line :showLoading="goodsList.length!==0"></ending-line>
     </view-box>
 
   </div>
@@ -29,9 +29,12 @@ export default {
   name:'Index',
   data () {
     return{
-      goodsList: [],
+      goodsList: [
+        {"id":1,"name":"面膜","imgUrl":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=71967853,872167714&fm=26&gp=0.jpg","headImgUrl":"http://www.stemtherapy.cn/pics/2.jpg","detailUrl":"http://www.stemtherapy.cn/pics/3.jpg","retailPrice":"288.00","price":"225.00","inventory":31},
+        {"id":2,"name":"修复精华液","imgUrl":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=71967853,872167714&fm=26&gp=0.jpg","headImgUrl":"http://www.stemtherapy.cn/pics/pr_2.jpg","detailUrl":"http://www.stemtherapy.cn/pics/pr_3.jpg","retailPrice":"300.00","price":"240.00","inventory":0}]
+      ,
       shop: {
-        title: '首页',
+        title: '产品购买',
       }
     }
   },
@@ -54,6 +57,8 @@ export default {
         queryProduct(token, data => {
           if(!data.errcode) {
             that.goodsList = data
+          } else{
+
           }
         })
       }

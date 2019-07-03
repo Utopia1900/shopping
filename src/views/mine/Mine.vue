@@ -185,6 +185,18 @@
         }
       }
     },
+    methods:{
+      getToken () {
+        console.log('cookie:',this.$cookie.get('token'))
+        const token = this.$cookie.get('token')
+        if (token) {
+          window.sessionStorage.setItem('token', token)
+        }
+      }
+    },
+    created(){
+      this.getToken()
+    },
     watch:{
       '$route'(to, from){
          if(to.name === 'soldOrder'){

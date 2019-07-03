@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-let url = '/api/1/' // 生产环境
-// let url = 'http://10.1.2.3/mx/api/1'  // 开发环境
+let url = '/mx/api/1/' // 生产环境
+// let url = 'http://www.stemtherapy.cn/mx/api/1'  // 开发环境
 axios.defaults.baseURL = url
 axios.defaults.timeout = 5 * 1000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -43,7 +43,7 @@ export const editAddress = (token, index, addressObj, successCb) => {
 
 export const setDefaultAddress = (token, index, successCb) => {
 // 设置默认地址 setDefaultAddress(token, index)  返回{errcode: ,errmsg: }
-  let formData = {token}
+  let formData = {token, index}
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -200,9 +200,9 @@ export const comment = (token, orderID, productID, star, desc, successCb) => {
 }
 
 
-export const addToCart = (token, productId, successCb) => {
-// 加入购物车  addToCart (token, productId) 返回 {errcode: , errmsg: }
-  let formData = {token, productId}
+export const addToCart = (token, productID, successCb) => {
+// 加入购物车  addToCart (token, productID) 返回 {errcode: , errmsg: }
+  let formData = {token, productID}
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),

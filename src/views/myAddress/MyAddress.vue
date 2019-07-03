@@ -10,7 +10,7 @@
       @on-address-delete="deleteAddress(item.index, index)"
       :tool="true"
       :data="item"
-      :selected=" item.isDefault == 1? true : false"
+      :selected="item.isDefault === 1"
     ></address-card>
     <span class="address-add-btn" @click="addAddress">添加地址</span>
   </div>
@@ -34,19 +34,24 @@
       return {
         headerNavTitle: "收货地址",
         index: null,
-        address: [],
+        // address: [],
         defIndex: null
       };
+    },
+    computed:{
+      address:function(){
+        return this.$store.state.address.addressList
+      }
     },
     methods: {
       selectAddress(index) {
         let that = this;
-        if (token != null) {
+        if (token !== null) {
           setDefaultAddress(token, index, data => {
             if (!data.errcode) {
               let address = this.address;
               for (var i = 0; i < address.length; i++) {
-                if (address[i].index == index) {
+                if (address[i].index === index) {
                   address[i].isDefault = 1
                 } else {
                   address[i].isDefault = 0
@@ -70,7 +75,8 @@
         if (token != null) {
           queryAddress(token, data => {
             if (!data.errcode) {
-              that.address = data.length > 0 ? data : [];
+              that.$store.commit('address/setAddressList', data)
+              // that.address = data.length > 0 ? data : [];
               that.defIndex = data.length > 0 ? data[0].index : null;
             } else {
               that.$vux.alert.show({
@@ -90,7 +96,7 @@
             if (!data.errcode) {
               let address = this.address;
               for (var i = 0; i < address.length; i++) {
-                if (address[i].index == index) {
+                if (address[i].index === index) {
                   address.splice(listIndex, 1);
                 }
               }

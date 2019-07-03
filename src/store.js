@@ -47,6 +47,7 @@ export default {
         addressObj: {
           isDefault: 0
         },
+        addressList:[],
         selectedAddress: null
       },
       mutations: {
@@ -55,6 +56,9 @@ export default {
         },
         setSelectedAddress(state, payload) {
           state.selectedAddress = payload
+        },
+        setAddressList(state, payload){
+          state.addressList = payload
         }
       }
     }

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 const Index = r => require.ensure([], () => r(require('@/views/index/Index')), 'Index')
+const MyQrcode = r => require.ensure([], () => r(require('@/views/MyQrcode')), 'MyQrcode')
+// const MyQrcode = r => require.ensure([], () => r(require('@/views/MyQrcode')), 'MyQrcode')
 const Cart = r => require.ensure([], () => r(require('@/views/cart/Cart')), 'Cart')
 const Mine = r => require.ensure([], () => r(require('@/views/mine/Mine')), 'Mine')
 const GoodsDetail = r => require.ensure([], () => r(require('@/views/goodsDetail/GoodsDetail')), 'GoodsDetail')
@@ -20,6 +22,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: Index
+    },
+    {
+      path: '/myQrcode',
+      name: 'myQrcode',
+      component: MyQrcode
     },
     {
       path: '/cart',

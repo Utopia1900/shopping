@@ -157,12 +157,12 @@
         this.$store.commit('bottomNav/set', 1);
         this.$router.push('/cart');
       },
-      handleAddToCart (productId) {
+      handleAddToCart (productID) {
         console.log('add')
         let that = this
         let token = window.sessionStorage.getItem("token")
         if (token !=null) {
-         addToCart(token, productId, data => {
+         addToCart(token, productID, data => {
            if (!data.errcode) {
               that.$vux.toast.show({
                 type: "success",
@@ -176,7 +176,7 @@
                 buttonText: "知道了"
               })
            }
-         }) 
+         })
 
         }
       },
@@ -186,7 +186,7 @@
         this.show = false
       },
       goBack() {
-        this.$router.go(-1) 
+        this.$router.go(-1)
       }
     }
   }
