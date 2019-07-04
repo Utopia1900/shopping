@@ -132,6 +132,7 @@
 <script>
   require('./mine.less')
   import {Badge, Cell, Group, Flexbox, FlexboxItem} from 'vux'
+  import {querySummary, handleGetPurchaseOrder} from "../../api";
 
   export default {
     components: {
@@ -185,28 +186,51 @@
         }
       }
     },
-    methods:{
-      getToken () {
-        console.log('cookie:',this.$cookie.get('token'))
-        const token = this.$cookie.get('token')
+    methods: {
+      getToken() {
+        let token = this.$cookie.get('token')
         if (token) {
           window.sessionStorage.setItem('token', token)
         }
-      }
+      },
+      querySummary() {
+        let token = window.sessionStorage.getItem('token')
+        if(token){
+          querySummary(token, data=>{
+            if(!data.errcode){
+              this.userInfo = data
+            } else {
+              this.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              });
+            }
+          })
+        }
+      },
     },
-    created(){
+    created() {
       this.getToken()
+      this.querySummary()
     },
     watch:{
-      '$route'(to, from){
-         if(to.name === 'soldOrder'){
-           console.log('in sold')
-         }
-         if(to.name === 'purchaseOrder') {
-           console.log('in purchase')
-         }
+      $route(to, from) {
+        if(to.name === 'purchaseOrder') {
+          if(to.query.tag === 'all') {
+            handleGetPurchaseOrder(this, null, 1)
+          } else if(to.query.tag === 'needSend') {
+            handleGetPurchaseOrder(this, '1', 1)
+          } else if(to.query.tag === 'needGet') {
+            handleGetPurchaseOrder(this, '2', 1)
+          } else if(to.query.tag === 'needComment'){
+            handleGetPurchaseOrder(this, '3', 1)
+          }
+        } else if(to.name === 'soldOrder'){
+
+        }
       }
-    },
+    }
   }
 </script>
 <style>

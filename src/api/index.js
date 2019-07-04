@@ -72,8 +72,7 @@ export const delAddress = (token, index, defIndex, successCb) => {
     console.error(error)
   })
 }
-
-export const queryAddress = (token, successCb) => {
+ const queryAddress = (token, successCb) => {
 // 获取收货地址 queryAddress(token)  返回{index: , name: , mobile: , province: , city: , district: , detail: } 的数组
   let formData = {token}
   const options = {
@@ -88,6 +87,29 @@ export const queryAddress = (token, successCb) => {
     console.error(error)
   })
 }
+
+
+export const handleGetAddress = self => {
+  const token = window.sessionStorage.getItem('token')
+  if (token !== null) {
+    queryAddress(token, data => {
+      if (!data.errcode) {
+        if(data.length !==0) {
+          self.$store.commit('address/setAddressList', data)
+          // that.address = data.length > 0 ? data : [];
+          self.$store.commit('address/setDefIndex', data[0].index)
+        }
+      } else {
+        self.$vux.alert.show({
+          title: "提示",
+          content: data.errmsg,
+          buttonText: "知道了"
+        });
+      }
+    });
+  }
+}
+
 
 export const querySummary = (token, successCb) => {
 // 获取摘要信息 querySummary(token)
@@ -108,10 +130,11 @@ export const querySummary = (token, successCb) => {
 
 export const createOrder = (token, products, amount, addressIndex, points, successCb) => {
 // 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
-  let formData = {token, products, amount, addressIndex, points}
+  let formData = {token, products, amount, addressIndex}
+  if(points) formData.points = points
   const options = {
     method: 'POST',
-    data: JSON.stringify(formData),
+    data: formData,
     url: 'createOrder'
   }
   axios(options).then(response => {
@@ -125,11 +148,11 @@ export const createOrder = (token, products, amount, addressIndex, points, succe
 export const queryPurchaseOrder = (token, type, page, successCb) => {
 // 查询我购买的订单 type：1- 待发货， 2- 已发货待收货，3- 确认收货待评价， 不传为所有订单
   let formData = {token, page}
-  if(type) formData.type = type
+  if (type) formData.type = type
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
-    url:  'queryPurchaseOrder'
+    url: 'queryPurchaseOrder'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -138,14 +161,29 @@ export const queryPurchaseOrder = (token, type, page, successCb) => {
   })
 }
 
+export const handleGetPurchaseOrder = (self, type, page) => {
+  const token = window.sessionStorage.getItem('token')
+  queryPurchaseOrder(token, type, page, data => {
+    if(!data.errcode) {
+      self.$store.commit('order/setOrder', data)
+    } else {
+      self.$vux.alert.show({
+        title: "提示",
+        content: data.errmsg,
+        buttonText: "知道了"
+      })
+    }
+  })
+}
+
 export const querySoldOrder = (token, type, page, successCb) => {
 // 查询我出售的订单 type：1- 待发货， 2- 已发货待买家收货，3- 确认收货待评价， 不传为所有订单
   let formData = {token, page}
-  if(type) formData.type = type
+  if (type) formData.type = type
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
-    url:  'querySoldOrder'
+    url: 'querySoldOrder'
   }
   axios(options).then(response => {
     if (successCb) successCb(response.data)
@@ -251,7 +289,7 @@ export const delCartProduct = (token, productIDs, successCb) => {
 }
 
 
-export const queryCart = (token, successCb) => {
+const queryCart = (token, successCb) => {
 // 查看购物车 queryCart(token)  返回 {productID: , price: , oriPrice: , num: , headImgUrl: ,name: } 的数组
   let formData = {token}
   const options = {
@@ -266,6 +304,32 @@ export const queryCart = (token, successCb) => {
     console.error(error)
   })
 }
+
+
+export const handleGetCart = self => {
+  const token = window.sessionStorage.getItem('token')
+  if (token !== null) {
+    queryCart(token, data => {
+      if (!data.errcode) {
+        if (data.length != 0) {
+          let tmp = [];
+          for (var i = 0; i < data.length; i++) {
+            data[i].selected = false;
+            tmp.push(data[i])
+          }
+          self.$store.commit("cart/setCartList", tmp)
+        }
+      } else {
+        self.$vux.alert.show({
+          title: "提示",
+          content: data.errmsg,
+          buttonText: "知道了"
+        })
+      }
+    })
+  }
+}
+
 
 export const getSDKConfig = (url, successCb) => {
   let formData = {url}

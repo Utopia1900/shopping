@@ -62,6 +62,7 @@
     },
     watch: {
       'selectData'(newVal, oldVal) {
+         console.log('new', newVal)
          this.$store.commit('address/setSelectedAddress', newVal)
       }
     }

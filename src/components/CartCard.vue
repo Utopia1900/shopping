@@ -13,7 +13,7 @@
 
       <div class="cart-card-desc">
         <div class="suptitle z-ellipsis-2">{{data.name}}</div>
-        <div class="price">{{data.price}}</div>
+        <div class="price">￥{{data.price}}</div>
         <x-number
           class="accumulator"
           :title="''"
@@ -49,7 +49,7 @@
       }
     },
     watch: {
-      
+
     }
   }
 </script>

@@ -33,7 +33,8 @@
         <div class="good-detail-head">
           <div class="title z-ellipsis-2">{{productDetail.name}}</div>
           <div class="subtitle">
-            <div class="params price">￥{{productDetail.price}}</div>
+            <div class="price">￥{{productDetail.price}}</div>
+            <div class="retailPrice">零售价:￥{{productDetail.retailPrice}}</div>
             <div class="params">库存{{productDetail.inventory}}件</div>
           </div>
         </div>
@@ -110,14 +111,14 @@
 <script>
   import './goodsDetail.less'
   // import CommentCard from '../../components/commentCard.vue'
-  import {Swiper,SwiperItem,Popup,Scroller,Toast,XNumber, ViewBox} from 'vux'
+  import {Swiper, SwiperItem, Popup, Scroller, XNumber, ViewBox} from 'vux'
   import HeaderNav from '../../components/HeaderNav'
-  import {addToCart} from '../../api'
+  import {addToCart, handleGetCart} from '../../api'
+
   export default {
     components: {
       Popup,
       Scroller,
-      Toast,
       Swiper,
       SwiperItem,
       // CommentCard,
@@ -137,7 +138,7 @@
       scrollerHeight() {
         return 'cale(100%-130px)'
       },
-      productDetail () {
+      productDetail() {
         return this.$store.state.goodDetail.detail
       }
     },
@@ -151,33 +152,31 @@
         console.log(str)
       },
       toggerPopup() {
-            this.show = !this.show
+        this.show = !this.show
       },
       goToCart() {
-        this.$store.commit('bottomNav/set', 1);
-        this.$router.push('/cart');
+        this.$store.commit('bottomNav/set', 1)
+        this.$router.push('/cart')
       },
-      handleAddToCart (productID) {
-        console.log('add')
-        let that = this
+      handleAddToCart(productID) {
         let token = window.sessionStorage.getItem("token")
-        if (token !=null) {
-         addToCart(token, productID, data => {
-           if (!data.errcode) {
-              that.$vux.toast.show({
+        if (token != null) {
+          addToCart(token, productID, data => {
+            if (!data.errcode) {
+              this.$vux.toast.show({
                 type: "success",
                 text: "添加成功",
                 isShowMask: true
               })
-           } else {
-             that.$vux.alert.show({
+              handleGetCart(this)
+            } else {
+              this.$vux.alert.show({
                 title: "提示",
                 content: data.errmsg,
                 buttonText: "知道了"
               })
-           }
-         })
-
+            }
+          })
         }
       },
       handleBuy() {

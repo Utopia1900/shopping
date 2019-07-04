@@ -18,6 +18,9 @@
 					{{item}}
 				</span>
         </div>
+        <div style="color:#333333">
+          {{data.name}}
+        </div>
         <div class="price">
           ￥{{data.price}}
           <span
@@ -35,7 +38,7 @@
   import GoodGrid from '../components/GoodGrid.vue'
   export default {
     props: ['type', 'data'],
-    components: {GoodGrid}
+    components: {GoodGrid},
   }
 </script>
 <style>
@@ -44,7 +47,6 @@
     padding: 8px;
     border-bottom: 1px solid #f8f8f8;
     background: #ffffff;
-    margin-top: 45px;
   }
   .good-list-wrap:last-child{
     border-bottom: none;
@@ -52,8 +54,9 @@
   .good-list-wrap .good-list-img{
     display: block;
     float: left;
-    height: 100px;
-    width: 100px;
+    height: 60px;
+    width: 60px;
+    border: 1px solid #e1e1e1;
   }
   .good-list-wrap .good-list-info{
     overflow: hidden;

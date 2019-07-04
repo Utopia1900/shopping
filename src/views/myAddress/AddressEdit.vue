@@ -33,11 +33,11 @@
       ></x-textarea>
       <div
         class="vux-cell-box set-default-wrap"
-        :class="addressObj.isDefault ? 'active' : '' "
-        @click="toggleDefault"
+        :class="addressObj.index === defIndex ? 'active' : '' "
+        @click="toggleDefault(addressObj.index)"
       >
-        <icon class="icon" :type="addressObj.isDefault ? 'success' : 'circle'"></icon>
-        {{addressObj.isDefault ? '默认地址' : '设为默认'}}
+        <icon class="icon" :type="addressObj.index === defIndex ? 'success' : 'circle'"></icon>
+        {{addressObj.index === defIndex ? '默认地址' : '设为默认'}}
       </div>
     </div>
     <div class="address-edit-btn" @click="submitHandle(addressObj.index)">保存</div>
@@ -52,176 +52,159 @@
   </div>
 </template>
 <script>
-import "./addressEdit.less";
-import HeaderNav from "../../components/HeaderNav";
-import {
-  XInput,
-  XAddress,
-  ChinaAddressData,
-  XTextarea,
-  Icon,
-  Confirm
-} from "vux";
-import { editAddress, isEquivalent, queryAddress } from "../../api";
-
-export default {
-  name: "AddressEdit",
-  components: {
+  import "./addressEdit.less";
+  import HeaderNav from "../../components/HeaderNav";
+  import {
     XInput,
     XAddress,
+    ChinaAddressData,
     XTextarea,
-    HeaderNav,
     Icon,
     Confirm
-  },
-  data() {
-    return {
-      addressObj: {
-        isDefault: 0
+  } from "vux";
+  import {editAddress, isEquivalent, handleGetAddress} from "../../api";
+
+  export default {
+    name: "AddressEdit",
+    components: {
+      XInput,
+      XAddress,
+      XTextarea,
+      HeaderNav,
+      Icon,
+      Confirm
+    },
+    data() {
+      return {
+        addressObj: {
+          isDefault: 0
+        },
+        value: [],
+        addressData: ChinaAddressData,
+        show: false
+      };
+    },
+    computed: {
+      headerNavTitle() {
+        if (this.addressObj.name) {
+          return "编辑";
+        } else {
+          return "添加";
+        }
       },
-      value: [],
-      addressData: ChinaAddressData,
-      show: false
-    };
-  },
-  computed: {
-    headerNavTitle() {
-      if (this.addressObj.name) {
-        return "编辑";
-      } else {
-        return "添加";
-      }
-    }
-  },
-  watch: {
-    value: function(val, oldVal) {
-      let that = this;
-      if (val) {
-        this.addressData.forEach(item => {
-          if (item.value == val[0]) {
-            that.addressObj.province = item.name;
-          }
-        });
-
-        this.addressData.forEach(item => {
-          if (item.value == val[1]) {
-            that.addressObj.city = item.name;
-          }
-        });
-
-        this.addressData.forEach(item => {
-          if (item.value == val[2]) {
-            that.addressObj.district = item.name;
-          }
-        });
+      defIndex() {
+        return this.$store.state.address.defIndex
       }
     },
-    $route(val, oldVal) {
-      if (val) {
-        let addressObj = this.$store.state.address.addressObj
-        if (!addressObj) {
-          this.addressObj = {
-            isDefault: 0
-          }
-          window.sessionStorage.removeItem("initialAddress")
-        } else {
-          this.addressObj = addressObj;
-          window.sessionStorage.setItem(
-            "initialAddress",
-            JSON.stringify(this.addressObj)
-          );
+    watch: {
+      value: function (val, oldVal) {
+        let that = this;
+        if (val) {
+          this.addressData.forEach(item => {
+            if (item.value == val[0]) {
+              that.addressObj.province = item.name;
+            }
+          });
 
+          this.addressData.forEach(item => {
+            if (item.value == val[1]) {
+              that.addressObj.city = item.name;
+            }
+          });
+
+          this.addressData.forEach(item => {
+            if (item.value == val[2]) {
+              that.addressObj.district = item.name;
+            }
+          });
+        }
+      },
+      $route(val, oldVal) {
+        if (val) {
+          let addressObj = this.$store.state.address.addressObj
+          if (!addressObj) {
+            this.addressObj = {
+              isDefault: 0
+            }
+            window.sessionStorage.removeItem("initialAddress")
+          } else {
+            this.addressObj = addressObj;
+            window.sessionStorage.setItem(
+              "initialAddress",
+              JSON.stringify(this.addressObj)
+            );
+
+          }
         }
       }
-    }
-  },
-  created() {
-    // 第一次进入路由时 watch 不到$route
-    this.addressObj = this.$store.state.address.addressObj;
-    console.log(this.addressObj);
-    window.sessionStorage.setItem(
-      "initialAddress",
-      JSON.stringify(this.addressObj)
-    );
-  },
-  methods: {
-    changeName(val) {
-      this.addressObj.name = val;
     },
-    changeMobile(val) {
-      this.addressObj.mobile = val;
+    created() {
+      // 第一次进入路由时 watch 不到$route
+      this.addressObj = this.$store.state.address.addressObj;
+      console.log(this.addressObj);
+      window.sessionStorage.setItem(
+        "initialAddress",
+        JSON.stringify(this.addressObj)
+      );
     },
-    changeAddress(val) {
-      this.addressObj.detail = val;
-    },
-    submitHandle(argIndex) {
-      let that = this;
-      let token = window.sessionStorage.getItem("token");
-      let addressObj = this.addressObj;
-      let index = argIndex != null ? argIndex : -1;
-      console.log("index", index);
-      console.log(addressObj);
-      if (token != null) {
-        editAddress(token, index, addressObj, data => {
-          if (!data.errcode) {
-            that.$vux.toast.show({
-              text: `保存成功`
-            });
-            that.handleGetAddress();
-            that.$router.replace("/mine/address");
-            // that.$router.replace('/mine/address')
-          } else {
-            that.$vux.alert.show({
-              title: "提示",
-              content: data.errmsg,
-              buttonText: "知道了"
-            });
-          }
-        });
-      }
-    },
-    handleGetAddress() {
-      const token = window.sessionStorage.getItem('token')
-      let that = this;
-      if (token != null) {
-        queryAddress(token, data => {
-          if (!data.errcode) {
-            that.$store.commit('address/setAddressList', data)
-            // that.address = data.length > 0 ? data : [];
-            // that.defIndex = data.length > 0 ? data[0].index : null;
-          } else {
-            that.$vux.alert.show({
-              title: "提示",
-              content: data.errmsg,
-              buttonText: "知道了"
-            });
-          }
-        });
-      }
-    },
-    toggleDefault() {
-      let isDefault = this.addressObj.isDefault;
-      if (isDefault === 0) {
-        this.addressObj.isDefault = 1;
-      } else {
-        this.addressObj.isDefault = 0;
-      }
-      // this.addressObj.isDefault = !this.addressObj.isDefault
-    },
-    handleBack() {
-      // 比较地址对象转化为字符串进行比较
-      let initialAddress = window.sessionStorage.getItem("initialAddress");
-      let currentAddress = JSON.stringify(this.addressObj);
-      if (initialAddress == currentAddress) {
-        this.$router.go(-1);
-      } else {
+    methods: {
+      changeName(val) {
+        this.addressObj.name = val;
+      },
+      changeMobile(val) {
+        this.addressObj.mobile = val;
+      },
+      changeAddress(val) {
+        this.addressObj.detail = val;
+      },
+      submitHandle(argIndex) {
+        let token = window.sessionStorage.getItem("token");
+        let addressObj = this.addressObj;
+        let index = argIndex != null ? argIndex : -1;
+        console.log("index", index);
+        console.log(addressObj);
+        if (token !== null) {
+          editAddress(token, index, addressObj, data => {
+            if (!data.errcode) {
+              this.$vux.toast.show({
+                text: `保存成功`
+              });
+              handleGetAddress(this);
+              this.$router.replace("/mine/address");
+              // that.$router.replace('/mine/address')
+            } else {
+              this.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              });
+            }
+          });
+        }
+      },
+      toggleDefault(index) {
+        if(this.defIndex === index) {
+          this.addressObj.isDefault = 0
+
+        } else {
+          this.addressObj.isDefault = 1
+        }
+        console.log(this.addressObj.isDefault)
+      },
+      handleBack() {
+        // 比较地址对象转化为字符串进行比较
+        let initialAddress = window.sessionStorage.getItem("initialAddress");
+        let currentAddress = JSON.stringify(this.addressObj);
+        if (initialAddress == currentAddress) {
+          this.$router.go(-1);
+        } else {
+          this.show = !this.show;
+        }
+      },
+      goBack() {
         this.show = !this.show;
+        this.$router.go(-1);
       }
-    },
-    goBack() {
-      this.show = !this.show;
-      this.$router.go(-1);
     }
-  }
-};
+  };
 </script>

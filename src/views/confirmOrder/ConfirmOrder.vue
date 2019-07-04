@@ -3,7 +3,7 @@
     <header-nav :headerNavTitle="'确认订单'" @on-back="goBack"/>
     <div class="good-pay-bottombar">
       <div class="sum-price">总计: <span style="color:#ed7a5d">￥{{totalAmount}}</span></div>
-      <div class="pill-submit-btn">
+      <div class="pill-submit-btn" @click="handleCreateOrder">
         <span class="btn">提交订单</span>
       </div>
     </div>
@@ -12,9 +12,9 @@
       <div
         style="margin-top: 45px;"
         class="good-pay-address"
-        @click="selectAddress('address')">
+        @click="handleSetAddress('address')">
         <address-card
-          v-if="selectAddress"
+          v-if="selectedAddress"
           :link="true"
           :tool="false"
           :data="selectedAddress">
@@ -51,8 +51,6 @@
     <popup
       v-model="showPopup"
       height="400px"
-      @on-hide="log('hide')"
-      @on-show="log('show')"
       @on-first-show="resetScroller">
       <pay-popup
         :type="popupType"
@@ -68,6 +66,7 @@
   import PayPopup from './PayPopup.vue'
   import HeaderNav from '../../components/HeaderNav'
   import {Cell, ViewBox, Popup, Scroller, Checklist, XInput} from 'vux'
+  import {handleGetAddress, createOrder, handleGetPurchaseOrder} from '../../api'
 
   export default {
     components: {
@@ -84,7 +83,7 @@
     },
     data() {
       return {
-        popupData: [],
+        // popupData: [],
         paySumAmount: 0,
         showPopup: false,
         popupType: '',
@@ -95,10 +94,11 @@
     computed: {
       selectedAddress() {
         let selectedAddress = this.$store.state.address.selectedAddress
-        if (selectedAddress != null) {
-          return selectedAddress
+        let addressList = this.$store.state.address.addressList
+        if (addressList.length !== 0 && selectedAddress === null) {
+          return addressList[0]
         } else {
-          return (this.userAddress.filter(i => i.isDefault === 1))[0]
+          return selectedAddress
         }
       },
       payList() {
@@ -119,14 +119,51 @@
           num += payList[i].num
         }
         return num
+      },
+      products() {
+        let payList = this.$store.state.cart.payList
+        let products = [];
+        for (let i = 0; i < payList.length; i++) {
+          products.push({
+            "productID": payList[i].productID,
+            "price": parseFloat(payList[i].price),
+            "num": payList[i].num
+          })
+        }
+        return products
+      },
+      popupData() {
+        return this.$store.state.address.addressList
       }
     },
     methods: {
-      selectAddress(type) {
+      handleSetAddress(type) {
         this.popupType = type
         this.showPopup = !this.showPopup
-        // this.$store.commit('payPopup/open')
-        this.popupData = this.userAddress
+        handleGetAddress(this)
+      },
+      handleCreateOrder() {
+        let token = window.sessionStorage.getItem('token')
+        let products = this.products
+        let addressIndex = this.selectedAddress.index
+        let amount = parseFloat(this.totalAmount)
+        if (token !== null) {
+          createOrder(token, products, amount, addressIndex, null, data => {
+            if (!data.errcode) {
+              this.$vux.toast.show({
+                text: "提交成功"
+              })
+              handleGetPurchaseOrder(this, null, 1)
+              this.$router.push('/purchaseOrder?tag=all')
+            } else {
+              this.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              })
+            }
+          })
+        }
       },
       resetScroller() {
         // this.$nextTick(() => {

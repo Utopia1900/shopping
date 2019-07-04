@@ -56,12 +56,12 @@
           {
             tag: 'needSend',
             text: '待发货',
-            type: 1,
+            type: '1',
           },
           {
             tag: 'needGet',
             text: '待买家确认',
-            type: 2,
+            type: '2',
           }
         ],
         index: 0

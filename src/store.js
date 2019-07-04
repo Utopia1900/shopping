@@ -7,7 +7,7 @@ export default {
         index: 0
       },
       mutations: {
-        set (state, payload) {
+        set(state, payload) {
           state.index = payload
         }
       }
@@ -19,7 +19,7 @@ export default {
         detail: {}
       },
       mutations: {
-        set (state, payload) {
+        set(state, payload) {
           state.detail = payload
         }
       }
@@ -32,10 +32,10 @@ export default {
         cartList: []
       },
       mutations: {
-        setPayList (state, payload) {
+        setPayList(state, payload) {
           state.payList = payload
         },
-        setCartList (state, payload) {
+        setCartList(state, payload) {
           state.cartList = payload
         }
       }
@@ -47,18 +47,34 @@ export default {
         addressObj: {
           isDefault: 0
         },
-        addressList:[],
-        selectedAddress: null
+        addressList: [],
+        selectedAddress: null,
+        defIndex: 0
       },
       mutations: {
-        set (state, payload) {
+        set(state, payload) {
           state.addressObj = payload
         },
         setSelectedAddress(state, payload) {
           state.selectedAddress = payload
         },
-        setAddressList(state, payload){
+        setAddressList(state, payload) {
           state.addressList = payload
+        },
+        setDefIndex(state, payload) {
+          state.defIndex = payload
+        }
+      }
+    },
+    order: {
+      stric: true,
+      namespaced: true,
+      state: {
+        orderList: []
+      },
+      mutations: {
+        setOrder(state, payload) {
+          state.orderList = payload
         }
       }
     }

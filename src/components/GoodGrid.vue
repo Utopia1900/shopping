@@ -5,7 +5,8 @@
         <img :src="item.imgUrl">
         <div class="info">
           <div class="title z-ellipsis-2">{{item.name}}</div>
-          <div class="subtitle z-ellipsis-2">￥{{item.price}}</div>
+          <div class="subtitle z-ellipsis-2" style="color: #E03C12">￥{{item.price}}</div>
+          <div class="subtitle z-ellipsis-2" style="font-size: 12px">零售价:￥{{item.retailPrice}}</div>
         </div>
       </div>
     </li>

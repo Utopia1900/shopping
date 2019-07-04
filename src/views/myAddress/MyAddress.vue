@@ -10,7 +10,7 @@
       @on-address-delete="deleteAddress(item.index, index)"
       :tool="true"
       :data="item"
-      :selected="item.isDefault === 1"
+      :selected="item.index === defIndex"
     ></address-card>
     <span class="address-add-btn" @click="addAddress">添加地址</span>
   </div>
@@ -21,7 +21,7 @@
   import HeaderNav from "../../components/HeaderNav";
   import EmptyView from "../../components/EmptyView";
   import AddressCard from "../../components/AddressCard";
-  import {queryAddress, setDefaultAddress, delAddress} from "../../api";
+  import {handleGetAddress, setDefaultAddress, delAddress} from "../../api";
 
   const token = window.sessionStorage.getItem("token");
   export default {
@@ -33,19 +33,19 @@
     data() {
       return {
         headerNavTitle: "收货地址",
-        index: null,
-        // address: [],
-        defIndex: null
+        index: null
       };
     },
     computed:{
       address:function(){
         return this.$store.state.address.addressList
+      },
+      defIndex: function () {
+        return this.$store.state.address.defIndex
       }
     },
     methods: {
       selectAddress(index) {
-        let that = this;
         if (token !== null) {
           setDefaultAddress(token, index, data => {
             if (!data.errcode) {
@@ -57,29 +57,12 @@
                   address[i].isDefault = 0
                 }
               }
-              that.$vux.toast.show({
+              this.$vux.toast.show({
                 text: `设置成功`
               });
+              handleGetAddress(this)
             } else {
-              that.$vux.alert.show({
-                title: "提示",
-                content: data.errmsg,
-                buttonText: "知道了"
-              });
-            }
-          });
-        }
-      },
-      handleGetAddress() {
-        let that = this;
-        if (token != null) {
-          queryAddress(token, data => {
-            if (!data.errcode) {
-              that.$store.commit('address/setAddressList', data)
-              // that.address = data.length > 0 ? data : [];
-              that.defIndex = data.length > 0 ? data[0].index : null;
-            } else {
-              that.$vux.alert.show({
+              this.$vux.alert.show({
                 title: "提示",
                 content: data.errmsg,
                 buttonText: "知道了"
@@ -89,9 +72,8 @@
         }
       },
       deleteAddress(index, listIndex) {
-        let that = this;
         let defIndex = this.defIndex;
-        if (token != null && defIndex != null) {
+        if (token !== null && defIndex !== null) {
           delAddress(token, index, defIndex, data => {
             if (!data.errcode) {
               let address = this.address;
@@ -100,11 +82,11 @@
                   address.splice(listIndex, 1);
                 }
               }
-              that.$vux.toast.show({
+              this.$vux.toast.show({
                 text: `删除成功`
               });
             } else {
-              that.$vux.alert.show({
+              this.$vux.alert.show({
                 title: "提示",
                 content: data.errmsg,
                 buttonText: "知道了"
@@ -127,7 +109,7 @@
       }
     },
     created() {
-      this.handleGetAddress();
+      handleGetAddress(this)
     }
   };
 </script>

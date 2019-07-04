@@ -20,53 +20,55 @@
   </div>
 </template>
 <script>
-import('./index.less')
-import EndingLine from '../../components/EndingLine'
-import GoodList from '../../components/GoodList'
-import {ViewBox} from 'vux'
-import {queryProduct} from '../../api'
-export default {
-  name:'Index',
-  data () {
-    return{
-      goodsList: [
-        {"id":1,"name":"面膜","imgUrl":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=71967853,872167714&fm=26&gp=0.jpg","headImgUrl":"http://www.stemtherapy.cn/pics/2.jpg","detailUrl":"http://www.stemtherapy.cn/pics/3.jpg","retailPrice":"288.00","price":"225.00","inventory":31},
-        {"id":2,"name":"修复精华液","imgUrl":"https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=71967853,872167714&fm=26&gp=0.jpg","headImgUrl":"http://www.stemtherapy.cn/pics/pr_2.jpg","detailUrl":"http://www.stemtherapy.cn/pics/pr_3.jpg","retailPrice":"300.00","price":"240.00","inventory":0}]
-      ,
-      shop: {
-        title: '产品购买',
-      }
-    }
-  },
-  components:{
-    EndingLine,
-    ViewBox,
-    GoodList
-  },
-  methods: {
-    getToken () {
-      const token = this.$cookie.get('token')
-      if (token) {
-        window.sessionStorage.setItem('token', token)
+  import('./index.less')
+  import EndingLine from '../../components/EndingLine'
+  import GoodList from '../../components/GoodList'
+  import {ViewBox} from 'vux'
+  import {queryProduct} from '../../api'
+
+  export default {
+    name: 'Index',
+    data() {
+      return {
+        goodsList: [],
+        shop: {
+          title: '产品购买',
+        }
       }
     },
-    handleQueryProduct () {
-      let token = window.sessionStorage.getItem('token')
-      let that = this
-      if (token) {
-        queryProduct(token, data => {
-          if(!data.errcode) {
-            that.goodsList = data
-          } else{
-
-          }
-        })
+    components: {
+      EndingLine,
+      ViewBox,
+      GoodList
+    },
+    methods: {
+      getToken() {
+        const token = this.$cookie.get('token')
+        // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOjMsInQiOjE1NjIyMDg4NjE4ODd9.8JA-S-p5kB4J6SNhg0kjA9sOH2v1ZfSjxVSoLji0Xl4'
+        if (token) {
+          window.sessionStorage.setItem('token', token)
+        }
+      },
+      handleQueryProduct() {
+        let token = window.sessionStorage.getItem('token')
+        if (token) {
+          queryProduct(token, data => {
+            if (!data.errcode) {
+              this.goodsList = data
+            } else {
+              this.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              })
+            }
+          })
+        }
       }
+    },
+    created() {
+      this.getToken()
+      this.handleQueryProduct()
     }
-  },
-  created () {
-    this.getToken()
-    this.handleQueryProduct()
   }
-}
 </script>

@@ -62,7 +62,7 @@ import "./cart.less";
 import EmptyView from "../../components/EmptyView.vue";
 import CartCard from "../../components/CartCard.vue";
 import { Icon, Swipeout, SwipeoutItem, SwipeoutButton } from "vux";
-import { queryCart, delCartProduct } from "../../api";
+import { handleGetCart, delCartProduct,handleGetAddress} from "../../api";
 
 export default {
   name: "Cart",
@@ -100,6 +100,7 @@ export default {
       let selectList = this.selectList;
       if (selectList.length != 0) {
         this.$store.commit("cart/setPayList", this.selectList);
+        handleGetAddress(this)
         this.$router.push("/cart/confirmOrder");
       } else {
         this.$vux.toast.show({
@@ -148,7 +149,6 @@ export default {
         })
       } else {
         var productIDs = []
-        let that = this
         let token = window.sessionStorage.getItem("token")
         for (var i = 0; i < selectList.length; i++) {
           productIDs.push(selectList[i].productID)
@@ -156,12 +156,12 @@ export default {
         if (token != null) {
           delCartProduct(token, productIDs, data => {
             if (!data.errcode) {
-              that.$vux.toast.show({
+              this.$vux.toast.show({
                 type: "success",
                 text: "删除成功",
                 isShowMask: true
               });
-              let cartList = that.cartList;
+              let cartList = this.cartList;
               for (var a = 0; a < cartList.length; a++) {
                 for (var b = 0; b < productIDs.length; b++) {
                   if (cartList[a].productID == productIDs[b]) {
@@ -170,7 +170,7 @@ export default {
                 }
               }
             } else {
-              that.$vux.alert.show({
+              this.$vux.alert.show({
                 title: "提示",
                 content: data.errmsg,
                 buttonText: "知道了"
@@ -180,29 +180,8 @@ export default {
         }
       }
     },
-    handleGetCart() {
-      let token = window.sessionStorage.getItem("token")
-      let that = this
-      if (token != null) {
-        queryCart(token, data => {
-          if (!data.errcode) {
-            if (data.length != 0) {
-              let tmp = [];
-              for (var i = 0; i < data.length; i++) {
-                data[i].selected = false;
-                tmp.push(data[i])
-              }
-              that.$store.commit("cart/setCartList", tmp)
-            }
-          } else {
-            that.$vux.alert.show({
-              title: "提示",
-              content: data.errmsg,
-              buttonText: "知道了"
-            })
-          }
-        })
-      }
+    getCart() {
+      handleGetCart(this)
     }
   },
   watch: {
@@ -220,7 +199,7 @@ export default {
     }
   },
   created() {
-    this.handleGetCart()
+    this.getCart()
   }
 };
 </script>
