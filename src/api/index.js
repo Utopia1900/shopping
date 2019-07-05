@@ -145,7 +145,7 @@ export const createOrder = (token, products, amount, addressIndex, points, succe
   })
 }
 
-export const queryPurchaseOrder = (token, type, page, successCb) => {
+const queryPurchaseOrder = (token, type, page, successCb) => {
 // 查询我购买的订单 type：1- 待发货， 2- 已发货待收货，3- 确认收货待评价， 不传为所有订单
   let formData = {token, page}
   if (type) formData.type = type
@@ -165,7 +165,7 @@ export const handleGetPurchaseOrder = (self, type, page) => {
   const token = window.sessionStorage.getItem('token')
   queryPurchaseOrder(token, type, page, data => {
     if(!data.errcode) {
-      self.$store.commit('order/setOrder', data)
+      self.$store.commit('order/setPurchaseOrder', data)
     } else {
       self.$vux.alert.show({
         title: "提示",
@@ -176,7 +176,7 @@ export const handleGetPurchaseOrder = (self, type, page) => {
   })
 }
 
-export const querySoldOrder = (token, type, page, successCb) => {
+const querySoldOrder = (token, type, page, successCb) => {
 // 查询我出售的订单 type：1- 待发货， 2- 已发货待买家收货，3- 确认收货待评价， 不传为所有订单
   let formData = {token, page}
   if (type) formData.type = type
@@ -189,6 +189,21 @@ export const querySoldOrder = (token, type, page, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     console.error(error)
+  })
+}
+
+export const handleGetSoldOrder = (self, type, page) => {
+  const token = window.sessionStorage.getItem('token')
+  querySoldOrder(token, type, page, data => {
+    if(!data.errcode) {
+      self.$store.commit('order/setSoldOrder', data)
+    } else {
+      self.$vux.alert.show({
+        title: "提示",
+        content: data.errmsg,
+        buttonText: "知道了"
+      })
+    }
   })
 }
 

@@ -70,11 +70,27 @@ export default {
       stric: true,
       namespaced: true,
       state: {
-        orderList: []
+        purchaseOrderList: [],
+        soldOrderList: []
       },
       mutations: {
-        setOrder(state, payload) {
-          state.orderList = payload
+        setPurchaseOrder(state, payload) {
+          state.purchaseOrderList = payload
+        },
+        setSoldOrder(state, payload) {
+          state.soldOrderList = payload
+        }
+      }
+    },
+    orderDetail: {
+      stric: true,
+      namespaced: true,
+      state: {
+        detail: {}
+      },
+      mutations: {
+        set(state, payload) {
+          state.detail = payload
         }
       }
     }

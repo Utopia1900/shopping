@@ -26,25 +26,21 @@
           v-for="(order, index) in orderList"
           :key=index
           :shop="order">
-          <router-link
-            class="shop-card-body"
-            :to="{
-						name: 'orderDetail',
-						params: {id: order.id}
-					}"
-            slot="body">
+          <div slot="body">
             <good-list
               v-for="(item, index) in order.products"
               :key=index
               :type="'INCONFIRM'"
               :data="item">
             </good-list>
-          </router-link>
+          </div>
           <div slot="head">
-            <div class="z-cell-item z-text-right">
-              <span v-if="order.status === '0'">待发货</span>
-              <span v-if="order.status === '2'">待收货</span>
-              <span
+            <div class="z-cell-item z-text-right" style="border-bottom: 1px solid #f6f6f6">
+              <span v-if="order.status === '1' || order.status === '0'">待发货</span>
+              <span v-if="order.status === '2'">已发货</span>
+              <span v-if="order.status === '3'">确认收货未评价</span>
+              <span v-if="order.status === '4'">已评价</span>
+              <!--<span
                 v-if="order.status === 'needGet'"
                 class="state-btn">
 							确认收货
@@ -56,7 +52,7 @@
                 v-if="order.status === 'needComment'"
                 class="state-btn">
                 评价
-              </router-link>
+              </router-link>-->
             </div>
           </div>
           <div
@@ -65,6 +61,11 @@
             <div class="z-cell-item z-text-right">
               <span>共{{getTotalNum(order.products)}}件</span>
               合计￥<strong>{{order.amount}}</strong>
+            </div>
+          </div>
+          <div slot="foot" class="shop-card-foot">
+            <div class="z-cell-item z-text-right">
+              <span class="state-plain-btn" @click="getOrderDetail(order)">查看详情</span>
             </div>
           </div>
         </shop-card>
@@ -125,7 +126,7 @@
         return this.$route.query.tag
       },
       orderList() {
-        return this.$store.state.order.orderList
+        return this.$store.state.order.purchaseOrderList
       }
     },
     methods: {
@@ -143,6 +144,10 @@
           }
           return num
         }
+      },
+      getOrderDetail(item) {
+        this.$store.commit("orderDetail/set", item);
+        this.$router.push('/orderDetail');
       }
     },
     created() {
@@ -158,8 +163,6 @@
         } else if (routeQuery === 'needComment') {
           handleGetPurchaseOrder(this, '3', 1)
         }
-      } else if (routeName === 'soldOrder') {
-
       }
     }
   }

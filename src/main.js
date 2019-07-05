@@ -7,7 +7,7 @@ import router from './router'
 import store from './store.js'
 import VueCookie from 'vue-cookie'
 import FastClick from 'fastclick'
-import {AlertPlugin, ToastPlugin} from 'vux'
+import {AlertPlugin, ToastPlugin, ConfirmPlugin} from 'vux'
 import './style/index.less'
 Vue.config.productionTip = false
 FastClick.attach(document.body)
@@ -16,6 +16,7 @@ Vue.use(Vuex)
 Vue.use(VueCookie)
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
+Vue.use(ConfirmPlugin)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

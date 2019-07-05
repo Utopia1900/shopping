@@ -2,8 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 // import HelloWorld from '@/components/HelloWorld'
 const Index = r => require.ensure([], () => r(require('@/views/index/Index')), 'Index')
-const MyQrcode = r => require.ensure([], () => r(require('@/views/MyQrcode')), 'MyQrcode')
-// const MyQrcode = r => require.ensure([], () => r(require('@/views/MyQrcode')), 'MyQrcode')
 const Cart = r => require.ensure([], () => r(require('@/views/cart/Cart')), 'Cart')
 const Mine = r => require.ensure([], () => r(require('@/views/mine/Mine')), 'Mine')
 const GoodsDetail = r => require.ensure([], () => r(require('@/views/goodsDetail/GoodsDetail')), 'GoodsDetail')
@@ -13,6 +11,7 @@ const ConfirmOrder = r => require.ensure([], () => r(require('@/views/confirmOrd
 const PurchaseOrder = r => require.ensure([], () => r(require('@/views/order/PurchaseOrder')), 'PurchaseOrder')
 const SoldOrder = r => require.ensure([], () => r(require('@/views/order/SoldOrder')), 'SoldOrder')
 const OrderDetail = r => require.ensure([], () => r(require('@/views/order/OrderDetail')), 'OrderDetail')
+const Delivery = r => require.ensure([], () => r(require('@/views/order/Delivery')), 'Delivery')
 const MyLower = r => require.ensure([], () => r(require('@/views/myLower/MyLower')), 'MyLower')
 
 Vue.use(Router)
@@ -23,11 +22,6 @@ export default new Router({
       path: '/',
       name: 'index',
       component: Index
-    },
-    {
-      path: '/myQrcode',
-      name: 'myQrcode',
-      component: MyQrcode
     },
     {
       path: '/cart',
@@ -93,6 +87,14 @@ export default new Router({
       components: {
         'default': Mine,
         'subPage': OrderDetail
+      }
+    },
+    {
+      path: '/delivery',
+      name: 'delivery',
+      components: {
+        'default': Mine,
+        'subPage': Delivery
       }
     },
     {

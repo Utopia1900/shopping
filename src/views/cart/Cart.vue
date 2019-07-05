@@ -21,11 +21,11 @@
           v-for="(item,index) in cartList"
           :key="index"
           transition-mode="follow"
-          @on-close="handleEvents('on-close')"
-          @on-open="handleEvents('on-open')"
+          @on-close="handleEvents('close', item.productID)"
+          @on-open="handleEvents('open')"
         >
           <div slot="right-menu">
-            <swipeout-button type="warn" @click="delBySwipe(item.productID)">删除</swipeout-button>
+            <swipeout-button type="warn" @click.native="delBySwipe(item.productID)">删除</swipeout-button>
           </div>
           <div slot="content">
             <cart-card @on-selected-good="selectGood(item)" :data="item"></cart-card>
@@ -110,8 +110,35 @@ export default {
         });
       }
     },
-    handleEvents(type) {
-      console.log("event: ", type);
+    handleEvents(type, productID) {
+      /*if(type==='close'){
+        console.log(productID)
+        const token = window.sessionStorage.getItem('token')
+        const productIDs = [productID]
+        delCartProduct(token, productIDs, data => {
+          if (!data.errcode) {
+            this.$vux.toast.show({
+              type: "success",
+              text: "删除成功",
+              isShowMask: true
+            });
+            let cartList = this.cartList;
+            for (var a = 0; a < cartList.length; a++) {
+              for (var b = 0; b < productIDs.length; b++) {
+                if (cartList[a].productID === productIDs[b]) {
+                  cartList.splice(a, 1);
+                }
+              }
+            }
+          } else {
+            this.$vux.alert.show({
+              title: "提示",
+              content: data.errmsg,
+              buttonText: "知道了"
+            })
+          }
+        })
+      }*/
     },
     selectAllHandler() {
       this.selectAll = !this.selectAll;
@@ -136,8 +163,32 @@ export default {
     toggleEditCart() {
       this.toggle.isDefault = !this.toggle.isDefault
     },
-    delBySwipe() {
-
+    delBySwipe(productID) {
+      const token = window.sessionStorage.getItem('token')
+      const productIDs = [productID]
+      delCartProduct(token, productIDs, data => {
+        if (!data.errcode) {
+          this.$vux.toast.show({
+            type: "success",
+            text: "删除成功",
+            isShowMask: true
+          });
+          let cartList = this.cartList;
+          for (var a = 0; a < cartList.length; a++) {
+            for (var b = 0; b < productIDs.length; b++) {
+              if (cartList[a].productID === productIDs[b]) {
+                cartList.splice(a, 1);
+              }
+            }
+          }
+        } else {
+          this.$vux.alert.show({
+            title: "提示",
+            content: data.errmsg,
+            buttonText: "知道了"
+          })
+        }
+      })
     },
     handleDelete() {
       let selectList = this.selectList;
@@ -153,7 +204,7 @@ export default {
         for (var i = 0; i < selectList.length; i++) {
           productIDs.push(selectList[i].productID)
         }
-        if (token != null) {
+        if (token) {
           delCartProduct(token, productIDs, data => {
             if (!data.errcode) {
               this.$vux.toast.show({
@@ -164,7 +215,7 @@ export default {
               let cartList = this.cartList;
               for (var a = 0; a < cartList.length; a++) {
                 for (var b = 0; b < productIDs.length; b++) {
-                  if (cartList[a].productID == productIDs[b]) {
+                  if (cartList[a].productID === productIDs[b]) {
                     cartList.splice(a, 1);
                   }
                 }

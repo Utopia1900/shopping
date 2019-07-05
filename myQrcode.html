@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
+  <title>我的二维码</title>
+  <style type="text/css">
+    #myQrcodeUrl{
+      width: 200px;
+      display: block;
+      margin: 100px auto;
+    }
+  </style>
+</head>
+<body>
+<div>
+  <img src="" alt="" id="myQrcodeUrl" />
+</div>
+<script type="text/javascript">
+  function ajax(options) {
+    options = options || {};
+    options.type = (options.type || "GET").toUpperCase();
+    options.dataType = options.dataType || "json";
+    // var params = formatParams(options.data);
+    var params = options.data;
+    //创建 - 非IE6 - 第一步
+    if (window.XMLHttpRequest) {
+      var xhr = new XMLHttpRequest();
+    } else { //IE6及其以下版本浏览器
+      var xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    //接收 - 第三步
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+        var status = xhr.status;
+        if (status >= 200 && status < 300) {
+          options.success && options.success(xhr.responseText, xhr.responseXML);
+        } else {
+          options.fail && options.fail(status);
+        }
+      }
+    }
+
+    //连接 和 发送 - 第二步
+    if (options.type == "GET") {
+      xhr.open("GET", options.url + "?" + params, true);
+      xhr.send(null);
+    } else if (options.type == "POST") {
+      xhr.open("POST", options.url, true);
+      //设置表单提交时的内容类型
+      // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.send(params);
+    }
+  }
+
+  //格式化参数
+  function formatParams(data) {
+    var arr = [];
+    for (var name in data) {
+      arr.push(encodeURIComponent(name) + "=" + encodeURIComponent(data[name]));
+    }
+    // arr.push(("v=" + Math.random()).replace(".", ""));
+    return arr.join("&");
+  }
+
+  // var apiUrl = 'http://www.stemtherapy.cn/mx/getQRCodeUrl'
+  var apiUrl = '/mx/getQRCodeUrl'
+  window.onload = function(){
+    var href = window.location.href
+    var hrefArr = href.split('?')
+    var openID = hrefArr[1] // 获取url中的openID
+    ajax({
+      url:apiUrl,
+      type:"POST",
+      data:JSON.stringify({openID:openID}),
+      dataType: "json",
+      success: function(response, xml){
+        var result = JSON.parse(response)
+        if(!result.errcode){
+          document.getElementById('myQrcodeUrl').src = result.url
+        } else {
+          alert(result.errmsg)
+        }
+      },
+      fail: function (status) {
+        console.log('fail:', status)
+      }
+    })
+  }
+</script>
+</body>
+</html>

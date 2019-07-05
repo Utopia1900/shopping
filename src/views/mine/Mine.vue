@@ -108,6 +108,17 @@
               <div>{{soldTag.get.text}}</div>
             </router-link>
           </flexbox-item>
+          <flexbox-item>
+            <router-link
+              class="mine-order-item"
+              :to="{
+							name: 'soldOrder',
+							query: {tag: soldTag.comment.tag}
+						}">
+              <span :class="soldTag.comment.icon"></span>
+              <div>{{soldTag.comment.text}}</div>
+            </router-link>
+          </flexbox-item>
         </flexbox>
       </div>
     </group>
@@ -132,7 +143,7 @@
 <script>
   require('./mine.less')
   import {Badge, Cell, Group, Flexbox, FlexboxItem} from 'vux'
-  import {querySummary, handleGetPurchaseOrder} from "../../api";
+  import {querySummary, handleGetPurchaseOrder, handleGetSoldOrder} from "../../api";
 
   export default {
     components: {
@@ -183,6 +194,11 @@
             text: '待买家确认',
             icon: 'zui-icon zui-icon-the-receipt'
           },
+          comment: {
+            tag: 'needComment',
+            text: '待评价',
+            icon: 'zui-icon zui-icon-comment'
+          },
         }
       }
     },
@@ -227,7 +243,15 @@
             handleGetPurchaseOrder(this, '3', 1)
           }
         } else if(to.name === 'soldOrder'){
-
+          if(to.query.tag === 'all') {
+            handleGetSoldOrder(this, null, 1)
+          } else if(to.query.tag === 'needSend') {
+            handleGetSoldOrder(this, '1', 1)
+          } else if(to.query.tag === 'needGet') {
+            handleGetSoldOrder(this, '2', 1)
+          } else if(to.query.tag === 'needComment'){
+            handleGetSoldOrder(this, '3', 1)
+          }
         }
       }
     }
