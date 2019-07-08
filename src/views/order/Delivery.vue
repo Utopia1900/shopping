@@ -1,6 +1,6 @@
 <template>
   <div class="z-content">
-    <header-nav :headerNavTitle="headerNavTitle" @on-back=""/>
+    <header-nav :headerNavTitle="headerNavTitle" @on-back="goBack"/>
     <div v-if="orderDetail.name"
          style="margin-top: 45px;padding: 8px; border-bottom: 1px solid #eeeeee;background-color: #ffffff">
       <div style="border-bottom: 1px solid #efeff4">
@@ -30,8 +30,8 @@
           <li>
             订单总价：{{orderDetail.amount}}
           </li>
-          <li>
-            创建时间：{{orderDetail.time}}
+          <li v-if="orderDetail.time">
+            创建时间：{{formatDate(orderDetail.time)}}
           </li>
         </ul>
       </div>
@@ -56,6 +56,7 @@
   import HeaderNav from "../../components/HeaderNav";
   import GoodList from '../../components/GoodList.vue'
   import {XInput, Confirm, PopupPicker} from "vux";
+  import '../../utils/formatDate'
   import {delivery} from '../../api'
 
   export default {
@@ -97,6 +98,11 @@
       goBack() {
         this.$router.go(-1)
       },
+      formatDate(date) {
+        let parseDate = Date.parse(data)
+        let reqDate = (new Date(parseDate)).FormatDate('yyyy-MM-dd hh:mm:ss')
+        return reqDate
+      },
       handleDelivery() {
         const token = window.sessionStorage.getItem('token')
         let orderID = this.orderDetail.orderID
@@ -122,7 +128,7 @@
                   type: "success",
                   text: "发货成功",
                   isShowMask: true
-                });
+                })
              /*   let orderList = this.orderList
                 for (let i = 0; i < orderList.length; i++) {
                   if (orderList[i].orderID === orderID) {

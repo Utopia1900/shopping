@@ -66,7 +66,7 @@
   import PayPopup from './PayPopup.vue'
   import HeaderNav from '../../components/HeaderNav'
   import {Cell, ViewBox, Popup, Scroller, Checklist, XInput} from 'vux'
-  import {handleGetAddress, createOrder, handleGetPurchaseOrder} from '../../api'
+  import {handleGetAddress, createOrder, handleGetPurchaseOrder, delCartProduct} from '../../api'
 
   export default {
     components: {
@@ -153,8 +153,33 @@
               this.$vux.toast.show({
                 text: "提交成功"
               })
+
+              let productIDs = []
+              for (let j = 0; j < products.length; j++) {
+                productIDs.push(products[j].productID)
+              }
+
+              delCartProduct(token, productIDs, data => {
+                if (!data.errcode) {
+                  let cartList = this.$store.state.cart.cartList
+                  for (let a = 0; a < cartList.length; a++) {
+                    for (let b = 0; b < productIDs.length; b++) {
+                      if (cartList[a].productID === productIDs[b]) {
+                        cartList.splice(a, 1);
+                      }
+                    }
+                  }
+                } else {
+                  this.$vux.alert.show({
+                    title: "提示",
+                    content: data.errmsg,
+                    buttonText: "知道了"
+                  })
+                }
+              })
+
               handleGetPurchaseOrder(this, null, 1)
-              this.$router.push('/purchaseOrder?tag=all')
+              this.$router.replace('/purchaseOrder?tag=all')
             } else {
               this.$vux.alert.show({
                 title: "提示",

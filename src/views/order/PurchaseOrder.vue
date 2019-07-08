@@ -21,7 +21,14 @@
         :iconCls="'zui-icon-IMGCARD'"
         :text="'暂无相关订单！'">
       </empty-view>
+
       <div class="order-list-wrap" v-else>
+        <scroller
+          refreshText="下拉刷新"
+          noDataText="没有更多数据"
+          :on-refresh="initData"
+          :on-infinite="loadMore">
+        >
         <shop-card
           v-for="(order, index) in orderList"
           :key=index
@@ -66,21 +73,32 @@
           <div slot="foot" class="shop-card-foot">
             <div class="z-cell-item z-text-right">
               <span class="state-plain-btn" @click="getOrderDetail(order)">查看详情</span>
+              <span v-if="order.status === '2'" class="state-plain-btn"
+                    style="background-color: #09bb07;color: #fff;border: none" @click="openConfirmModal(order.orderID)">确认收货</span>
             </div>
           </div>
         </shop-card>
+        </scroller>
       </div>
     </view-box>
+    <confirm
+      title="是否确认收货？"
+      :value="show"
+      confirm-text="确认"
+      cancel-text="取消"
+      @on-cancel="closeConfirmModal"
+      @on-confirm="handleConfirmReceipt(orderID)"
+    ></confirm>
   </div>
 </template>
 
 <script>
-  import {ViewBox, Tab, TabItem} from 'vux'
+  import {ViewBox, Tab, TabItem, Confirm} from 'vux'
   import HeaderNav from '../../components/HeaderNav'
   import EmptyView from '../../components/EmptyView'
   import ShopCard from '../../components/ShopCard.vue'
   import GoodList from '../../components/GoodList.vue'
-  import {handleGetPurchaseOrder} from '../../api'
+  import {handleGetPurchaseOrder, confirmReceipt} from '../../api'
 
   export default {
     name: 'PurchaseOrder',
@@ -88,6 +106,7 @@
       ViewBox,
       Tab,
       TabItem,
+      Confirm,
       HeaderNav,
       EmptyView,
       ShopCard,
@@ -95,6 +114,8 @@
     },
     data() {
       return {
+        orderID: null,
+        show: false,
         headerNavTitle: '我购买的',
         list: [
           {
@@ -118,7 +139,8 @@
             type: '3'
           }
         ],
-        index: 0
+        index: 0,
+        type: null
       }
     },
     computed: {
@@ -136,10 +158,10 @@
       goBack() {
         this.$router.go(-1)
       },
-      getTotalNum(args){
-        if(args.length!==0){
+      getTotalNum(args) {
+        if (args.length !== 0) {
           let num = 0;
-          for(let i=0; i<args.length; i++){
+          for (let i = 0; i < args.length; i++) {
             num += args[i].num
           }
           return num
@@ -148,7 +170,51 @@
       getOrderDetail(item) {
         this.$store.commit("orderDetail/set", item);
         this.$router.push('/orderDetail');
+      },
+      openConfirmModal(orderID) {
+        this.show = true
+        this.orderID = orderID
+      },
+      closeConfirmModal() {
+        this.orderID = null
+        this.show = false
+      },
+      handleConfirmReceipt(orderID) {
+        const token = window.sessionStorage.getItem('token')
+        if (token) {
+          confirmReceipt(token, orderID, data => {
+            if (!data.errcode) {
+              this.$vux.toast.show({
+                type: "success",
+                text: "收货成功",
+                isShowMask: true
+              })
+              let orderList = this.orderList
+              for (let i = 0; i < orderList.length; i++) {
+                if (orderList[i].orderID === orderID) {
+                  orderList.splice(i, 1)
+                  break
+                }
+              }
+              this.show = false
+            } else {
+              this.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              })
+            }
+          })
+        }
+      },
+      initData(){
+        this.$store.commit('order/setPurchaseOrder', []);
+        handleGetPurchaseOrder(this, null, 1)
+      },
+      loadMore(){
+        handleGetPurchaseOrder(this, null, 2)
       }
+
     },
     created() {
       let routeName = this.$route.name
@@ -174,7 +240,13 @@
     position: fixed;
     z-index: 999;
   }
+
   .order-list-wrap {
     margin-top: 50px;
+  }
+  .load-more{
+    position: fixed;
+    bottom: 0;
+    height: 40px;text-align: center;font-size: 13px;color: #9b9b9b;
   }
 </style>

@@ -8,6 +8,7 @@ import store from './store.js'
 import VueCookie from 'vue-cookie'
 import FastClick from 'fastclick'
 import {AlertPlugin, ToastPlugin, ConfirmPlugin} from 'vux'
+import VueScroller from 'vue-scroller'
 import './style/index.less'
 Vue.config.productionTip = false
 FastClick.attach(document.body)
@@ -17,6 +18,7 @@ Vue.use(VueCookie)
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
+Vue.use(VueScroller)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

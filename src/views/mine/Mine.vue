@@ -1,10 +1,9 @@
 <template>
   <div class="z-page">
     <div class="mine-head-wrap">
-      <img :src="userInfo.logo"/>
+      <img :src="userInfo.headImgUrl"/>
       <div class="mine-info">
-        <span class="name">{{userInfo.name}}</span>
-        <span class="hello">, hello</span>
+        <span class="name">{{userInfo.nickname}}</span>
       </div>
     </div>
 

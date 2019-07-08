@@ -44,9 +44,7 @@ export default {
       stric: true,
       namespaced: true,
       state: {
-        addressObj: {
-          isDefault: 0
-        },
+        addressObj: {},
         addressList: [],
         selectedAddress: null,
         defIndex: 0

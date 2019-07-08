@@ -36,6 +36,7 @@
           </div>
             <div slot="head">
               <div class="z-cell-item z-text-right">
+              <span v-if="order.status === '0' || order.status === '1'">待发货</span>
               <span v-if="order.status === '2'">已发货</span>
               <span v-if="order.status === '3'">买家已收货未评价</span>
               <span v-if="order.status === '4'">已评价</span>

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-let url = '/mx/api/1/' // 生产环境
-// let url = 'http://www.stemtherapy.cn/mx/api/1'  // 开发环境
+// let url = '/mx/api/1/' // 生产环境
+let url = 'http://www.stemtherapy.cn/mx/api/1'  // 开发环境
 axios.defaults.baseURL = url
 axios.defaults.timeout = 5 * 1000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -165,7 +165,10 @@ export const handleGetPurchaseOrder = (self, type, page) => {
   const token = window.sessionStorage.getItem('token')
   queryPurchaseOrder(token, type, page, data => {
     if(!data.errcode) {
-      self.$store.commit('order/setPurchaseOrder', data)
+      for(var i =0; i<data.length; i++){
+        self.$store.state.order.purchaseOrderList.push(data[i]);
+      }
+      // self.$store.commit('order/setPurchaseOrder', data)
     } else {
       self.$vux.alert.show({
         title: "提示",

@@ -80,6 +80,11 @@
         this.$emit('on-address-delete')
       },
       editAddress(payload) {
+        if (payload.index === this.$store.state.address.defIndex) {
+          payload.isDefault = 1
+        } else {
+          payload.isDefault = 0
+        }
         this.$store.commit('address/set', payload)
         this.$router.push('/mine/address/edit')
       },

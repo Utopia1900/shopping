@@ -7,7 +7,8 @@
       </div>
       <div v-if="orderDetail.name" style="padding: 8px; border-bottom: 1px solid #eeeeee">
         <ul style="padding-left: 40px">
-          <li style="font-size: 13px"><span>{{orderDetail.name}}</span><span style="color: #555555;padding-left: 10px;">{{orderDetail.mobile}}</span></li>
+          <li style="font-size: 13px"><span>{{orderDetail.name}}</span><span style="color: #555555;padding-left: 10px;">{{orderDetail.mobile}}</span>
+          </li>
           <li style="font-size: 15px;">{{orderDetail.address}}</li>
         </ul>
       </div>
@@ -26,8 +27,8 @@
         <li>
           订单总价：{{orderDetail.amount}}
         </li>
-        <li>
-          创建时间：{{orderDetail.time}}
+        <li v-if="orderDetail.time">
+          创建时间：{{formatDate(orderDetail.time)}}
         </li>
       </ul>
     </div>
@@ -37,13 +38,15 @@
 <script>
   import HeaderNav from '../../components/HeaderNav'
   import GoodList from '../../components/GoodList.vue'
+  import '../../utils/formatDate'
+
   export default {
     data() {
       return {
-        headerNavTitle:'订单详情'
+        headerNavTitle: '订单详情'
       }
     },
-    components:{
+    components: {
       HeaderNav,
       GoodList
     },
@@ -52,20 +55,25 @@
         return this.$store.state.orderDetail.detail
       }
     },
-    methods:{
-      goBack(){
+    methods: {
+      goBack() {
         this.$router.go(-1)
       },
-      formatStatusText(status){
-        if(status==='0' || status === '1'){
+      formatStatusText(status) {
+        if (status === '0' || status === '1') {
           return '待发货'
-        } else if(status === '2'){
+        } else if (status === '2') {
           return '已发货'
         } else if (status === '3') {
-          return '确认收货未评价'
-        } else if(status === '4') {
+          return '买家已收货未评价'
+        } else if (status === '4') {
           return '已评价'
         }
+      },
+      formatDate(date) {
+        let parseDate = Date.parse(data)
+        let reqDate = (new Date(parseDate)).FormatDate('yyyy-MM-dd hh:mm:ss')
+        return reqDate
       }
     }
   }
