@@ -29,7 +29,8 @@ export default {
       namespaced: true,
       state: {
         payList: [],
-        cartList: []
+        cartList: [],
+        payType: 'fromCart'
       },
       mutations: {
         setPayList(state, payload) {
@@ -37,6 +38,9 @@ export default {
         },
         setCartList(state, payload) {
           state.cartList = payload
+        },
+        setPayType(state, payload){
+          state.payType = payload
         }
       }
     },
@@ -69,7 +73,8 @@ export default {
       namespaced: true,
       state: {
         purchaseOrderList: [],
-        soldOrderList: []
+        soldOrderList: [],
+        hasMore: false
       },
       mutations: {
         initPurchaseOrder(state) {
@@ -83,6 +88,9 @@ export default {
         },
         setSoldOrder(state, payload) {
           state.soldOrderList = state.soldOrderList.concat(payload)
+        },
+        setHasMore(state, payload){
+          state.hasMore = payload 
         }
       }
     },

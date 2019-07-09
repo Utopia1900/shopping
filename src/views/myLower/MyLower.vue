@@ -14,7 +14,7 @@
           :on-refresh="initData"
           style="margin-top: 60px;margin-bottom: 50px;"
         >
-          <div v-for="(item, index) in lowerList">
+          <div v-for="(item, index) in lowerList" :key="index">
             <div style="display: flex; flex-direction: row;background-color: #fff;padding: 8px;">
               <img :src="item.headImgUrl" alt="昵称" style="margin-left:20px;width: 50px;">
               <div style="display: flex; flex-direction: column; margin-left: 15px;font-size: 15px;">
@@ -79,13 +79,10 @@
         this.$store.commit('lower/init');
         handleQueryLower(this, this.page)
       },
-      infinite(done) {
+      infinite() {
         this.page++
         if (this.hasMore) {
           handleGetPurchaseOrder(this, this.page)
-          done()
-        } else {
-          done(true)
         }
       },
       formatLevel(id){

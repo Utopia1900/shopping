@@ -32,7 +32,7 @@
               <div>
 								<span
                   class="z-text-color-main"
-                  v-if="item.isDefault === 1">
+                  v-if="index===0">
 									默认地址:
 								</span>
                 {{item.province}}{{item.city}}{{item.district}}{{item.detail}}
@@ -62,7 +62,6 @@
     },
     watch: {
       'selectData'(newVal, oldVal) {
-         console.log('new', newVal)
          this.$store.commit('address/setSelectedAddress', newVal)
       }
     }

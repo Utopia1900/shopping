@@ -21,8 +21,6 @@
           v-for="(item,index) in cartList"
           :key="index"
           transition-mode="follow"
-          @on-close="handleEvents('close', item.productID)"
-          @on-open="handleEvents('open')"
         >
           <div slot="right-menu">
             <swipeout-button type="warn" @click.native="delBySwipe(item.productID)">删除</swipeout-button>
@@ -99,7 +97,8 @@ export default {
     confirmOrder() {
       let selectList = this.selectList;
       if (selectList.length != 0) {
-        this.$store.commit("cart/setPayList", this.selectList);
+        this.$store.commit('cart/setPayType', 'fromCart')
+        this.$store.commit("cart/setPayList", this.selectList)
         handleGetAddress(this)
         this.$router.push("/cart/confirmOrder");
       } else {
@@ -109,36 +108,6 @@ export default {
           isShowMask: true
         });
       }
-    },
-    handleEvents(type, productID) {
-      /*if(type==='close'){
-        console.log(productID)
-        const token = window.sessionStorage.getItem('token')
-        const productIDs = [productID]
-        delCartProduct(token, productIDs, data => {
-          if (!data.errcode) {
-            this.$vux.toast.show({
-              type: "success",
-              text: "删除成功",
-              isShowMask: true
-            });
-            let cartList = this.cartList;
-            for (var a = 0; a < cartList.length; a++) {
-              for (var b = 0; b < productIDs.length; b++) {
-                if (cartList[a].productID === productIDs[b]) {
-                  cartList.splice(a, 1);
-                }
-              }
-            }
-          } else {
-            this.$vux.alert.show({
-              title: "提示",
-              content: data.errmsg,
-              buttonText: "知道了"
-            })
-          }
-        })
-      }*/
     },
     selectAllHandler() {
       this.selectAll = !this.selectAll;

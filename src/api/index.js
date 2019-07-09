@@ -9,8 +9,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 // 可以考虑给接口加上时间戳 eg: '/api/queryOrder?timestamp=' + new Date.getTime()
 export const queryProduct = (token, successCb) => {
-// 获取商品信息  queryProduct (token)  返回 {id: , detailUrl: , imgUrl: , name: , price: , oriPrice: , inventory: } 的数组
-  let formData = {token}
+  // 获取商品信息  queryProduct (token)  返回 {id: , detailUrl: , imgUrl: , name: , price: , oriPrice: , inventory: } 的数组
+  let formData = { token }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -25,8 +25,8 @@ export const queryProduct = (token, successCb) => {
 }
 
 export const editAddress = (token, index, addressObj, successCb) => {
-// 编辑收货地址 editAddress(token, index, isDefault, name, mobile, province, city, district, detail)  注意： index:-1 代表新增, index: 非-1 代表修改(编辑)
-  let preData = {token, index}
+  // 编辑收货地址 editAddress(token, index, isDefault, name, mobile, province, city, district, detail)  注意： index:-1 代表新增, index: 非-1 代表修改(编辑)
+  let preData = { token, index }
   let formData = Object.assign(preData, addressObj)
   const options = {
     method: 'POST',
@@ -42,8 +42,8 @@ export const editAddress = (token, index, addressObj, successCb) => {
 }
 
 export const setDefaultAddress = (token, index, successCb) => {
-// 设置默认地址 setDefaultAddress(token, index)  返回{errcode: ,errmsg: }
-  let formData = {token, index}
+  // 设置默认地址 setDefaultAddress(token, index)  返回{errcode: ,errmsg: }
+  let formData = { token, index }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -58,8 +58,8 @@ export const setDefaultAddress = (token, index, successCb) => {
 }
 
 export const delAddress = (token, index, defIndex, successCb) => {
-// 删除地址 delAddress(token, index, defIndex) 返回{errcode: , errmsg: }
-  let formData = {token, index, defIndex}
+  // 删除地址 delAddress(token, index, defIndex) 返回{errcode: , errmsg: }
+  let formData = { token, index, defIndex }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -73,8 +73,8 @@ export const delAddress = (token, index, defIndex, successCb) => {
   })
 }
 const queryAddress = (token, successCb) => {
-// 获取收货地址 queryAddress(token)  返回{index: , name: , mobile: , province: , city: , district: , detail: } 的数组
-  let formData = {token}
+  // 获取收货地址 queryAddress(token)  返回{index: , name: , mobile: , province: , city: , district: , detail: } 的数组
+  let formData = { token }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -112,9 +112,9 @@ export const handleGetAddress = self => {
 
 
 export const querySummary = (token, successCb) => {
-// 获取摘要信息 querySummary(token)
-// 返回{headImgUrl: , customerID: ,nickname: ,buyAmount: , marketAmount: ,commission: ,unpaidOrderNum: , finishedOrderNum: , introducer: ,followTime: }
-  let formData = {token}
+  // 获取摘要信息 querySummary(token)
+  // 返回{headImgUrl: , customerID: ,nickname: ,buyAmount: , marketAmount: ,commission: ,unpaidOrderNum: , finishedOrderNum: , introducer: ,followTime: }
+  let formData = { token }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -129,8 +129,8 @@ export const querySummary = (token, successCb) => {
 }
 
 export const createOrder = (token, products, amount, addressIndex, points, successCb) => {
-// 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
-  let formData = {token, products, amount, addressIndex}
+  // 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
+  let formData = { token, products, amount, addressIndex }
   if (points) formData.points = points
   const options = {
     method: 'POST',
@@ -146,8 +146,8 @@ export const createOrder = (token, products, amount, addressIndex, points, succe
 }
 
 const queryPurchaseOrder = (token, type, page, successCb) => {
-// 查询我购买的订单 type：1- 待发货， 2- 已发货待收货，3- 确认收货待评价， 不传为所有订单
-  let formData = {token, page}
+  // 查询我购买的订单 type：1- 待发货， 2- 已发货待收货，3- 确认收货待评价， 不传为所有订单
+  let formData = { token, page }
   if (type) formData.type = type
   const options = {
     method: 'POST',
@@ -170,9 +170,9 @@ export const handleGetPurchaseOrder = (self, type, page) => {
       // }
       self.$store.commit('order/setPurchaseOrder', data)
       if (data.length < 10) {
-        self.hasMore = false
+        self.$store.commit('order/setHasMore', false)
       } else {
-        self.hasMore = true
+        self.$store.commit('order/setHasMore', true)
       }
     } else {
       self.$vux.alert.show({
@@ -185,8 +185,8 @@ export const handleGetPurchaseOrder = (self, type, page) => {
 }
 
 const querySoldOrder = (token, type, page, successCb) => {
-// 查询我出售的订单 type：1- 待发货， 2- 已发货待买家收货，3- 确认收货待评价， 不传为所有订单
-  let formData = {token, page}
+  // 查询我出售的订单 type：1- 待发货， 2- 已发货待买家收货，3- 确认收货待评价， 不传为所有订单
+  let formData = { token, page }
   if (type) formData.type = type
   const options = {
     method: 'POST',
@@ -206,9 +206,9 @@ export const handleGetSoldOrder = (self, type, page) => {
     if (!data.errcode) {
       self.$store.commit('order/setSoldOrder', data)
       if (data.length < 10) {
-        self.hasMore = false
+        self.$store.commit('order/setHasMore', false)
       } else {
-        self.hasMore = true
+        self.$store.commit('order/setHasMore', true)
       }
     } else {
       self.$vux.alert.show({
@@ -222,7 +222,7 @@ export const handleGetSoldOrder = (self, type, page) => {
 
 export const confirmReceipt = (token, orderID, successCb) => {
   // 确认订单
-  let formData = {token, orderID}
+  let formData = { token, orderID }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -237,7 +237,7 @@ export const confirmReceipt = (token, orderID, successCb) => {
 
 export const delivery = (token, orderID, expressCompany, expressNo, successCb) => {
   // 发货
-  let formData = {token, orderID, expressCompany, expressNo}
+  let formData = { token, orderID, expressCompany, expressNo }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -252,7 +252,7 @@ export const delivery = (token, orderID, expressCompany, expressNo, successCb) =
 
 export const comment = (token, orderID, productID, star, desc, successCb) => {
   // 评价订单
-  let formData = {token, orderID, productID, star, desc}
+  let formData = { token, orderID, productID, star, desc }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -267,8 +267,8 @@ export const comment = (token, orderID, productID, star, desc, successCb) => {
 
 
 export const addToCart = (token, productID, successCb) => {
-// 加入购物车  addToCart (token, productID) 返回 {errcode: , errmsg: }
-  let formData = {token, productID}
+  // 加入购物车  addToCart (token, productID) 返回 {errcode: , errmsg: }
+  let formData = { token, productID }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -283,9 +283,9 @@ export const addToCart = (token, productID, successCb) => {
 }
 
 export const editCartProduct = (token, products, successCb) => {
-// 编辑购物车商品(修改数量) editCartProduct(token, products)  其中 products是{id:productID, num: num}的数组
-// 返回 {errcode: , errmsg: }
-  let formData = {token, products}
+  // 编辑购物车商品(修改数量) editCartProduct(token, products)  其中 products是{id:productID, num: num}的数组
+  // 返回 {errcode: , errmsg: }
+  let formData = { token, products }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -300,9 +300,9 @@ export const editCartProduct = (token, products, successCb) => {
 }
 
 export const delCartProduct = (token, productIDs, successCb) => {
-// 删除购物车商品 delCartProduct(token, productIDs) 其中productIDs 是选择要删除的productID的数组
-// 返回 {errcode: , errmsg: }
-  let formData = {token, productIDs}
+  // 删除购物车商品 delCartProduct(token, productIDs) 其中productIDs 是选择要删除的productID的数组
+  // 返回 {errcode: , errmsg: }
+  let formData = { token, productIDs }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -318,8 +318,8 @@ export const delCartProduct = (token, productIDs, successCb) => {
 
 
 const queryCart = (token, successCb) => {
-// 查看购物车 queryCart(token)  返回 {productID: , price: , oriPrice: , num: , headImgUrl: ,name: } 的数组
-  let formData = {token}
+  // 查看购物车 queryCart(token)  返回 {productID: , price: , oriPrice: , num: , headImgUrl: ,name: } 的数组
+  let formData = { token }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -360,7 +360,7 @@ export const handleGetCart = self => {
 
 
 export const getSDKConfig = (url, successCb) => {
-  let formData = {url}
+  let formData = { url }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -374,9 +374,9 @@ export const getSDKConfig = (url, successCb) => {
 }
 
 const queryLower = (token, page, successCb) => {
-// 查看我的推广（下级） queryLower(token)
-// 返回{levelName: , paid: , unpaid: ,num: }
-  let formData = {token, page}
+  // 查看我的推广（下级） queryLower(token)
+  // 返回{levelName: , paid: , unpaid: ,num: }
+  let formData = { token, page }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),
@@ -414,7 +414,7 @@ export const handleQueryLower = (self, page) => {
 
 
 export const getAgencyLevel = (token, successCb) => {
-  let formData = {token}
+  let formData = { token }
   const options = {
     method: 'POST',
     data: JSON.stringify(formData),

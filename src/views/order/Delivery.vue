@@ -136,6 +136,7 @@
                     break
                   }
                 }*/
+                this.$router.go(-1)
               } else {
                 this.$vux.alert.show({
                   title: "提示",

@@ -22,7 +22,7 @@
         @on-change="changeMobile"
         placeholder="手机号码"
       ></x-input>
-      <x-address :title="'地区'" v-model="value" :list="addressData" :placeholder="address"></x-address>
+      <x-address :title="'地区'" v-model="value" :list="addressData"></x-address>
       <x-textarea
         :max="50"
         :height="100"
@@ -77,8 +77,7 @@
         addressData: ChinaAddressData,
         show: false,
         isDefault: false,
-        addressObj: this.$store.state.address.addressObj,
-        save: false
+        addressObj:{}
       }
     },
     computed: {
@@ -92,18 +91,14 @@
       defIndex() {
         return this.$store.state.address.defIndex
       },
-      address() {
-        return this.addressObj.province ? `${this.addressObj.province} ${this.addressObj.city} ${this.addressObj.district}` : '请选择'
-      },
-      // addressObj() {
-      //   return this.$store.state.address.addressObj
-      // }
+      // address() {
+      //   return this.addressObj.province ? `${this.addressObj.province} ${this.addressObj.city} ${this.addressObj.district}` : '请选择'
+      // },
     },
     watch: {
       value: function (val, oldVal) {
         let that = this;
         if (val) {
-          if (this.save){
             this.addressData.forEach(item => {
               if (item.value === val[0]) {
                 this.addressObj.province = item.name;
@@ -121,7 +116,6 @@
                 this.addressObj.district = item.name;
               }
             });
-          }
         }
       },
       $route(val, oldVal) {
@@ -131,9 +125,6 @@
             this.addressObj = addressObj;
             this.isDefault = this.addressObj.isDefault === 1 ? true : false
             console.log('value', this.value);
-            this.value[0] = this.addressObj.province
-            this.value[1] = this.addressObj.city
-            this.value[2] = this.addressObj.district
             window.sessionStorage.setItem("initialAddress", JSON.stringify(this.addressObj))
           } else {
             window.sessionStorage.removeItem("initialAddress")
@@ -150,8 +141,7 @@
     },
     created() {
       // 第一次进入路由时 watch 不到$route
-      // this.addressObj = this.$store.state.address.addressObj;
-      // console.log(this.addressObj);
+      this.addressObj = this.$store.state.address.addressObj;
       if(this.addressObj.isDefault === 1) {
         this.isDefault = true
       } else if(this.addressObj.isDefault === 0) {
@@ -189,7 +179,6 @@
               this.$vux.toast.show({
                 text: `保存成功`
               });
-              this.save = true
               handleGetAddress(this);
               this.$router.replace("/mine/address");
               // that.$router.replace('/mine/address')
@@ -216,7 +205,7 @@
         }
       },
       goBack() {
-        this.save = false
+
         this.show = !this.show;
         this.$router.go(-1);
       }
