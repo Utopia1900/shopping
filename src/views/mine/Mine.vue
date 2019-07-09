@@ -131,18 +131,39 @@
       </cell>
       <cell
         class="z-cell-item"
-        :title="'我的推广'"
+        :title="'我的下级'"
         :link="{
 					name: 'myLower'
 				}">
       </cell>
+      <div
+        class="z-cell-item"
+        @click="handleGetAgency('get')"
+        >
+        <p style="text-indent: 15px;">
+        级别说明
+      </p>
+      </div>
     </group>
+    <x-dialog v-model="showAgency" class="dialog-demo">
+      <div style="padding:15px;text-align: left">
+        <ul v-for="(item, index) in agencyList">
+          <div :key="index">
+              <h4>{{item.name}}:</h4>
+              <p style="font-size: 14px;">{{item.desc}}</p>
+          </div>
+        </ul>
+      </div>
+      <div @click="showAgency=false" style="padding: 8px; color: rgba(128,127,132,0.89)">
+        <span class="vux-close">关闭</span>
+      </div>
+    </x-dialog>
   </div>
 </template>
 <script>
   require('./mine.less')
-  import {Badge, Cell, Group, Flexbox, FlexboxItem} from 'vux'
-  import {querySummary, handleGetPurchaseOrder, handleGetSoldOrder} from "../../api";
+  import {Badge, Cell, Group, Flexbox, FlexboxItem, XDialog} from 'vux'
+  import {querySummary, handleGetPurchaseOrder, handleGetSoldOrder, getAgencyLevel} from "../../api";
 
   export default {
     components: {
@@ -150,10 +171,12 @@
       Group,
       Cell,
       FlexboxItem,
-      Flexbox
+      Flexbox,
+      XDialog
     },
     data() {
       return {
+        showAgency: false,
         userInfo: [],
         purchaseTag: {
           all: {
@@ -198,7 +221,8 @@
             text: '待评价',
             icon: 'zui-icon zui-icon-comment'
           },
-        }
+        },
+        agencyList: []
       }
     },
     methods: {
@@ -224,10 +248,32 @@
           })
         }
       },
+      handleGetAgency(type){
+        let token = window.sessionStorage.getItem('token')
+        if(token){
+          getAgencyLevel(token, data => {
+            if(!data.errcode){
+              if(type === 'sessionStorage') {
+                window.sessionStorage.setItem('agencyLevel', JSON.stringify(data))
+              } else if(type === 'get') {
+                this.agencyList = data
+                this.showAgency = true
+              }
+            } else {
+              this.$vux.alert.show({
+                title: "提示",
+                content: data.errmsg,
+                buttonText: "知道了"
+              });
+            }
+          })
+        }
+      }
     },
     created() {
       this.getToken()
       this.querySummary()
+      this.handleGetAgency('sessionStorage')
     },
     watch:{
       $route(to, from) {
@@ -241,14 +287,14 @@
           } else if(to.query.tag === 'needComment'){
             handleGetPurchaseOrder(this, '3', 1)
           }
-        } else if(to.name === 'soldOrder'){
-          if(to.query.tag === 'all') {
+        } else if(to.name === 'soldOrder') {
+          if (to.query.tag === 'all') {
             handleGetSoldOrder(this, null, 1)
-          } else if(to.query.tag === 'needSend') {
+          } else if (to.query.tag === 'needSend') {
             handleGetSoldOrder(this, '1', 1)
-          } else if(to.query.tag === 'needGet') {
+          } else if (to.query.tag === 'needGet') {
             handleGetSoldOrder(this, '2', 1)
-          } else if(to.query.tag === 'needComment'){
+          } else if (to.query.tag === 'needComment') {
             handleGetSoldOrder(this, '3', 1)
           }
         }

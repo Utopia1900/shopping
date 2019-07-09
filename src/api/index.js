@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-// let url = '/mx/api/1/' // 生产环境
-let url = 'http://www.stemtherapy.cn/mx/api/1'  // 开发环境
+let url = '/mx/api/1/' // 生产环境
+// let url = 'http://www.stemtherapy.cn/mx/api/1'  // 开发环境
 axios.defaults.baseURL = url
 axios.defaults.timeout = 5 * 1000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -72,7 +72,7 @@ export const delAddress = (token, index, defIndex, successCb) => {
     console.error(error)
   })
 }
- const queryAddress = (token, successCb) => {
+const queryAddress = (token, successCb) => {
 // 获取收货地址 queryAddress(token)  返回{index: , name: , mobile: , province: , city: , district: , detail: } 的数组
   let formData = {token}
   const options = {
@@ -94,7 +94,7 @@ export const handleGetAddress = self => {
   if (token !== null) {
     queryAddress(token, data => {
       if (!data.errcode) {
-        if(data.length !==0) {
+        if (data.length !== 0) {
           self.$store.commit('address/setAddressList', data)
           // that.address = data.length > 0 ? data : [];
           self.$store.commit('address/setDefIndex', data[0].index)
@@ -131,7 +131,7 @@ export const querySummary = (token, successCb) => {
 export const createOrder = (token, products, amount, addressIndex, points, successCb) => {
 // 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
   let formData = {token, products, amount, addressIndex}
-  if(points) formData.points = points
+  if (points) formData.points = points
   const options = {
     method: 'POST',
     data: formData,
@@ -164,11 +164,16 @@ const queryPurchaseOrder = (token, type, page, successCb) => {
 export const handleGetPurchaseOrder = (self, type, page) => {
   const token = window.sessionStorage.getItem('token')
   queryPurchaseOrder(token, type, page, data => {
-    if(!data.errcode) {
-      for(var i =0; i<data.length; i++){
-        self.$store.state.order.purchaseOrderList.push(data[i]);
+    if (!data.errcode) {
+      // for(var i =0; i<data.length; i++){
+      //   self.$store.state.order.purchaseOrderList.push(data[i]);
+      // }
+      self.$store.commit('order/setPurchaseOrder', data)
+      if (data.length < 10) {
+        self.hasMore = false
+      } else {
+        self.hasMore = true
       }
-      // self.$store.commit('order/setPurchaseOrder', data)
     } else {
       self.$vux.alert.show({
         title: "提示",
@@ -198,8 +203,13 @@ const querySoldOrder = (token, type, page, successCb) => {
 export const handleGetSoldOrder = (self, type, page) => {
   const token = window.sessionStorage.getItem('token')
   querySoldOrder(token, type, page, data => {
-    if(!data.errcode) {
+    if (!data.errcode) {
       self.$store.commit('order/setSoldOrder', data)
+      if (data.length < 10) {
+        self.hasMore = false
+      } else {
+        self.hasMore = true
+      }
     } else {
       self.$vux.alert.show({
         title: "提示",
@@ -363,7 +373,7 @@ export const getSDKConfig = (url, successCb) => {
   })
 }
 
-export const queryLower = (token, page, successCb) => {
+const queryLower = (token, page, successCb) => {
 // 查看我的推广（下级） queryLower(token)
 // 返回{levelName: , paid: , unpaid: ,num: }
   let formData = {token, page}
@@ -376,6 +386,43 @@ export const queryLower = (token, page, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     // handle error
+    console.error(error)
+  })
+}
+
+export const handleQueryLower = (self, page) => {
+  const token = window.sessionStorage.getItem('token')
+  if (token) {
+    queryLower(token, page, data => {
+      if (!data.errcode) {
+        self.$store.commit('lower/set', data)
+        if (data.length < 10) {
+          self.hasMore = false
+        } else {
+          self.hasMore = true
+        }
+      } else {
+        self.$vux.alert.show({
+          title: "提示",
+          content: data.errmsg,
+          buttonText: "知道了"
+        })
+      }
+    })
+  }
+}
+
+
+export const getAgencyLevel = (token, successCb) => {
+  let formData = {token}
+  const options = {
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'getAgencyLevel'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
     console.error(error)
   })
 }

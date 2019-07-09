@@ -22,6 +22,12 @@
         :text="'暂无相关订单！'">
       </empty-view>
       <div class="order-list-wrap" v-else>
+        <scroller
+          refreshText="下拉刷新"
+          noDataText="没有更多数据"
+          :on-refresh="initData"
+          style="margin-top: 80px;"
+        >
         <shop-card
           v-for="(order, index) in orderList"
           :key=index
@@ -38,7 +44,7 @@
               <div class="z-cell-item z-text-right">
               <span v-if="order.status === '0' || order.status === '1'">待发货</span>
               <span v-if="order.status === '2'">已发货</span>
-              <span v-if="order.status === '3'">买家已收货未评价</span>
+              <span v-if="order.status === '3'">买家已收货</span>
               <span v-if="order.status === '4'">已评价</span>
               </div>
             </div>
@@ -69,6 +75,9 @@
             </div>
           </div>
         </shop-card>
+          <div @click="infinite" v-if="hasMore" style="text-align: center;color: #818085;padding-bottom: 30px;">点击加载</div>
+          <div v-else style="text-align: center;color: #818085">--没有更多--</div>
+        </scroller>
       </div>
     </view-box>
   </div>
@@ -118,7 +127,10 @@
             type: '3',
           }
         ],
-        index: 0
+        index: 0,
+        type: null,
+        page: 1,
+        hasMore: false
       }
     },
     computed: {
@@ -131,6 +143,9 @@
     },
     methods: {
       tabHandler(type) {
+        this.page = 1
+        this.type = type
+        this.$store.commit('order/initSoldOrder');
         handleGetSoldOrder(this, type, 1)
       },
       goBack() {
@@ -152,9 +167,24 @@
       goToDelivery(order){
         this.$store.commit("orderDetail/set", order);
         this.$router.push('/delivery')
-      }
+      },
+      initData(){
+        this.page = 1
+        this.$store.commit('order/initSoldOrder');
+        handleGetSoldOrder(this, this.type, this.page)
+      },
+      infinite(done){
+        this.page ++
+        if(this.hasMore) {
+          handleGetSoldOrder(this, this.type, this.page)
+          done()
+        } else {
+          done(true)
+        }
+      },
     },
     created() {
+      console.log('run herr')
       let routeName = this.$route.name
       let routeQuery = this.$route.query.tag
       if (routeName === 'soldOrder') {

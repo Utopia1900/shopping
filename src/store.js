@@ -72,11 +72,17 @@ export default {
         soldOrderList: []
       },
       mutations: {
+        initPurchaseOrder(state) {
+          state.purchaseOrderList = []
+        },
+        initSoldOrder(state) {
+          state.soldOrderList = []
+        },
         setPurchaseOrder(state, payload) {
-          state.purchaseOrderList = payload
+          state.purchaseOrderList = state.purchaseOrderList.concat(payload)
         },
         setSoldOrder(state, payload) {
-          state.soldOrderList = payload
+          state.soldOrderList = state.soldOrderList.concat(payload)
         }
       }
     },
@@ -91,6 +97,21 @@ export default {
           state.detail = payload
         }
       }
-    }
+    },
+    lower: {
+      stric: true,
+      namespaced: true,
+      state: {
+        list: []
+      },
+      mutations: {
+        init(state) {
+          state.list = []
+        },
+        set(state, payload) {
+          state.list = state.list.concat(payload)
+        }
+      }
+    },
   }
 }

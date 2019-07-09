@@ -27,7 +27,7 @@
           refreshText="下拉刷新"
           noDataText="没有更多数据"
           :on-refresh="initData"
-          :on-infinite="loadMore">
+          style="margin-top: 80px;margin-bottom: 50px;"
         >
         <shop-card
           v-for="(order, index) in orderList"
@@ -78,6 +78,8 @@
             </div>
           </div>
         </shop-card>
+          <div @click="infinite" v-if="hasMore" style="text-align: center;color: #818085; padding-bottom: 30px;">点击加载</div>
+          <div v-else style="text-align: center;color: #818085;padding-top: 30px;">--没有更多--</div>
         </scroller>
       </div>
     </view-box>
@@ -140,7 +142,9 @@
           }
         ],
         index: 0,
-        type: null
+        type: null,
+        page: 1,
+        hasMore: false
       }
     },
     computed: {
@@ -153,6 +157,9 @@
     },
     methods: {
       tabHandler(type) {
+        this.page = 1
+        this.type = type
+        this.$store.commit('order/initPurchaseOrder');
         handleGetPurchaseOrder(this, type, 1)
       },
       goBack() {
@@ -208,12 +215,19 @@
         }
       },
       initData(){
-        this.$store.commit('order/setPurchaseOrder', []);
-        handleGetPurchaseOrder(this, null, 1)
+        this.page = 1
+        this.$store.commit('order/initPurchaseOrder');
+        handleGetPurchaseOrder(this, this.type, this.page)
       },
-      loadMore(){
-        handleGetPurchaseOrder(this, null, 2)
-      }
+      infinite(done){
+        this.page ++
+        if(this.hasMore) {
+          handleGetPurchaseOrder(this, this.type, this.page)
+          done()
+        } else {
+          done(true)
+        }
+      },
 
     },
     created() {

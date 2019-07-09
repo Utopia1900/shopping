@@ -65,7 +65,7 @@
         } else if (status === '2') {
           return '已发货'
         } else if (status === '3') {
-          return '买家已收货未评价'
+          return '买家已收货'
         } else if (status === '4') {
           return '已评价'
         }

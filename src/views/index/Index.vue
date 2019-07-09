@@ -43,8 +43,8 @@
     },
     methods: {
       getToken() {
-        // const token = this.$cookie.get('token')
-        const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOjMsInQiOjE1NjI1NTM2ODc3NjR9.3I7m5kCSDvleBo1aSv68tWG3RpMRvNSOaAurfFDySU8'
+        const token = this.$cookie.get('token')
+        // const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOjMsInQiOjE1NjI1NTM2ODc3NjR9.3I7m5kCSDvleBo1aSv68tWG3RpMRvNSOaAurfFDySU8'
         if (token) {
           window.sessionStorage.setItem('token', token)
         }
