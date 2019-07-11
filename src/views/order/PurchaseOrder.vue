@@ -142,7 +142,6 @@ export default {
         // }
       ],
       index: 0,
-      type: null,
       page: 1
     };
   },
@@ -158,6 +157,9 @@ export default {
     },
     scroll() {
       return this.$store.state.order.scroll;
+    },
+    type(){
+      return this.$store.state.order.type
     }
   },
   methods: {
@@ -258,6 +260,9 @@ export default {
             this.$refs.myScroller.scrollTo(0, this.scroll, true);
           }, 500);
         });
+      }
+      if(to.name==='mine'){
+        this.page = 1
       }
     }
   }

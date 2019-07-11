@@ -184,6 +184,7 @@ export const handleGetPurchaseOrder = (self, type, page) => {
       //   self.$store.state.order.purchaseOrderList.push(data[i]);
       // }
       self.$store.commit('order/setPurchaseOrder', data)
+      self.$store.commit('order/setType', type)
       if (data.length < 10) {
         self.$store.commit('order/setHasMore', false)
       } else {
@@ -220,6 +221,7 @@ export const handleGetSoldOrder = (self, type, page) => {
   querySoldOrder(token, type, page, data => {
     if (!data.errcode) {
       self.$store.commit('order/setSoldOrder', data)
+      self.$store.commit('order/setType', type)
       if (data.length < 10) {
         self.$store.commit('order/setHasMore', false)
       } else {

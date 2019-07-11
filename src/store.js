@@ -76,6 +76,7 @@ export default {
         soldOrderList: [],
         hasMore: false,
         scroll: null,
+        type: null
       },
       mutations: {
         initPurchaseOrder(state) {
@@ -95,6 +96,9 @@ export default {
         },
         setScroll(state, payload){
           state.scroll = payload
+        },
+        setType(state, payload) {
+          state.type = payload
         }
       }
     },

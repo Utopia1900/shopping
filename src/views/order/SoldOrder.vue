@@ -120,7 +120,6 @@ export default {
         // }
       ],
       index: 0,
-      type: null,
       page: 1
     };
   },
@@ -136,6 +135,9 @@ export default {
     },
     scroll() {
       return this.$store.state.order.scroll;
+    },
+    type(){
+      return this.$store.state.order.type
     }
   },
   methods: {
