@@ -164,7 +164,7 @@ export default {
                 }
               });
             }
-            // handleGetPurchaseOrder(this, null, 1)
+            handleGetPurchaseOrder(this, null, 1)
             this.$router.replace("/purchaseOrder?tag=all");
           } else {
             this.$vux.alert.show({

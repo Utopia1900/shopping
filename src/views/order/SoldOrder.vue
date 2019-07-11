@@ -18,6 +18,7 @@
           noDataText="没有更多数据"
           :on-refresh="initData"
           style="margin-top: 80px;"
+          ref="myScroller"
         >
           <shop-card v-for="(order, index) in orderList" :key="index" :shop="order">
             <div slot="body">
@@ -132,6 +133,9 @@ export default {
     },
     hasMore() {
       return this.$store.state.order.hasMore;
+    },
+    scroll() {
+      return this.$store.state.order.scroll;
     }
   },
   methods: {
@@ -164,6 +168,10 @@ export default {
       }
     },
     getOrderDetail(item) {
+      this.$store.commit(
+        "order/setScroll",
+        this.$refs.myScroller.getPosition().top
+      ); // 获取scroller移动的垂直距离
       this.$store.commit("orderDetail/set", item);
       this.$router.push("/orderDetail");
     },
@@ -180,6 +188,18 @@ export default {
       this.page++;
       if (this.hasMore) {
         handleGetSoldOrder(this, this.type, this.page);
+      }
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name === "orderDetail") {
+        this.$nextTick(() => {
+          // scroller移动到指定的位置
+          setTimeout(() => {
+            this.$refs.myScroller.scrollTo(0, this.scroll, true);
+          }, 500);
+        });
       }
     }
   }

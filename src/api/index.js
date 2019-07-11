@@ -128,6 +128,21 @@ export const querySummary = (token, successCb) => {
   })
 }
 
+export const handleGetsummary = (self) => {
+  const token = window.sessionStorage.getItem('token')
+  querySummary(token, data => {
+    if(!data.errcode) {
+      self.$store.commit('summary/set', data)
+    } else {
+      self.$vux.alert.show({
+        title: "提示",
+        content: data.errmsg,
+        buttonText: "知道了"
+      });
+    }
+  })
+}
+
 export const createOrder = (token, products, amount, addressIndex, points, successCb) => {
   // 支付订单 （eg:微信支付） createOrder(token, products, amount, addressIndex)  其中 products是{productID: , price: , num: ,}的数组， amount是总金额
   let formData = { token, products, amount, addressIndex }

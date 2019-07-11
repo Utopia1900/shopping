@@ -74,7 +74,8 @@ export default {
       state: {
         purchaseOrderList: [],
         soldOrderList: [],
-        hasMore: false
+        hasMore: false,
+        scroll: null,
       },
       mutations: {
         initPurchaseOrder(state) {
@@ -91,6 +92,9 @@ export default {
         },
         setHasMore(state, payload){
           state.hasMore = payload 
+        },
+        setScroll(state, payload){
+          state.scroll = payload
         }
       }
     },
@@ -118,6 +122,22 @@ export default {
         },
         set(state, payload) {
           state.list = state.list.concat(payload)
+        }
+      }
+    },
+    summary: {
+      stric: true,
+      namespaced: true,
+      state: {
+        row: {},
+        timer: null
+      },
+      mutations: {
+        set(state, payload) {
+          state.row = payload
+        },
+        setTimer(state, payload) {
+          state.timer = payload
         }
       }
     },

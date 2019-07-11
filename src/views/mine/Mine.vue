@@ -4,6 +4,20 @@
       <img :src="userInfo.headImgUrl" />
       <div class="mine-info">
         <span class="name">{{userInfo.nickname}}</span>
+        <div style="font-size:12px;">
+          <div>
+            <span style="color:#555555">
+              购买的订单总额:
+              <span style="color:#ED7A5D;text-indent:12px;font-size:15px;">{{userInfo.amount}}</span>
+            </span>
+          </div>
+          <div>
+            <span style="color:#555555">
+              订单总数:
+              <span style="color:#ED7A5D;text-indent:12px;font-size:15px;">{{userInfo.orderNum}}</span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -59,7 +73,7 @@
               <span :class="purchaseTag.comment.icon"></span>
               <div>{{purchaseTag.comment.text}}</div>
             </router-link>
-          </flexbox-item> -->
+          </flexbox-item>-->
         </flexbox>
       </div>
     </group>
@@ -117,7 +131,7 @@
               <span :class="soldTag.comment.icon"></span>
               <div>{{soldTag.comment.text}}</div>
             </router-link>
-          </flexbox-item> -->
+          </flexbox-item>-->
         </flexbox>
       </div>
     </group>
@@ -169,7 +183,6 @@ export default {
   data() {
     return {
       showAgency: false,
-      userInfo: [],
       purchaseTag: {
         all: {
           tag: "all",
@@ -216,6 +229,11 @@ export default {
       },
       agencyList: []
     };
+  },
+  computed:{
+    userInfo(){
+      return this.$store.state.summary.row
+    }
   },
   methods: {
     getToken() {
@@ -267,8 +285,16 @@ export default {
   },
   created() {
     this.getToken();
-    this.querySummary();
+    // this.querySummary();
     this.handleGetAgency("sessionStorage");
+  },
+  beforeRouteLeave (to, from, next) {
+    let timer = this.$store.state.summary.timer
+    if(timer){
+      window.clearInterval(timer)
+      this.$store.commit('summary/setTimer', null)
+    }
+    next()
   },
   watch: {
     $route(to, from) {

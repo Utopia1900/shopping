@@ -19,6 +19,7 @@
           noDataText="没有更多数据"
           :on-refresh="initData"
           style="margin-top: 80px;margin-bottom: 50px;"
+          ref="myScroller"
         >
           <shop-card v-for="(order, index) in orderList" :key="index" :shop="order">
             <div slot="body">
@@ -30,7 +31,10 @@
               ></good-list>
             </div>
             <div slot="head">
-              <div class="z-cell-item z-text-right" style="border-bottom: 1px solid #f6f6f6;color:#ed7a5d">
+              <div
+                class="z-cell-item z-text-right"
+                style="border-bottom: 1px solid #f6f6f6;color:#ed7a5d"
+              >
                 <span v-if="order.status === '1' || order.status === '0'">待发货</span>
                 <span v-if="order.status === '2'">已发货</span>
                 <span v-if="order.status === '3'">已收货</span>
@@ -96,6 +100,7 @@ import EmptyView from "../../components/EmptyView";
 import ShopCard from "../../components/ShopCard.vue";
 import GoodList from "../../components/GoodList.vue";
 import { handleGetPurchaseOrder, confirmReceipt } from "../../api";
+import { setTimeout } from "timers";
 
 export default {
   name: "PurchaseOrder",
@@ -129,7 +134,7 @@ export default {
           tag: "needGet",
           text: "待收货",
           type: "2"
-        },
+        }
         // {
         //   tag: "needComment",
         //   text: "待评价",
@@ -150,6 +155,9 @@ export default {
     },
     hasMore() {
       return this.$store.state.order.hasMore;
+    },
+    scroll() {
+      return this.$store.state.order.scroll;
     }
   },
   methods: {
@@ -182,6 +190,10 @@ export default {
       }
     },
     getOrderDetail(item) {
+      this.$store.commit(
+        "order/setScroll",
+        this.$refs.myScroller.getPosition().top
+      ); // 获取scroller移动的垂直距离
       this.$store.commit("orderDetail/set", item);
       this.$router.push("/orderDetail");
     },
@@ -230,6 +242,22 @@ export default {
       this.page++;
       if (this.hasMore) {
         handleGetPurchaseOrder(this, this.type, this.page);
+      }
+    },
+    handleScroll() {
+      let scrollTop = this.$refs.myScroller.scrollTop;
+      this.$store.commit("order/setScroll", scrollTop);
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.name === "orderDetail") {
+        this.$nextTick(() => {
+          // scroller移动到指定的位置
+          setTimeout(() => {
+            this.$refs.myScroller.scrollTo(0, this.scroll, true);
+          }, 500);
+        });
       }
     }
   }
