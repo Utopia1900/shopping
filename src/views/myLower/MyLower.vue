@@ -108,7 +108,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     handleQueryLower(this, this.page);
   }
 };

@@ -99,7 +99,7 @@
         this.$router.go(-1)
       },
       formatDate(date) {
-        let parseDate = Date.parse(data)
+        let parseDate = Date.parse(date)
         let reqDate = (new Date(parseDate)).FormatDate('yyyy-MM-dd hh:mm:ss')
         return reqDate
       },

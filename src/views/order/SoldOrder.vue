@@ -143,7 +143,7 @@ export default {
   methods: {
     tabHandler(type) {
       this.page = 1;
-      this.type = type;
+      this.$store.commit('order/setType', type)
       this.$store.commit("order/initSoldOrder");
       var tag;
       if (type === null) {
