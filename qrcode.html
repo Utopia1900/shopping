@@ -5,16 +5,72 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
   <title>我的二维码</title>
   <style type="text/css">
-    #myQrcodeUrl{
+    body {
+      background-color: #ed7a5d;
+    }
+
+    #myQrcodeUrl {
       width: 200px;
       display: block;
-      margin: 100px auto;
+      position: absolute;
+      top: 50px;
+      left: 50px;
+      text-align: center;
+    }
+
+    .info {
+      color: #FFffff;
+    }
+
+    .info p {
+      text-align: center;
+    }
+
+    #headImgUrl {
+      width: 32px;
+      display: block;
+      z-index: 999;
+      position: absolute;
+      border: 1px solid #ed7a5d;
+      top: 135px;
+      left: 135px;
+    }
+
+    .nickname {
+      font-size: 32px;
+      color: #fff0ab;
+    }
+
+    .qrcode {
+      width: 300px;
+      height: 300px;
+      border-radius: 100%;
+      border: 1px solid #ccc;
+      background-color: #ffffff;
+      margin: 50px auto;
+      position: relative;
+    }
+
+    .instruction {
+      color: #fff0ab;
+      font-size: 12px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 <div>
-  <img src="" alt="" id="myQrcodeUrl" />
+  <div class="info">
+    <p>我是&nbsp;&nbsp;<span class="nickname" id="nickname">1900</span>&nbsp;&nbsp;,</p>
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我为铭兴代言！！！</p>
+  </div>
+  <div class="qrcode">
+    <img src="" alt="" id="headImgUrl">
+    <img src="" alt="" id="myQrcodeUrl"/>
+  </div>
+  <div class="instruction">
+    <p style="text-align: center">提示：长按识别二维码关注即可</p>
+  </div>
 </div>
 <script type="text/javascript">
   function ajax(options) {
@@ -67,19 +123,31 @@
 
   // var apiUrl = 'http://www.stemtherapy.cn/mx/getQRCodeUrl'
   var apiUrl = '/mx/getQRCodeUrl'
-  window.onload = function(){
-    var href = window.location.href
-    var hrefArr = href.split('?')
-    var openID = hrefArr[1] // 获取url中的openID
+
+  function getQueryVariable(param) {
+    var query = window.location.search.substring(1)
+    var params = query.split("&")
+    for (var i = 0; i < params.length; i++) {
+      var pair = params[i].split("=")
+      if (pair[0] === param) return pair[1]
+    }
+    return false
+  }
+
+
+  window.onload = function () {
+    var openID = getQueryVariable('q') // 获取url中的openID
     ajax({
-      url:apiUrl,
-      type:"POST",
-      data:JSON.stringify({openID:openID}),
+      url: apiUrl,
+      type: "POST",
+      data: JSON.stringify({openID: openID}),
       dataType: "json",
-      success: function(response, xml){
+      success: function (response, xml) {
         var result = JSON.parse(response)
-        if(!result.errcode){
+        if (!result.errcode) {
           document.getElementById('myQrcodeUrl').src = result.url
+          document.getElementById('headImgUrl').src = result.headImgUrl
+          document.getElementById('nickname').textContent = result.nickname
         } else {
           alert(result.errmsg)
         }
