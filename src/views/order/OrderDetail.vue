@@ -5,9 +5,23 @@
       <div style="padding: 10px;text-align: center">
         <h4 style="color: #ed7a5d">{{formatStatusText(orderDetail.status)}}</h4>
       </div>
+      <div v-if="orderDetail.expressNumber" style="padding: 10px; border-bottom: 1px solid #eeeeee; display:flex; flex-direction:row">
+        <span
+          class="zui-icon zui-icon-the-receipt"
+          style="font-size: 30px;line-height:40px;color: #307ded;"
+        ></span>
+        <ul style="padding-left: 10px">
+          <li style="font-size: 15px;">
+            <span style="color: #307ded;">{{orderDetail.expressCompany}}</span>
+          </li>
+          <li>
+            <span style="font-size: 14px;">快递单号:&nbsp;&nbsp;{{orderDetail.expressNumber}}</span>
+          </li>
+        </ul>
+      </div>
       <div
         v-if="orderDetail.name"
-        style="padding: 8px; border-bottom: 1px solid #eeeeee; display:flex; flex-direction:row"
+        style="padding: 10px; border-bottom: 1px solid #eeeeee; display:flex; flex-direction:row"
       >
         <span
           class="zui-icon zui-icon-address"
