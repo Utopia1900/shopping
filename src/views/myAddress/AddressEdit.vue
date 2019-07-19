@@ -205,7 +205,6 @@
         }
       },
       goBack() {
-
         this.show = !this.show;
         this.$router.go(-1);
       }

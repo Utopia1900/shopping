@@ -1,11 +1,10 @@
 import axios from 'axios'
 
 let url = '/mx/api/1/' // 生产环境
-// let url = 'http://www.stemtherapy.cn/mx/api/1'  // 开发环境
+// let url = 'http://www.stemtherapy.cn/mx/api/1' // 开发环境
 axios.defaults.baseURL = url
 axios.defaults.timeout = 5 * 1000
 axios.defaults.headers.post['Content-Type'] = 'application/json'
-
 
 // 可以考虑给接口加上时间戳 eg: '/api/queryOrder?timestamp=' + new Date.getTime()
 export const queryProduct = (token, successCb) => {
@@ -88,7 +87,6 @@ const queryAddress = (token, successCb) => {
   })
 }
 
-
 export const handleGetAddress = self => {
   const token = window.sessionStorage.getItem('token')
   if (token !== null) {
@@ -101,15 +99,14 @@ export const handleGetAddress = self => {
         }
       } else {
         self.$vux.alert.show({
-          title: "提示",
+          title: '提示',
           content: data.errmsg,
-          buttonText: "知道了"
-        });
+          buttonText: '知道了'
+        })
       }
-    });
+    })
   }
 }
-
 
 export const querySummary = (token, successCb) => {
   // 获取摘要信息 querySummary(token)
@@ -135,10 +132,10 @@ export const handleGetsummary = (self) => {
       self.$store.commit('summary/set', data)
     } else {
       self.$vux.alert.show({
-        title: "提示",
+        title: '提示',
         content: data.errmsg,
-        buttonText: "知道了"
-      });
+        buttonText: '知道了'
+      })
     }
   })
 }
@@ -192,9 +189,9 @@ export const handleGetPurchaseOrder = (self, type, page) => {
       }
     } else {
       self.$vux.alert.show({
-        title: "提示",
+        title: '提示',
         content: data.errmsg,
-        buttonText: "知道了"
+        buttonText: '知道了'
       })
     }
   })
@@ -229,9 +226,9 @@ export const handleGetSoldOrder = (self, type, page) => {
       }
     } else {
       self.$vux.alert.show({
-        title: "提示",
+        title: '提示',
         content: data.errmsg,
-        buttonText: "知道了"
+        buttonText: '知道了'
       })
     }
   })
@@ -248,8 +245,8 @@ export const confirmReceipt = (token, orderID, successCb) => {
   axios(options).then(response => {
     if (successCb) successCb(response.data)
   }).catch(error => {
+    console.error(error)
   })
-  console.error(errot)
 }
 
 export const delivery = (token, orderID, expressCompany, expressNo, successCb) => {
@@ -281,7 +278,6 @@ export const comment = (token, orderID, productID, star, desc, successCb) => {
     console.error(error)
   })
 }
-
 
 export const addToCart = (token, productID, successCb) => {
   // 加入购物车  addToCart (token, productID) 返回 {errcode: , errmsg: }
@@ -333,7 +329,6 @@ export const delCartProduct = (token, productIDs, successCb) => {
   })
 }
 
-
 const queryCart = (token, successCb) => {
   // 查看购物车 queryCart(token)  返回 {productID: , price: , oriPrice: , num: , headImgUrl: ,name: } 的数组
   let formData = { token }
@@ -350,31 +345,29 @@ const queryCart = (token, successCb) => {
   })
 }
 
-
 export const handleGetCart = self => {
   const token = window.sessionStorage.getItem('token')
   if (token !== null) {
     queryCart(token, data => {
       if (!data.errcode) {
-        if (data.length != 0) {
-          let tmp = [];
+        if (data.length !== 0) {
+          let tmp = []
           for (var i = 0; i < data.length; i++) {
-            data[i].selected = false;
+            data[i].selected = false
             tmp.push(data[i])
           }
-          self.$store.commit("cart/setCartList", tmp)
+          self.$store.commit('cart/setCartList', tmp)
         }
       } else {
         self.$vux.alert.show({
-          title: "提示",
+          title: '提示',
           content: data.errmsg,
-          buttonText: "知道了"
+          buttonText: '知道了'
         })
       }
     })
   }
 }
-
 
 export const getSDKConfig = (url, successCb) => {
   let formData = { url }
@@ -420,15 +413,14 @@ export const handleQueryLower = (self, page) => {
         }
       } else {
         self.$vux.alert.show({
-          title: "提示",
+          title: '提示',
           content: data.errmsg,
-          buttonText: "知道了"
+          buttonText: '知道了'
         })
       }
     })
   }
 }
-
 
 export const getAgencyLevel = (token, successCb) => {
   let formData = { token }
@@ -464,30 +456,30 @@ export const getPersonalInfo = self => {
       self.$store.commit('personal/setInfo', data)
     } else {
       self.$vux.alert.show({
-        title: "提示",
+        title: '提示',
         content: data.errmsg,
-        buttonText: "知道了"
+        buttonText: '知道了'
       })
     }
   })
 }
 
 const reqUpdatePersonalInfo = (token, forms, successCb) => {
-  let {id, name, mobile, sex, porvince, city, birthday} = forms
+  let {id, name, mobile, sex, province, city, birthday} = forms
   let formData = {token, id}
-  if (name !== "") formData.name = name
-  if (mobile !== "") formData.mobile = mobile
-  if (sex !== "") formData.sex = sex
-  if (porvince !== "") formData.porvince = porvince
-  if (city !== "") formData.city = city
-  if (birthday !== "") formData.birthday = birthday
+  if (name !== '') formData.name = name
+  if (mobile !== '') formData.mobile = mobile
+  if (sex !== '') formData.sex = sex
+  if (province !== '') formData.province = province
+  if (city !== '') formData.city = city
+  if (birthday !== '') formData.birthday = birthday
   const options = {
-    method: "POSt",
-    data:JSON.stringify(formData),
-    url:"updatePersonalInfo"
+    method: 'POST',
+    data: JSON.stringify(formData),
+    url: 'updatePersonalInfo'
   }
   axios(options).then(response => {
-    if(successCb) successCb(response.data) 
+    if (successCb) successCb(response.data)
   }).catch(error => {
     console.error(error)
   })
@@ -496,16 +488,17 @@ const reqUpdatePersonalInfo = (token, forms, successCb) => {
 export const updatePersonalInfo = (self, forms) => {
   const token = window.sessionStorage.getItem('token')
   reqUpdatePersonalInfo(token, forms, data => {
-    if(!data.errcode){
+    if (!data.errcode) {
       self.isEditing = false
+      self.$store.commit('personal/setInfo', forms)
       self.$vux.toast.show({
-        text: `修改成功`
-      });
+        text: '修改成功'
+      })
     } else {
       self.$vux.alert.show({
-        title: "提示",
+        title: '提示',
         content: data.errmsg,
-        buttonText: "知道了"
+        buttonText: '知道了'
       })
     }
   })
@@ -514,7 +507,7 @@ export const updatePersonalInfo = (self, forms) => {
 export const isEquivalent = (a, b) => {
   var aProps = Object.getOwnPropertyNames(a)
   var bProps = Object.getOwnPropertyNames(b)
-  if (aProps.length != bProps.length) {
+  if (aProps.length !== bProps.length) {
     return false
   }
   for (var i = 0; i < aProps.length; i++) {

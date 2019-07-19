@@ -1,7 +1,7 @@
 <template>
   <ul class="zlist-2-item">
     <li class="item" v-for="(item, index) in data" :key="index">
-      <div @click="getGoodDetail(item)">
+      <div @click="getGoodDetail(item)" class="item-container">
         <img :src="item.imgUrl">
         <div class="info">
           <div class="title z-ellipsis-2">{{item.name}}</div>
@@ -30,16 +30,18 @@
   .zlist-2-item {
     width: 100%;
     overflow: hidden;
+    margin-top: 50px;
   }
 
   .zlist-2-item .item {
     float: left;
-    width: 48%;
-    background: #efeff4;
-    margin: 2px;
-    border: 1px solid #eeeeee;
+    width: 50%;
   }
-
+  .item-container{
+    padding: 2px;
+    border: 1px solid #ccc;
+    margin: 2px;
+  }
   .zlist-2-item .item a {
     padding-top: 14px;
     margin-top: 1px;

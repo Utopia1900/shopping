@@ -1,33 +1,29 @@
 <template>
   <div class="z-page">
-    <header-nav :headerNavTitle="headerNavTitle" @on-back="handleBack" />
-
+    <header-nav :headerNavTitle="headerNavTitle" @on-back="handleBack"/>
     <span class="info-edit" @click="toggleEdit">{{!isEditing? '編輯':'完成'}}</span>
-
     <div class="personal-info-edit" v-if="isEditing">
       <ul style="padding: 15px;">
         <li>
           <label for="name">姓名</label>
-          <input type="text" v-model="name" ref="name" placeholder="请输入" />
+          <input type="text" v-model="name" ref="name" placeholder="请输入">
         </li>
         <li>
           <label for="mobile">电话</label>
-          <input type="text" v-model="mobile" id="mobile" placeholder="请输入" />
+          <input type="text" v-model="mobile" id="mobile" placeholder="请输入">
         </li>
         <li>
           <label for="province">所在省份</label>
-          <input type="text" v-model="province" id="province" placeholder="请选择" />
+          <input type="text" v-model="province" id="province" placeholder="请选择">
         </li>
         <li>
           <label for="city">所在城市</label>
-          <input type="text" v-model="city" id="city" placeholder="请选择" />
+          <input type="text" v-model="city" id="city" placeholder="请选择">
         </li>
-
         <popup-radio title="性别" :options="options1" v-model="sex"></popup-radio>
-
         <li>
           <label for="birthday">生日</label>
-          <input type="text" v-model="birthday" id="birthday" />
+          <input type="text" v-model="birthday" id="birthday">
         </li>
       </ul>
       <div class="address-edit-btn" @click="handleUpdate">保存</div>
@@ -60,25 +56,33 @@
         </li>
       </ul>
     </div>
+    <confirm
+      title="是否保存本次修改？"
+      :value="show"
+      confirm-text="保存"
+      cancel-text="不保存"
+      @on-cancel="goBack"
+      @on-confirm="handleUpdate"
+    ></confirm>
   </div>
 </template>
 <script>
 import HeaderNav from "../../components/HeaderNav";
-import { Group, PopupRadio } from "vux";
+import { Group, PopupRadio, Confirm } from "vux";
 import { updatePersonalInfo } from "../../api";
-import { format } from "path";
-import { setTimeout } from "timers";
 export default {
   name: "PersonalInfo",
   components: {
     HeaderNav,
     Group,
-    PopupRadio
+    PopupRadio,
+    Confirm
   },
   data() {
     return {
       headerNavTitle: "个人资料",
       isEditing: false,
+      show: false,
       options1: ["请选择", "男", "女"],
       name: "",
       mobile: "",
@@ -114,10 +118,7 @@ export default {
     }
   },
   methods: {
-    handleBack() {
-      this.isEditing = false;
-      this.$router.go(-1);
-    },
+
     handleUpdate() {
       let name = this.name,
         mobile = this.mobile,
@@ -133,6 +134,8 @@ export default {
     },
     toggleEdit() {
       this.isEditing = !this.isEditing;
+      let info = this.$store.state.personal.info;
+      window.sessionStorage.setItem("personalInfo", JSON.stringify(info));
       if (this.isEditing) {
         this.name = this.c_name;
         this.mobile = this.c_mobile;
@@ -144,6 +147,35 @@ export default {
           this.$refs.name.focus();
         }, 500);
       }
+    },
+    handleBack() {
+      // 比较地址对象转化为字符串进行比较
+      if (this.isEditing) {
+        const preInfo = JSON.parse(window.sessionStorage.getItem("personalInfo"));
+        // const id = this.id, name = this.name, mobile = this.mobile, province = this.province, city=this.city, birthday=this.birthday
+        const {id, name, mobile, province, city, birthday} = this
+        const inputSex = this.sex
+        const sex = inputSex === "请选择" ? "" : inputSex === "男" ? "0" : "1";
+        if (
+          preInfo.name !== name ||
+          preInfo.mobile !== mobile ||
+          preInfo.province !== province ||
+          preInfo.city !== city ||
+          preInfo.sex !== sex ||
+          preInfo.birthday !== birthday
+        ) {
+          this.show = !this.show;
+        } else {
+          this.isEditing = false
+          this.$router.go(-1);
+        }
+      } else {
+        this.$router.go(-1);
+      }
+    },
+    goBack() {
+      this.show = !this.show;
+      this.$router.go(-1);
     }
   }
 };
@@ -193,6 +225,7 @@ ul li input {
   height: 25px;
   border: none;
   outline: none;
+  font-size: 15px;
 }
 .address-edit-btn {
   position: fixed;

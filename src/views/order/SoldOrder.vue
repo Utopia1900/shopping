@@ -178,6 +178,10 @@ export default {
       this.$router.push("/orderDetail");
     },
     goToDelivery(order) {
+      this.$store.commit(
+        "order/setScroll",
+        this.$refs.myScroller.getPosition().top
+      ); // 获取scroller移动的垂直距离
       this.$store.commit("orderDetail/set", order);
       this.$router.push("/delivery");
     },
