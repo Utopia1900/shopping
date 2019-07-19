@@ -13,6 +13,7 @@ const SoldOrder = r => require.ensure([], () => r(require('@/views/order/SoldOrd
 const OrderDetail = r => require.ensure([], () => r(require('@/views/order/OrderDetail')), 'OrderDetail')
 const Delivery = r => require.ensure([], () => r(require('@/views/order/Delivery')), 'Delivery')
 const MyLower = r => require.ensure([], () => r(require('@/views/myLower/MyLower')), 'MyLower')
+const PersonalInfo = r => require.ensure([], () => r(require('@/views/mine/PersonalInfo')), 'PersonalInfo')
 
 Vue.use(Router)
 
@@ -47,6 +48,14 @@ export default new Router({
       components: {
         'default': MyAddress,
         'subPage': AddressEdit
+      }
+    },
+    {
+      path:'/mine/personalInfo',
+      name:'personalInfo',
+      components: {
+        'default': Mine,
+        'subPage': PersonalInfo
       }
     },
     {

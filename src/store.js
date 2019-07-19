@@ -145,5 +145,17 @@ export default {
         }
       }
     },
+    personal:{
+      stric: true,
+      namespaced: true,
+      state: {
+        info: {}
+      },
+      mutations: {
+        setInfo(state, payload) {
+          state.info = payload
+        }
+      }
+    }
   }
 }

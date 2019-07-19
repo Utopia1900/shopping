@@ -131,7 +131,7 @@ export const querySummary = (token, successCb) => {
 export const handleGetsummary = (self) => {
   const token = window.sessionStorage.getItem('token')
   querySummary(token, data => {
-    if(!data.errcode) {
+    if (!data.errcode) {
       self.$store.commit('summary/set', data)
     } else {
       self.$vux.alert.show({
@@ -441,6 +441,73 @@ export const getAgencyLevel = (token, successCb) => {
     if (successCb) successCb(response.data)
   }).catch(error => {
     console.error(error)
+  })
+}
+
+const reqPersonalInfo = (token, successCb) => {
+  const options = {
+    method: 'POST',
+    data: JSON.stringify({ token }),
+    url: 'getPersonalInfo'
+  }
+  axios(options).then(response => {
+    if (successCb) successCb(response.data)
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+export const getPersonalInfo = self => {
+  const token = window.sessionStorage.getItem('token')
+  reqPersonalInfo(token, data => {
+    if (!data.errcode) {
+      self.$store.commit('personal/setInfo', data)
+    } else {
+      self.$vux.alert.show({
+        title: "提示",
+        content: data.errmsg,
+        buttonText: "知道了"
+      })
+    }
+  })
+}
+
+const reqUpdatePersonalInfo = (token, forms, successCb) => {
+  let {id, name, mobile, sex, porvince, city, birthday} = forms
+  let formData = {token, id}
+  if (name !== "") formData.name = name
+  if (mobile !== "") formData.mobile = mobile
+  if (sex !== "") formData.sex = sex
+  if (porvince !== "") formData.porvince = porvince
+  if (city !== "") formData.city = city
+  if (birthday !== "") formData.birthday = birthday
+  const options = {
+    method: "POSt",
+    data:JSON.stringify(formData),
+    url:"updatePersonalInfo"
+  }
+  axios(options).then(response => {
+    if(successCb) successCb(response.data) 
+  }).catch(error => {
+    console.error(error)
+  })
+}
+
+export const updatePersonalInfo = (self, forms) => {
+  const token = window.sessionStorage.getItem('token')
+  reqUpdatePersonalInfo(token, forms, data => {
+    if(!data.errcode){
+      self.isEditing = false
+      self.$vux.toast.show({
+        text: `修改成功`
+      });
+    } else {
+      self.$vux.alert.show({
+        title: "提示",
+        content: data.errmsg,
+        buttonText: "知道了"
+      })
+    }
   })
 }
 

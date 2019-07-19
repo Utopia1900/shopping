@@ -1,7 +1,6 @@
 <template>
   <div class="catresult-catbar-wrap">
     <span @click="handleGoBack" class="catresult-catbar-back zui-icon zui-icon-back">
-
     </span>
     <div class="catresult-catbar-wrap-title">{{headerNavTitle}}</div>
   </div>
@@ -21,13 +20,14 @@
 
 <style scoped>
   .catresult-catbar-wrap{
-    background-color: #fff;
+    background-color: #ed7a5d;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     border-bottom: 1px solid #efeff4;
     z-index: 98;
+    color: #fff
   }
   .catresult-catbar-back{
     float: left;
@@ -37,9 +37,8 @@
     font-size: 20px;
     padding-left: 4px;
     padding-right: 4px;
-    color: #404040;
     z-index: 99;
-    background-color: #fff;
+    /* background-color: #fff; */
   }
   .catresult-catbar-item{
     background: #fff;

@@ -2,22 +2,25 @@
   <div class="z-page">
     <div class="mine-head-wrap">
       <img :src="userInfo.headImgUrl" />
-      <div class="mine-info">
+      <div class="mine-info" style="float:left; width:70%">
         <span class="name">{{userInfo.nickname}}</span>
-        <div style="font-size:12px;">
+        <div>
           <div>
-            <span style="color:#555555">
-              购买的订单总额:
-              <span style="color:#ED7A5D;text-indent:12px;font-size:15px;">{{userInfo.amount}}</span>
+            <span style="font-size:11px;">
+              购买的订单总额
             </span>
+            <span style="padding-left:10px;font-size:16px;">{{userInfo.amount}}</span>
           </div>
           <div>
-            <span style="color:#555555">
-              订单总数:
-              <span style="color:#ED7A5D;text-indent:12px;font-size:15px;">{{userInfo.orderNum}}</span>
+            <span style="font-size:11px;">
+              订单总数
             </span>
+            <span style="padding-left:10px;font-size:16px;">{{userInfo.orderNum}}</span>
           </div>
         </div>
+      </div>
+      <div>
+        <span class="zui-icon zui-icon-setting" @click="routeToPersonalInfo"></span>
       </div>
     </div>
 
@@ -168,7 +171,8 @@ import {
   querySummary,
   handleGetPurchaseOrder,
   handleGetSoldOrder,
-  getAgencyLevel
+  getAgencyLevel,
+  getPersonalInfo
 } from "../../api";
 
 export default {
@@ -281,6 +285,10 @@ export default {
           }
         });
       }
+    },
+    routeToPersonalInfo(){
+      getPersonalInfo(this)
+      this.$router.push('/mine/personalInfo')
     }
   },
   created() {
