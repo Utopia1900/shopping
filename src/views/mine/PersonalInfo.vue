@@ -21,7 +21,7 @@
           style="height:50px;"
          @on-show="hello"></popup-radio>
         <popup-radio title="所在城市" :options="citysOptions" v-model="city" style="height:50px;" @click="hello"></popup-radio>
-        <popup-radio title="性别" :options="provinceOptions" v-model="sex" style="height:50px;"></popup-radio>
+        <popup-radio title="性别" :options="sexOptions" v-model="sex" style="height:50px;"></popup-radio>
         <li>
           <label for="birthday">生日</label>
           <input type="text" v-model="birthday" id="birthday" />
@@ -86,7 +86,7 @@ export default {
       headerNavTitle: "个人资料",
       isEditing: false,
       show: false,
-      options1: ["请选择", "男", "女"],
+      sexOptions: ["请选择", "男", "女"],
       name: "",
       mobile: "",
       city: "",
