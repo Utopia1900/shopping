@@ -1,29 +1,30 @@
 <template>
   <div class="z-page">
-    <header-nav :headerNavTitle="headerNavTitle" @on-back="handleBack"/>
-    <span class="info-edit" @click="toggleEdit">{{!isEditing? '編輯':'完成'}}</span>
+    <header-nav :headerNavTitle="headerNavTitle" @on-back="handleBack" />
+    <div class="edit-tag-container">
+      <span class="info-edit" @click="toggleEdit">{{!isEditing? '編輯':'完成'}}</span>
+    </div>
     <div class="personal-info-edit" v-if="isEditing">
       <ul style="padding: 15px;">
         <li>
           <label for="name">姓名</label>
-          <input type="text" v-model="name" ref="name" placeholder="请输入">
+          <input type="text" v-model="name" ref="name" placeholder="请输入" />
         </li>
         <li>
           <label for="mobile">电话</label>
-          <input type="text" v-model="mobile" id="mobile" placeholder="请输入">
+          <input type="text" v-model="mobile" id="mobile" placeholder="请输入" />
         </li>
-        <li>
-          <label for="province">所在省份</label>
-          <input type="text" v-model="province" id="province" placeholder="请选择">
-        </li>
-        <li>
-          <label for="city">所在城市</label>
-          <input type="text" v-model="city" id="city" placeholder="请选择">
-        </li>
-        <popup-radio title="性别" :options="options1" v-model="sex"></popup-radio>
+        <popup-radio
+          title="所在省份"
+          :options="provinceOptions"
+          v-model="province"
+          style="height:50px;"
+         @on-show="hello"></popup-radio>
+        <popup-radio title="所在城市" :options="citysOptions" v-model="city" style="height:50px;" @click="hello"></popup-radio>
+        <popup-radio title="性别" :options="provinceOptions" v-model="sex" style="height:50px;"></popup-radio>
         <li>
           <label for="birthday">生日</label>
-          <input type="text" v-model="birthday" id="birthday">
+          <input type="text" v-model="birthday" id="birthday" />
         </li>
       </ul>
       <div class="address-edit-btn" @click="handleUpdate">保存</div>
@@ -70,6 +71,8 @@
 import HeaderNav from "../../components/HeaderNav";
 import { Group, PopupRadio, Confirm } from "vux";
 import { updatePersonalInfo } from "../../api";
+const provinces = require("../../data/province.json");
+const citys = require("../../data/city.json");
 export default {
   name: "PersonalInfo",
   components: {
@@ -89,10 +92,16 @@ export default {
       city: "",
       sex: "",
       province: "",
-      birthday: ""
+      birthday: "",
+      province: "",
+      citysOptions: [],
+      isPopShow: false
     };
   },
   computed: {
+    provinceOptions() {
+      return provinces.map(item => item["name"]);
+    },
     id() {
       return this.$store.state.personal.info.id;
     },
@@ -118,7 +127,9 @@ export default {
     }
   },
   methods: {
-
+    hello(){
+      this.isPopShow = true
+    },
     handleUpdate() {
       let name = this.name,
         mobile = this.mobile,
@@ -151,10 +162,12 @@ export default {
     handleBack() {
       // 比较地址对象转化为字符串进行比较
       if (this.isEditing) {
-        const preInfo = JSON.parse(window.sessionStorage.getItem("personalInfo"));
+        const preInfo = JSON.parse(
+          window.sessionStorage.getItem("personalInfo")
+        );
         // const id = this.id, name = this.name, mobile = this.mobile, province = this.province, city=this.city, birthday=this.birthday
-        const {id, name, mobile, province, city, birthday} = this
-        const inputSex = this.sex
+        const { id, name, mobile, province, city, birthday } = this;
+        const inputSex = this.sex;
         const sex = inputSex === "请选择" ? "" : inputSex === "男" ? "0" : "1";
         if (
           preInfo.name !== name ||
@@ -166,67 +179,86 @@ export default {
         ) {
           this.show = !this.show;
         } else {
-          this.isEditing = false
+          this.isEditing = false;
           this.$router.go(-1);
         }
       } else {
         this.$router.go(-1);
       }
+      this.isPopShow = false
     },
     goBack() {
+      this.isEditing = false;
       this.show = !this.show;
       this.$router.go(-1);
+    },
+    getCitysOptions() {
+      this.citysOptions = citys
+        .filter(item => item["parent"] === this.province)
+        .map(item => item["name"]);
+    }
+  },
+  watch: {
+    'province': function(val, oldVale) {
+      if(this.isPopShow){
+        this.city = ''       
+      } else {
+        this.city = this.c_city
+      }
+      this.getCitysOptions();
     }
   }
 };
 </script>
 <style>
-.info-edit {
-  position: fixed;
-  top: 0;
-  right: 0;
-  display: inline-block;
-  z-index: 99;
-  color: #fff;
-  font-size: 14px;
-  height: 40px;
-  line-height: 40px;
-  padding-right: 5px;
+.edit-tag-container {
+  margin-top: 40px;
+  background-color: #ed7a5d;
+  height: 50px;
+}
+.edit-tag-container span {
+  line-height: 50px;
+  display: block;
+  float: right;
+  padding-right: 18px;
+  color: #ffffff;
 }
 .personal-info-edit {
   background-color: #fff;
   color: #404040;
-  margin-top: 50px;
 }
 ul li {
   border-bottom: 1px solid #eeeeee;
-  padding: 10px 16px;
+  padding: 0 16px;
+  height: 50px;
 }
-label {
-  width: 80px;
+.personal-info-edit ul li label,
+.personal-info-list ul li label {
+  height: 50px;
+  line-height: 50px;
+  width: 100px;
   display: inline-block;
   font-size: 16px;
-}
-.personal-info-edit ul li label {
-  color: #404040;
+  color: #000000;
 }
 .personal-info-list {
   background-color: #fff;
   color: #888888;
-  margin-top: 50px;
-}
-.personal-info-list ul li label {
-  color: #888888;
-}
-.personal-info-list ul li span {
-  color: #000000;
 }
 ul li input {
-  height: 25px;
+  height: 49px;
+  display: inline-block;
   border: none;
   outline: none;
-  font-size: 15px;
+  font-size: 18px;
+  color: green;
 }
+ul li span {
+  line-height: 50px;
+  font-size: 18px;
+  display: inline-block;
+}
+
 .address-edit-btn {
   position: fixed;
   left: 0;
@@ -239,5 +271,8 @@ ul li input {
   background-color: #ed7a5d;
   color: #fff;
   text-align: center;
+}
+.vux-popup-dialog {
+  top: 50%;
 }
 </style>

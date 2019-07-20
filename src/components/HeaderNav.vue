@@ -25,7 +25,7 @@
     top: 0;
     left: 0;
     right: 0;
-    border-bottom: 1px solid #efeff4;
+    /* border-bottom: 1px solid #efeff4; */
     z-index: 98;
     color: #fff
   }
