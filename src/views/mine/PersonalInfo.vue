@@ -123,7 +123,7 @@ export default {
     c_sex() {
       // return this.$store.state.personal.info.sex
       let sex = this.$store.state.personal.info.sex;
-      return sex === "" ? "请选择" : sex === "0" ? "男" : "女";
+      return sex === "" ? "" : sex === "0" ? "男" : "女";
     }
   },
   methods: {
